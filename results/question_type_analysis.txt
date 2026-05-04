@@ -1,0 +1,131 @@
+============================================================================
+  QUESTION-TYPE ANALYSIS / ANALIZ PO TIPAM VOPROSOV
+  Standard RAG vs Onto-RAG
+  Corpus: Introduction to Calculus Vol. II (Heinbockel)
+  Total questions: 18  |  Categories: 4
+============================================================================
+
+  CATEGORY DISTRIBUTION
+  ------------------------------------------------------------------------
+  Factual          5 questions  #####
+  Relationship     5 questions  #####
+  Reasoning        4 questions  ####
+  Summary          4 questions  ####
+  ------------------------------------------------------------------------
+
+  TABLE 1. Standard RAG -- average metrics by question type
+  ------------------------------------------------------------------------
+  Type              N   ROUGE-L     BLEU   Cosine   NDCG@5      MRR
+  ------------------------------------------------------------------------
+  Factual           5    0.3355   0.1214   0.5908   0.9529   1.0000
+  Relationship      5    0.2764   0.1002   0.5833   0.9643   1.0000
+  Reasoning         4    0.2219   0.0926   0.5181   0.9431   1.0000
+  Summary           4    0.2285   0.0677   0.4845   0.9063   0.8333
+  ------------------------------------------------------------------------
+  OVERALL          18    0.2701   0.0972   0.5489   0.9435   0.9630
+  ------------------------------------------------------------------------
+
+  TABLE 2. Onto-RAG -- average metrics by question type
+  ------------------------------------------------------------------------
+  Type              N   ROUGE-L     BLEU   Cosine   NDCG@5      MRR
+  ------------------------------------------------------------------------
+  Factual           5    0.3006   0.1206   0.5335   0.9082   1.0000
+  Relationship      5    0.2670   0.0874   0.5760   0.9668   1.0000
+  Reasoning         4    0.2149   0.0854   0.5466   0.8967   0.7083
+  Summary           4    0.1794   0.0669   0.3989   0.9771   0.5833
+  ------------------------------------------------------------------------
+  OVERALL          18    0.2453   0.0916   0.5183   0.9373   0.8426
+  ------------------------------------------------------------------------
+
+  TABLE 3. Delta: Onto-RAG vs Standard RAG (% change)
+  ------------------------------------------------------------------------
+  Type              N   ROUGE-L     BLEU   Cosine   NDCG@5      MRR
+  ------------------------------------------------------------------------
+  Factual           5    -10.4%    -0.7%    -9.7%    -4.7%    +0.0%
+  Relationship      5     -3.4%   -12.7%    -1.3%    +0.3%    +0.0%
+  Reasoning         4     -3.2%    -7.8%    +5.5%    -4.9%   -29.2%
+  Summary           4    -21.5%    -1.2%   -17.7%    +7.8%   -30.0%
+  ------------------------------------------------------------------------
+  OVERALL          18     -9.2%    -5.7%    -5.6%    -0.7%   -12.5%
+  ------------------------------------------------------------------------
+
+  TABLE 4. Per-question ROUGE-L comparison (sorted by type)
+  ------------------------------------------------------------------------
+  Q#   Type           RAG       Onto-RAG  Delta      Question
+  ------------------------------------------------------------------------
+  Q1   Factual          0.2707    0.1101  -0.1606 - What is the formal definition 
+  Q2   Factual          0.1138    0.1138  +0.0000 = What does the Fundamental Theo
+  Q3   Factual          0.4444    0.4724  +0.0280 + What is the gradient of a scal
+  Q4   Factual          0.4058    0.3889  -0.0169 - What is the divergence of a ve
+  Q5   Factual          0.4430    0.4177  -0.0252 - What is the curl of a vector f
+  Q6   Relationship     0.1000    0.1982  +0.0982 + How are derivatives and integr
+  Q7   Relationship     0.3860    0.3636  -0.0223 - How does the Chain Rule relate
+  Q8   Relationship     0.4200    0.2677  -0.1523 - What is the relationship betwe
+  Q9   Relationship     0.1517    0.1719  +0.0202 + How are gradient, divergence, 
+  Q10  Relationship     0.3243    0.3333  +0.0090 + How does the Product Rule rela
+  Q11  Reasoning        0.1667    0.1679  +0.0013 = Why does a Taylor series conve
+  Q12  Reasoning        0.1333    0.1261  -0.0072 - Why is the Jacobian needed whe
+  Q13  Reasoning        0.2239    0.2162  -0.0077 - Why are conservative vector fi
+  Q14  Reasoning        0.3636    0.3492  -0.0144 - How is the second derivative u
+  Q15  Summary          0.2037    0.0690  -0.1347 - What are the main integration 
+  Q16  Summary          0.3818    0.3818  +0.0000 = How do the fundamental theorem
+  Q17  Summary          0.0876    0.0367  -0.0509 - What are the key applications 
+  Q18  Summary          0.2407    0.2301  -0.0107 - How does single-variable calcu
+  ------------------------------------------------------------------------
+
+============================================================================
+  ANALYSIS / ANALITICHESKIY VYVOD
+============================================================================
+
+  1. CATEGORY RANKING BY ONTO-RAG IMPROVEMENT (ROUGE-L Delta):
+
+     1. Reasoning        ROUGE-L -3.2% (degradation)
+        Also improved: Cosine +5.5%
+     2. Relationship     ROUGE-L -3.4% (degradation)
+     3. Factual          ROUGE-L -10.4% (degradation)
+     4. Summary          ROUGE-L -21.5% (degradation)
+        Also improved: NDCG@5 +7.8%
+
+  2. DETAILED CATEGORY ANALYSIS:
+
+     Factual (5 questions): W=1 / T=1 / L=3
+       Degraded:  ROUGE-L (-10.4%), Cosine (-9.7%), NDCG@5 (-4.7%)
+       Best example: "What is the gradient of a scalar function?..."
+         RAG=0.4444 -> Onto-RAG=0.4724 (Delta=+0.0280)
+
+     Relationship (5 questions): W=3 / T=0 / L=2
+       Degraded:  ROUGE-L (-3.4%), BLEU (-12.7%), Cosine (-1.3%)
+       Best example: "How are derivatives and integrals related?..."
+         RAG=0.1000 -> Onto-RAG=0.1982 (Delta=+0.0982)
+
+     Reasoning (4 questions): W=0 / T=1 / L=3
+       Improved:  Cosine (+5.5%)
+       Degraded:  ROUGE-L (-3.2%), BLEU (-7.8%), NDCG@5 (-4.9%), MRR (-29.2%)
+
+     Summary (4 questions): W=0 / T=1 / L=3
+       Improved:  NDCG@5 (+7.8%)
+       Degraded:  ROUGE-L (-21.5%), BLEU (-1.2%), Cosine (-17.7%), MRR (-30.0%)
+
+  3. SUMMARY:
+
+     Onto-RAG does not uniformly outperform Standard RAG on
+     any category in ROUGE-L, but shows selective improvements
+     on individual questions and retrieval-based metrics.
+
+     The weakest performance is on Summary questions
+     (ROUGE-L -21.5%), where ontology expansion may
+     introduce noise by pulling in tangentially related concepts.
+
+     Overall (all categories combined):
+       ROUGE-L: 0.2701 -> 0.2453 (-9.2%)
+       BLEU: 0.0972 -> 0.0916 (-5.7%)
+       Cosine: 0.5489 -> 0.5183 (-5.6%)
+       NDCG@5: 0.9435 -> 0.9373 (-0.7%)
+       MRR: 0.9630 -> 0.8426 (-12.5%)
+
+     These results suggest that the ontology integration is most
+     beneficial for questions requiring multi-hop reasoning about
+     entity relationships, while simpler factual and summary
+     questions may not benefit from the additional complexity.
+
+============================================================================

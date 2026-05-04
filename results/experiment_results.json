@@ -1,0 +1,570 @@
+{
+  "averages": {
+    "rag": {
+      "rouge_l": 0.27005981101636345,
+      "bleu": 0.09719067482487104,
+      "cosine": 0.548934935131678,
+      "ndcg": 0.9435350838901903,
+      "mrr": 0.9629629629629629
+    },
+    "onto_rag": {
+      "rouge_l": 0.26078997160102835,
+      "bleu": 0.09063914198143669,
+      "cosine": 0.5562828298358453,
+      "ndcg": 0.9342860489549949,
+      "mrr": 0.9629629629629629
+    }
+  },
+  "results": [
+    {
+      "id": 1,
+      "question": "What is the formal definition of a limit?",
+      "reference": "A limit uses the epsilon-delta definition: for every epsilon > 0 there exists delta > 0 such that |x - c| < delta implies |f(x) - L| < epsilon.",
+      "type": "factual",
+      "rag_answer": "The formal epsilon-delta definition states that for every epsilon greater than zero there exists a delta greater than zero such that whenever the distance between x and the limit point is less than delta, the distance between f(x) and L is less than epsilon. A limit describes the value that a function approaches as the input approaches a particular point. Both rules are derived from the definition of the derivative using limits. The derivative of a function f(x) is defined as the limit of the di",
+      "onto_rag_answer": "The formal epsilon-delta definition states that for every epsilon greater than zero there exists a delta greater than zero such that whenever the distance between x and the limit point is less than delta, the distance between f(x) and L is less than epsilon. Both rules are derived from the definition of the derivative using limits. A limit describes the value that a function approaches as the input approaches a particular point. It is defined as the limit of Riemann sums. The Product Rule states that the derivative of a product of two functions u(x) and v(x) is u'(x)v(x) + u(x)v'(x).",
+      "onto_context": "Derivative: The instantaneous rate of change of a function, defined as the limit of the difference quotient. Derivative requires Limit. Derivative is part of Single-Variable Calculus. Derivative is the inverse of Integral. Area and Volume Computation: Computing areas between curves and volumes of solids using integration. Area and Volume Computation requires Integral. Limit: The value a function a",
+      "entities_found": [
+        "Limit"
+      ],
+      "rag_metrics": {
+        "rouge_l": 0.2706766917293233,
+        "bleu": 0.0,
+        "cosine": 0.5396211360022349,
+        "ndcg": 0.9938488985187953,
+        "mrr": 1.0
+      },
+      "onto_rag_metrics": {
+        "rouge_l": 0.26666666666666666,
+        "bleu": 0.0,
+        "cosine": 0.5128157140067362,
+        "ndcg": 0.8213137146137829,
+        "mrr": 1.0
+      },
+      "rag_context_size": 601,
+      "onto_rag_context_size": 590
+    },
+    {
+      "id": 2,
+      "question": "What does the Fundamental Theorem of Calculus state?",
+      "reference": "Part 1: if F(x) = integral from a to x of f(t)dt, then F'(x) = f(x). Part 2: integral from a to b of f(x)dx = F(b) - F(a), where F is an antiderivative of f.",
+      "type": "factual",
+      "rag_answer": "The Fundamental Theorem of Calculus, Green's Theorem, Stokes' Theorem, and the Divergence Theorem are all manifestations of a single generalized Stokes' theorem. The Fundamental Theorem of Calculus connects differentiation and integration. This theorem is the cornerstone of integral calculus. This theorem is fundamental in fluid mechanics, electromagnetism, and heat transfer. The Divergence Theorem (Gauss's Theorem) relates the flux of a vector field through a closed surface to the volume integr",
+      "onto_rag_answer": "The Fundamental Theorem of Calculus, Green's Theorem, Stokes' Theorem, and the Divergence Theorem are all manifestations of a single generalized Stokes' theorem. The Fundamental Theorem of Calculus connects differentiation and integration. This theorem is the cornerstone of integral calculus. This theorem is fundamental in fluid mechanics, electromagnetism, and heat transfer. The Divergence Theorem (Gauss's Theorem) relates the flux of a vector field through a closed surface to the volume integral of the divergence over the enclosed region: integral_S F .",
+      "onto_context": "Clairaut's Theorem: Mixed partial derivatives are equal when second-order partials are continuous. Clairaut's Theorem proves / applies to Partial Derivative. Green's Theorem: Relates line integral around a closed curve to double integral over the enclosed region. Green's Theorem proves / applies to Line Integral. Green's Theorem proves / applies to Double Integral. Green's Theorem is related to St",
+      "entities_found": [
+        "SingleVariableCalculus",
+        "MultivariableCalculus",
+        "VectorCalculus",
+        "FundamentalTheoremOfCalculus",
+        "GreensTheorem",
+        "StokesTheorem",
+        "DivergenceTheorem",
+        "IntermediateValueTheorem",
+        "FubiniTheorem",
+        "ClairauttTheorem"
+      ],
+      "rag_metrics": {
+        "rouge_l": 0.11382113821138214,
+        "bleu": 0.0,
+        "cosine": 0.2059036506817091,
+        "ndcg": 0.821313714613783,
+        "mrr": 1.0
+      },
+      "onto_rag_metrics": {
+        "rouge_l": 0.11382113821138214,
+        "bleu": 0.0,
+        "cosine": 0.2059036506817091,
+        "ndcg": 0.821313714613783,
+        "mrr": 1.0
+      },
+      "rag_context_size": 561,
+      "onto_rag_context_size": 561
+    },
+    {
+      "id": 3,
+      "question": "What is the gradient of a scalar function?",
+      "reference": "The gradient of f(x,y,z) is the vector (df/dx, df/dy, df/dz). It points in the direction of steepest ascent and its magnitude is the maximum rate of increase.",
+      "type": "factual",
+      "rag_answer": "The gradient of a scalar function f(x,y,z) is the vector of its partial derivatives: grad(f) = (df/dx, df/dy, df/dz). If curl(F) = 0, the field is irrotational, which implies that F is the gradient of some scalar potential function. The gradient points in the direction of steepest ascent of the function and its magnitude gives the rate of maximum increase. It is perpendicular to the level surfaces of the function. Continuity of a function at a point means that the limit of the function as x appr",
+      "onto_rag_answer": "The gradient of a scalar function f(x,y,z) is the vector of its partial derivatives: grad(f) = (df/dx, df/dy, df/dz). The gradient points in the direction of steepest ascent of the function and its magnitude gives the rate of maximum increase. It is perpendicular to the level surfaces of the function. The gradient generalizes the derivative, the divergence and curl extend differential analysis to vector fields, and double and triple integrals generalize single integrals. A partial derivative of a multivariable function f(x,y) with respect to x is the derivative taken while holding y constant, denoted df/dx or f_x.",
+      "onto_context": "Clairaut's Theorem: Mixed partial derivatives are equal when second-order partials are continuous. Clairaut's Theorem proves / applies to Partial Derivative. Derivative: The instantaneous rate of change of a function, defined as the limit of the difference quotient. Derivative requires Limit. Derivative is part of Single-Variable Calculus. Derivative is the inverse of Integral. Divergence: Scalar ",
+      "entities_found": [
+        "Gradient"
+      ],
+      "rag_metrics": {
+        "rouge_l": 0.4444444444444445,
+        "bleu": 0.1902389437117041,
+        "cosine": 0.7696075881600096,
+        "ndcg": 1.0,
+        "mrr": 1.0
+      },
+      "onto_rag_metrics": {
+        "rouge_l": 0.42857142857142855,
+        "bleu": 0.181221842079574,
+        "cosine": 0.820616408973021,
+        "ndcg": 0.9764156382887859,
+        "mrr": 1.0
+      },
+      "rag_context_size": 558,
+      "onto_rag_context_size": 621
+    },
+    {
+      "id": 4,
+      "question": "What is the divergence of a vector field?",
+      "reference": "The divergence of F = (P,Q,R) is dP/dx + dQ/dy + dR/dz. It measures the rate at which the field spreads out from a point. Zero divergence means the field is solenoidal.",
+      "type": "factual",
+      "rag_answer": "The divergence of a vector field F = (P, Q, R) is a scalar: div(F) = dP/dx + dQ/dy + dR/dz. The Divergence Theorem (Gauss's Theorem) relates the flux of a vector field through a closed surface to the volume integral of the divergence over the enclosed region: integral_S F . The curl of a vector field F = (P, Q, R) is a vector: curl(F) = (dR/dy - dQ/dz, dP/dz - dR/dx, dQ/dx - dP/dy). It measures the rate at which the field spreads out from a point. A positive divergence indicates a source, while ",
+      "onto_rag_answer": "The Divergence Theorem (Gauss's Theorem) relates the flux of a vector field through a closed surface to the volume integral of the divergence over the enclosed region: integral_S F . The divergence of a vector field F = (P, Q, R) is a scalar: div(F) = dP/dx + dQ/dy + dR/dz. The curl of a vector field F = (P, Q, R) is a vector: curl(F) = (dR/dy - dQ/dz, dP/dz - dR/dx, dQ/dx - dP/dy). It measures the rate at which the field spreads out from a point. A positive divergence indicates a source, while negative divergence indicates a sink.",
+      "onto_context": "Gradient: Vector of partial derivatives pointing in the direction of steepest ascent. Gradient requires Partial Derivative. Gradient is part of Vector Calculus. Gradient is related to Divergence. Gradient is related to Curl. Divergence: Scalar measuring how much a vector field spreads out from a point. Divergence requires Partial Derivative. Divergence is part of Vector Calculus. Divergence is rel",
+      "entities_found": [
+        "VectorCalculus",
+        "Divergence",
+        "ConservativeField",
+        "DivergenceTheorem"
+      ],
+      "rag_metrics": {
+        "rouge_l": 0.4057971014492754,
+        "bleu": 0.20715030166351084,
+        "cosine": 0.7665551758398332,
+        "ndcg": 0.9621295382417866,
+        "mrr": 1.0
+      },
+      "onto_rag_metrics": {
+        "rouge_l": 0.4057971014492754,
+        "bleu": 0.20715030166351084,
+        "cosine": 0.7665551758398332,
+        "ndcg": 0.7931073812122859,
+        "mrr": 1.0
+      },
+      "rag_context_size": 537,
+      "onto_rag_context_size": 537
+    },
+    {
+      "id": 5,
+      "question": "What is the curl of a vector field?",
+      "reference": "The curl of F = (P,Q,R) is (dR/dy - dQ/dz, dP/dz - dR/dx, dQ/dx - dP/dy). It measures the rotation tendency. If curl(F) = 0, the field is irrotational.",
+      "type": "factual",
+      "rag_answer": "The curl of a vector field F = (P, Q, R) is a vector: curl(F) = (dR/dy - dQ/dz, dP/dz - dR/dx, dQ/dx - dP/dy). It relates the surface integral of the curl of a vector field over a surface S to the line integral of the field around the boundary curve of S: integral_S curl(F) . The curl measures the rotation or circulation tendency of the field at a point. If curl(F) = 0, the field is irrotational, which implies that F is the gradient of some scalar potential function. A line integral of a vector ",
+      "onto_rag_answer": "The curl of a vector field F = (P, Q, R) is a vector: curl(F) = (dR/dy - dQ/dz, dP/dz - dR/dx, dQ/dx - dP/dy). It relates the surface integral of the curl of a vector field over a surface S to the line integral of the field around the boundary curve of S: integral_S curl(F) . The curl measures the rotation or circulation tendency of the field at a point. If curl(F) = 0, the field is irrotational, which implies that F is the gradient of some scalar potential function. A line integral of a vector field F along a curve C computes the work done by the field along the path.",
+      "onto_context": "Line Integral: Integral of a vector field along a curve, computing work done by the field. Line Integral is part of Vector Calculus. Line Integral is related to Surface Integral. Divergence: Scalar measuring how much a vector field spreads out from a point. Divergence requires Partial Derivative. Divergence is part of Vector Calculus. Divergence is related to Curl. Conservative Field: A vector fie",
+      "entities_found": [
+        "VectorCalculus",
+        "Curl",
+        "ConservativeField"
+      ],
+      "rag_metrics": {
+        "rouge_l": 0.44295302013422816,
+        "bleu": 0.20984689398691905,
+        "cosine": 0.6724713318184039,
+        "ndcg": 0.98725095045549,
+        "mrr": 1.0
+      },
+      "onto_rag_metrics": {
+        "rouge_l": 0.44295302013422816,
+        "bleu": 0.20984689398691905,
+        "cosine": 0.6724713318184039,
+        "ndcg": 0.98725095045549,
+        "mrr": 1.0
+      },
+      "rag_context_size": 575,
+      "onto_rag_context_size": 575
+    },
+    {
+      "id": 6,
+      "question": "How are derivatives and integrals related?",
+      "reference": "The Fundamental Theorem of Calculus connects them: differentiation and integration are inverse processes. The integral of a derivative recovers the original function (up to a constant).",
+      "type": "relationship",
+      "rag_answer": "Partial derivatives and multiple integrals extend single-variable calculus to higher dimensions. The gradient generalizes the derivative, the divergence and curl extend differential analysis to vector fields, and double and triple integrals generalize single integrals. A triple integral extends double integrals to three dimensions, computing quantities like mass and volume over a three-dimensional region. Triple integrals can be evaluated in Cartesian, cylindrical, or spherical coordinates, with",
+      "onto_rag_answer": "Partial derivatives and multiple integrals extend single-variable calculus to higher dimensions. The gradient generalizes the derivative, the divergence and curl extend differential analysis to vector fields, and double and triple integrals generalize single integrals. Related rates problems involve finding the rate of change of one quantity in terms of the rate of change of another. The Fundamental Theorem of Calculus connects differentiation and integration. Part 1 states that if F(x) = integral from a to x of f(t)dt, then F'(x) = f(x).",
+      "onto_context": "Derivative: The instantaneous rate of change of a function, defined as the limit of the difference quotient. Derivative requires Limit. Derivative is part of Single-Variable Calculus. Derivative is the inverse of Integral. Fundamental Theorem of Calculus: Connects differentiation and integration as inverse processes. Fundamental Theorem of Calculus proves / applies to Derivative. Fundamental Theor",
+      "entities_found": [
+        "RelatedRates",
+        "AreaAndVolume"
+      ],
+      "rag_metrics": {
+        "rouge_l": 0.1,
+        "bleu": 0.0,
+        "cosine": 0.46676002800933664,
+        "ndcg": 1.0,
+        "mrr": 1.0
+      },
+      "onto_rag_metrics": {
+        "rouge_l": 0.21428571428571427,
+        "bleu": 0.07577197923616355,
+        "cosine": 0.5679301390639018,
+        "ndcg": 1.0,
+        "mrr": 1.0
+      },
+      "rag_context_size": 683,
+      "onto_rag_context_size": 544
+    },
+    {
+      "id": 7,
+      "question": "How does the Chain Rule relate to integration by substitution?",
+      "reference": "Integration by substitution (u-substitution) is the reverse of the Chain Rule. If the integrand has the form f(g(x))*g'(x), substituting u=g(x) simplifies the integral.",
+      "type": "relationship",
+      "rag_answer": "Integration by substitution, also known as u-substitution, is the reverse of the Chain Rule. The Chain Rule states that the derivative of a composite function f(g(x)) equals f'(g(x)) multiplied by g'(x). The Chain Rule extends naturally to compositions of three or more functions. This rule is essential for differentiating nested functions. The Product Rule states that the derivative of a product of two functions u(x) and v(x) is u'(x)v(x) + u(x)v'(x).",
+      "onto_rag_answer": "Integration by substitution, also known as u-substitution, is the reverse of the Chain Rule. The Chain Rule states that the derivative of a composite function f(g(x)) equals f'(g(x)) multiplied by g'(x). The Chain Rule extends naturally to compositions of three or more functions. The Product Rule states that the derivative of a product of two functions u(x) and v(x) is u'(x)v(x) + u(x)v'(x). The Quotient Rule gives the derivative of u/v as [u'v - uv'] / v^2.",
+      "onto_context": "Derivative: The instantaneous rate of change of a function, defined as the limit of the difference quotient. Derivative requires Limit. Derivative is part of Single-Variable Calculus. Derivative is the inverse of Integral. Quotient Rule: Derivative of quotient: d/dx[u/v] = (u'v - uv')/v^2. Quotient Rule is related to Product Rule. Integration by Substitution: Reverse of the Chain Rule: substitutin",
+      "entities_found": [
+        "ChainRule",
+        "ProductRule",
+        "QuotientRule",
+        "Substitution",
+        "IntegrationByParts"
+      ],
+      "rag_metrics": {
+        "rouge_l": 0.38596491228070173,
+        "bleu": 0.1392029200241319,
+        "cosine": 0.751227496729687,
+        "ndcg": 1.0,
+        "mrr": 1.0
+      },
+      "onto_rag_metrics": {
+        "rouge_l": 0.3636363636363636,
+        "bleu": 0.12831376926913823,
+        "cosine": 0.7484720834395003,
+        "ndcg": 0.9852768631153932,
+        "mrr": 1.0
+      },
+      "rag_context_size": 455,
+      "onto_rag_context_size": 462
+    },
+    {
+      "id": 8,
+      "question": "What is the relationship between Green's Theorem and Stokes' Theorem?",
+      "reference": "Green's Theorem is a special two-dimensional case of Stokes' Theorem. Stokes' Theorem generalizes Green's Theorem to surfaces in three dimensions.",
+      "type": "relationship",
+      "rag_answer": "The Fundamental Theorem of Calculus, Green's Theorem, Stokes' Theorem, and the Divergence Theorem are all manifestations of a single generalized Stokes' theorem. Green's Theorem is a special two-dimensional case of Stokes' Theorem. Stokes' Theorem generalizes Green's Theorem to three dimensions. Green's Theorem relates a line integral around a simple closed curve C in the plane to a double integral over the region D enclosed by C. This theorem connects circulation and curl.",
+      "onto_rag_answer": "The Fundamental Theorem of Calculus, Green's Theorem, Stokes' Theorem, and the Divergence Theorem are all manifestations of a single generalized Stokes' theorem. Green's Theorem is a special two-dimensional case of Stokes' Theorem. Green's Theorem relates a line integral around a simple closed curve C in the plane to a double integral over the region D enclosed by C. The Divergence Theorem (Gauss's Theorem) relates the flux of a vector field through a closed surface to the volume integral of the divergence over the enclosed region: integral_S F . This theorem is fundamental in fluid mechanics, electromagnetism, and heat transfer.",
+      "onto_context": "Clairaut's Theorem: Mixed partial derivatives are equal when second-order partials are continuous. Clairaut's Theorem proves / applies to Partial Derivative. Green's Theorem: Relates line integral around a closed curve to double integral over the enclosed region. Green's Theorem proves / applies to Line Integral. Green's Theorem proves / applies to Double Integral. Green's Theorem is related to St",
+      "entities_found": [
+        "FundamentalTheoremOfCalculus",
+        "GreensTheorem",
+        "StokesTheorem",
+        "DivergenceTheorem",
+        "IntermediateValueTheorem",
+        "FubiniTheorem",
+        "ClairauttTheorem",
+        "AreaAndVolume"
+      ],
+      "rag_metrics": {
+        "rouge_l": 0.42000000000000004,
+        "bleu": 0.243241107040127,
+        "cosine": 0.828421161716988,
+        "ndcg": 0.9324965074305629,
+        "mrr": 1.0
+      },
+      "onto_rag_metrics": {
+        "rouge_l": 0.2677165354330709,
+        "bleu": 0.12923172056922155,
+        "cosine": 0.670603936726845,
+        "ndcg": 0.9334359949201134,
+        "mrr": 1.0
+      },
+      "rag_context_size": 478,
+      "onto_rag_context_size": 637
+    },
+    {
+      "id": 9,
+      "question": "How are gradient, divergence, and curl connected?",
+      "reference": "The gradient maps scalars to vectors, divergence maps vectors to scalars, and curl maps vectors to vectors. Key identities: div(curl F) = 0 and curl(grad f) = 0.",
+      "type": "relationship",
+      "rag_answer": "The gradient generalizes the derivative, the divergence and curl extend differential analysis to vector fields, and double and triple integrals generalize single integrals. If curl(F) = 0, the field is irrotational, which implies that F is the gradient of some scalar potential function. The curl of a vector field F = (P, Q, R) is a vector: curl(F) = (dR/dy - dQ/dz, dP/dz - dR/dx, dQ/dx - dP/dy). The curl measures the rotation or circulation tendency of the field at a point. It relates the surfac",
+      "onto_rag_answer": "The gradient generalizes the derivative, the divergence and curl extend differential analysis to vector fields, and double and triple integrals generalize single integrals. If curl(F) = 0, the field is irrotational, which implies that F is the gradient of some scalar potential function. The Divergence Theorem (Gauss's Theorem) relates the flux of a vector field through a closed surface to the volume integral of the divergence over the enclosed region: integral_S F . The curl of a vector field F = (P, Q, R) is a vector: curl(F) = (dR/dy - dQ/dz, dP/dz - dR/dx, dQ/dx - dP/dy). The curl measures the rotation or circulation tendency of the field at a point.",
+      "onto_context": "Divergence: Scalar measuring how much a vector field spreads out from a point. Divergence requires Partial Derivative. Divergence is part of Vector Calculus. Divergence is related to Curl. Area and Volume Computation: Computing areas between curves and volumes of solids using integration. Area and Volume Computation requires Integral. Divergence Theorem: Relates flux through a closed surface to vo",
+      "entities_found": [
+        "Gradient",
+        "Divergence",
+        "Curl",
+        "DivergenceTheorem",
+        "AreaAndVolume"
+      ],
+      "rag_metrics": {
+        "rouge_l": 0.15172413793103448,
+        "bleu": 0.0,
+        "cosine": 0.3416405787592545,
+        "ndcg": 0.9683327868750183,
+        "mrr": 1.0
+      },
+      "onto_rag_metrics": {
+        "rouge_l": 0.15384615384615385,
+        "bleu": 0.0,
+        "cosine": 0.33919868715439006,
+        "ndcg": 0.9893428092667278,
+        "mrr": 1.0
+      },
+      "rag_context_size": 644,
+      "onto_rag_context_size": 661
+    },
+    {
+      "id": 10,
+      "question": "How does the Product Rule relate to integration by parts?",
+      "reference": "Integration by parts is derived from the Product Rule. The Product Rule d(uv) = u dv + v du, when integrated, gives integral u dv = uv - integral v du.",
+      "type": "relationship",
+      "rag_answer": "Integration by parts is a technique derived from the Product Rule. The Product Rule states that the derivative of a product of two functions u(x) and v(x) is u'(x)v(x) + u(x)v'(x). The Quotient Rule gives the derivative of u/v as [u'v - uv'] / v^2. The Chain Rule states that the derivative of a composite function f(g(x)) equals f'(g(x)) multiplied by g'(x). This rule is essential for differentiating nested functions.",
+      "onto_rag_answer": "Integration by parts is a technique derived from the Product Rule. The Product Rule states that the derivative of a product of two functions u(x) and v(x) is u'(x)v(x) + u(x)v'(x). Integration by substitution, also known as u-substitution, is the reverse of the Chain Rule. The Quotient Rule gives the derivative of u/v as [u'v - uv'] / v^2. Both rules are derived from the definition of the derivative using limits.",
+      "onto_context": "Derivative: The instantaneous rate of change of a function, defined as the limit of the difference quotient. Derivative requires Limit. Derivative is part of Single-Variable Calculus. Derivative is the inverse of Integral. Quotient Rule: Derivative of quotient: d/dx[u/v] = (u'v - uv')/v^2. Quotient Rule is related to Product Rule. Integration by Substitution: Reverse of the Chain Rule: substitutin",
+      "entities_found": [
+        "ChainRule",
+        "ProductRule",
+        "QuotientRule",
+        "Substitution",
+        "IntegrationByParts"
+      ],
+      "rag_metrics": {
+        "rouge_l": 0.32432432432432434,
+        "bleu": 0.11830734220331081,
+        "cosine": 0.5283305411315734,
+        "ndcg": 0.9208319671875456,
+        "mrr": 1.0
+      },
+      "onto_rag_metrics": {
+        "rouge_l": 0.33333333333333337,
+        "bleu": 0.12282954245414167,
+        "cosine": 0.5984373892852721,
+        "ndcg": 0.9270880106593755,
+        "mrr": 1.0
+      },
+      "rag_context_size": 420,
+      "onto_rag_context_size": 416
+    },
+    {
+      "id": 11,
+      "question": "Why does a Taylor series converge only within a radius of convergence?",
+      "reference": "A power series converges where the terms become small enough to sum to a finite value. The radius of convergence R is determined by the ratio or root test applied to the coefficients.",
+      "type": "reasoning",
+      "rag_answer": "Within the radius of convergence, a power series can be differentiated and integrated term by term. Each power series has a radius of convergence R such that the series converges for |x-a| < R and diverges for |x-a| > R. A Taylor series represents a function as an infinite sum of terms calculated from the values of its derivatives at a single point. The Taylor series of f(x) around x = a is given by sum [f^(n)(a)/n!] * (x-a)^n. A power series is sigma from n=0 to infinity of c_n * (x-a)^n.",
+      "onto_rag_answer": "Within the radius of convergence, a power series can be differentiated and integrated term by term. Each power series has a radius of convergence R such that the series converges for |x-a| < R and diverges for |x-a| > R. A Taylor series represents a function as an infinite sum of terms calculated from the values of its derivatives at a single point. The Taylor series of f(x) around x = a is given by sum [f^(n)(a)/n!] * (x-a)^n. A power series is sigma from n=0 to infinity of c_n * (x-a)^n.",
+      "onto_context": "Derivative: The instantaneous rate of change of a function, defined as the limit of the difference quotient. Derivative requires Limit. Derivative is part of Single-Variable Calculus. Derivative is the inverse of Integral. Fundamental Theorem of Calculus: Connects differentiation and integration as inverse processes. Fundamental Theorem of Calculus proves / applies to Derivative. Fundamental Theor",
+      "entities_found": [
+        "TaylorSeries",
+        "PowerSeries"
+      ],
+      "rag_metrics": {
+        "rouge_l": 0.16666666666666666,
+        "bleu": 0.057794841046609265,
+        "cosine": 0.5032568233568384,
+        "ndcg": 0.9238377534323511,
+        "mrr": 1.0
+      },
+      "onto_rag_metrics": {
+        "rouge_l": 0.16666666666666666,
+        "bleu": 0.057794841046609265,
+        "cosine": 0.5032568233568384,
+        "ndcg": 1.0,
+        "mrr": 1.0
+      },
+      "rag_context_size": 494,
+      "onto_rag_context_size": 494
+    },
+    {
+      "id": 12,
+      "question": "Why is the Jacobian needed when changing variables in multiple integrals?",
+      "reference": "The Jacobian accounts for how the coordinate transformation stretches or compresses area/volume elements. Without it, the integral would not correctly measure the transformed region.",
+      "type": "reasoning",
+      "rag_answer": "The Jacobian determinant is used when changing variables in multiple integrals. Partial derivatives and multiple integrals extend single-variable calculus to higher dimensions. Triple integrals can be evaluated in Cartesian, cylindrical, or spherical coordinates, with appropriate Jacobian determinants for coordinate transformations. For a transformation from (u,v) to (x,y), the Jacobian J = d(x,y)/d(u,v) = (dx/du)(dy/dv) - (dx/dv)(dy/du). In polar coordinates, the Jacobian is r, so dA = r dr d(t",
+      "onto_rag_answer": "The Jacobian determinant is used when changing variables in multiple integrals. Partial derivatives and multiple integrals extend single-variable calculus to higher dimensions. For a transformation from (u,v) to (x,y), the Jacobian J = d(x,y)/d(u,v) = (dx/du)(dy/dv) - (dx/dv)(dy/du). In polar coordinates, the Jacobian is r, so dA = r dr d(theta). The gradient generalizes the derivative, the divergence and curl extend differential analysis to vector fields, and double and triple integrals generalize single integrals.",
+      "onto_context": "Clairaut's Theorem: Mixed partial derivatives are equal when second-order partials are continuous. Clairaut's Theorem proves / applies to Partial Derivative. Derivative: The instantaneous rate of change of a function, defined as the limit of the difference quotient. Derivative requires Limit. Derivative is part of Single-Variable Calculus. Derivative is the inverse of Integral. Jacobian: Determina",
+      "entities_found": [
+        "Jacobian"
+      ],
+      "rag_metrics": {
+        "rouge_l": 0.13333333333333333,
+        "bleu": 0.0,
+        "cosine": 0.28769822778437526,
+        "ndcg": 0.8751382235604076,
+        "mrr": 1.0
+      },
+      "onto_rag_metrics": {
+        "rouge_l": 0.1090909090909091,
+        "bleu": 0.0,
+        "cosine": 0.3505187640405076,
+        "ndcg": 0.9834114722632785,
+        "mrr": 1.0
+      },
+      "rag_context_size": 506,
+      "onto_rag_context_size": 521
+    },
+    {
+      "id": 13,
+      "question": "Why are conservative vector fields path-independent?",
+      "reference": "Because curl(F) = 0 for conservative fields, the field is the gradient of a potential. The line integral depends only on the potential values at the endpoints, not the path taken.",
+      "type": "reasoning",
+      "rag_answer": "A line integral of a vector field F along a curve C computes the work done by the field along the path. If F is conservative (curl F = 0), the line integral depends only on the endpoints, not the path. A scalar potential phi exists such that F = grad(phi) for conservative fields. The gradient generalizes the derivative, the divergence and curl extend differential analysis to vector fields, and double and triple integrals generalize single integrals. The curl of a vector field F = (P, Q, R) is a ",
+      "onto_rag_answer": "A line integral of a vector field F along a curve C computes the work done by the field along the path. If F is conservative (curl F = 0), the line integral depends only on the endpoints, not the path. A scalar potential phi exists such that F = grad(phi) for conservative fields. It relates the surface integral of the curl of a vector field over a surface S to the line integral of the field around the boundary curve of S: integral_S curl(F) . The Divergence Theorem (Gauss's Theorem) relates the flux of a vector field through a closed surface to the volume integral of the divergence over the enclosed region: integral_S F .",
+      "onto_context": "Line Integral: Integral of a vector field along a curve, computing work done by the field. Line Integral is part of Vector Calculus. Line Integral is related to Surface Integral. Divergence: Scalar measuring how much a vector field spreads out from a point. Divergence requires Partial Derivative. Divergence is part of Vector Calculus. Divergence is related to Curl. Surface Integral: Integral of a ",
+      "entities_found": [
+        "VectorCalculus",
+        "ConservativeField"
+      ],
+      "rag_metrics": {
+        "rouge_l": 0.22388059701492538,
+        "bleu": 0.1357514421511941,
+        "cosine": 0.7242932432176872,
+        "ndcg": 0.9733161529729548,
+        "mrr": 1.0
+      },
+      "onto_rag_metrics": {
+        "rouge_l": 0.21621621621621623,
+        "bleu": 0.10776833540179508,
+        "cosine": 0.764540293979072,
+        "ndcg": 1.0,
+        "mrr": 1.0
+      },
+      "rag_context_size": 564,
+      "onto_rag_context_size": 629
+    },
+    {
+      "id": 14,
+      "question": "How is the second derivative used to classify critical points?",
+      "reference": "At a critical point where f'(c)=0: if f''(c) > 0 the function is concave up so it is a local minimum; if f''(c) < 0 the function is concave down so it is a local maximum.",
+      "type": "reasoning",
+      "rag_answer": "The First Derivative Test uses sign changes of f'(x) to classify critical points. Critical points occur where f'(x) = 0 or f'(x) is undefined. The Second Derivative Test uses f''(x): if f''(c) > 0 the point is a local minimum, if f''(c) < 0 it is a local maximum. The second derivative f''(x) represents the rate of change of the rate of change, which geometrically describes the concavity of the curve. Points where concavity changes are called inflection points.",
+      "onto_rag_answer": "The First Derivative Test uses sign changes of f'(x) to classify critical points. Critical points occur where f'(x) = 0 or f'(x) is undefined. The Second Derivative Test uses f''(x): if f''(c) > 0 the point is a local minimum, if f''(c) < 0 it is a local maximum. A partial derivative of a multivariable function f(x,y) with respect to x is the derivative taken while holding y constant, denoted df/dx or f_x. Mixed partial derivatives f_xy and f_yx are equal for functions with continuous second-order partial derivatives, by Clairaut's theorem (also called Schwarz's theorem).",
+      "onto_context": "Clairaut's Theorem: Mixed partial derivatives are equal when second-order partials are continuous. Clairaut's Theorem proves / applies to Partial Derivative. Derivative: The instantaneous rate of change of a function, defined as the limit of the difference quotient. Derivative requires Limit. Derivative is part of Single-Variable Calculus. Derivative is the inverse of Integral. Fundamental Theorem",
+      "entities_found": [
+        "Derivative",
+        "PartialDerivative"
+      ],
+      "rag_metrics": {
+        "rouge_l": 0.36363636363636365,
+        "bleu": 0.17691073997324275,
+        "cosine": 0.557234544906733,
+        "ndcg": 1.0,
+        "mrr": 1.0
+      },
+      "onto_rag_metrics": {
+        "rouge_l": 0.30344827586206896,
+        "bleu": 0.14058771491185834,
+        "cosine": 0.5800692739128356,
+        "ndcg": 1.0,
+        "mrr": 1.0
+      },
+      "rag_context_size": 464,
+      "onto_rag_context_size": 578
+    },
+    {
+      "id": 15,
+      "question": "What are the main integration techniques covered in calculus?",
+      "reference": "The main techniques are: direct antidifferentiation, integration by substitution (u-substitution, reverse Chain Rule), integration by parts (from Product Rule), and partial fractions.",
+      "type": "summary",
+      "rag_answer": "The Fundamental Theorem of Calculus connects differentiation and integration. This theorem is the cornerstone of integral calculus. Integration by substitution, also known as u-substitution, is the reverse of the Chain Rule. It is evaluated as an iterated integral: integral(integral f(x,y) dA), where the order of integration can often be changed using Fubini's theorem, provided f is continuous on R. Part 1 states that if F(x) = integral from a to x of f(t)dt, then F'(x) = f(x).",
+      "onto_rag_answer": "The Fundamental Theorem of Calculus connects differentiation and integration. This theorem is the cornerstone of integral calculus. Integration by substitution, also known as u-substitution, is the reverse of the Chain Rule. Part 1 states that if F(x) = integral from a to x of f(t)dt, then F'(x) = f(x). Part 2 states that the definite integral of f from a to b equals F(b) - F(a), where F is any antiderivative of f.",
+      "onto_context": "Integration by Substitution: Reverse of the Chain Rule: substituting u = g(x) to simplify integrals. Integration by Substitution is related to Integral. Fundamental Theorem of Calculus: Connects differentiation and integration as inverse processes. Fundamental Theorem of Calculus proves / applies to Derivative. Fundamental Theorem of Calculus proves / applies to Integral. Fundamental Theorem of Ca",
+      "entities_found": [
+        "SingleVariableCalculus",
+        "MultivariableCalculus",
+        "VectorCalculus",
+        "Substitution",
+        "IntegrationByParts",
+        "FundamentalTheoremOfCalculus"
+      ],
+      "rag_metrics": {
+        "rouge_l": 0.20370370370370372,
+        "bleu": 0.0,
+        "cosine": 0.28736848324283987,
+        "ndcg": 0.8718919661366231,
+        "mrr": 1.0
+      },
+      "onto_rag_metrics": {
+        "rouge_l": 0.19801980198019803,
+        "bleu": 0.0,
+        "cosine": 0.2612624437536498,
+        "ndcg": 0.8718919661366231,
+        "mrr": 1.0
+      },
+      "rag_context_size": 482,
+      "onto_rag_context_size": 418
+    },
+    {
+      "id": 16,
+      "question": "How do the fundamental theorems of vector calculus unify?",
+      "reference": "The Fundamental Theorem of Calculus, Green's Theorem, Stokes' Theorem, and the Divergence Theorem are all cases of the generalized Stokes' theorem, relating boundary integrals to interior integrals.",
+      "type": "summary",
+      "rag_answer": "The Fundamental Theorem of Calculus connects differentiation and integration. The Fundamental Theorem of Calculus, Green's Theorem, Stokes' Theorem, and the Divergence Theorem are all manifestations of a single generalized Stokes' theorem. This theorem is the cornerstone of integral calculus. The Divergence Theorem (Gauss's Theorem) relates the flux of a vector field through a closed surface to the volume integral of the divergence over the enclosed region: integral_S F . This theorem is fundame",
+      "onto_rag_answer": "The Fundamental Theorem of Calculus connects differentiation and integration. The Fundamental Theorem of Calculus, Green's Theorem, Stokes' Theorem, and the Divergence Theorem are all manifestations of a single generalized Stokes' theorem. This theorem is the cornerstone of integral calculus. The Divergence Theorem (Gauss's Theorem) relates the flux of a vector field through a closed surface to the volume integral of the divergence over the enclosed region: integral_S F . This theorem is fundamental in fluid mechanics, electromagnetism, and heat transfer.",
+      "onto_context": "Derivative: The instantaneous rate of change of a function, defined as the limit of the difference quotient. Derivative requires Limit. Derivative is part of Single-Variable Calculus. Derivative is the inverse of Integral. Fundamental Theorem of Calculus: Connects differentiation and integration as inverse processes. Fundamental Theorem of Calculus proves / applies to Derivative. Fundamental Theor",
+      "entities_found": [
+        "SingleVariableCalculus",
+        "MultivariableCalculus",
+        "VectorCalculus",
+        "FundamentalTheoremOfCalculus"
+      ],
+      "rag_metrics": {
+        "rouge_l": 0.38181818181818183,
+        "bleu": 0.20709921939305934,
+        "cosine": 0.8129706790848977,
+        "ndcg": 0.8593514334404357,
+        "mrr": 1.0
+      },
+      "onto_rag_metrics": {
+        "rouge_l": 0.38181818181818183,
+        "bleu": 0.20709921939305934,
+        "cosine": 0.8129706790848977,
+        "ndcg": 0.8166814803743558,
+        "mrr": 1.0
+      },
+      "rag_context_size": 561,
+      "onto_rag_context_size": 561
+    },
+    {
+      "id": 17,
+      "question": "What are the key applications of derivatives?",
+      "reference": "Derivatives are used for: finding rates of change, optimization (maxima/minima), related rates problems, analyzing concavity and inflection points, and linear approximation via differentials.",
+      "type": "summary",
+      "rag_answer": "Partial derivatives and multiple integrals extend single-variable calculus to higher dimensions. These extensions are essential for physics and engineering applications. Applications of integration include computing areas between curves, volumes of solids of revolution (using the disk, washer, or shell methods), arc length of curves, surface area of surfaces of revolution, and physical quantities like work, center of mass, and moments of inertia. Mixed partial derivatives f_xy and f_yx are equal",
+      "onto_rag_answer": "Partial derivatives and multiple integrals extend single-variable calculus to higher dimensions. These extensions are essential for physics and engineering applications. Applications of integration include computing areas between curves, volumes of solids of revolution (using the disk, washer, or shell methods), arc length of curves, surface area of surfaces of revolution, and physical quantities like work, center of mass, and moments of inertia. Mixed partial derivatives f_xy and f_yx are equal for functions with continuous second-order partial derivatives, by Clairaut's theorem (also called Schwarz's theorem). The gradient generalizes the derivative, the divergence and curl extend differential analysis to vector fields, and double and triple integrals generalize single integrals.",
+      "onto_context": "",
+      "entities_found": [],
+      "rag_metrics": {
+        "rouge_l": 0.08759124087591241,
+        "bleu": 0.0,
+        "cosine": 0.35200010549016186,
+        "ndcg": 0.9106188852699119,
+        "mrr": 0.3333333333333333
+      },
+      "onto_rag_metrics": {
+        "rouge_l": 0.08759124087591241,
+        "bleu": 0.0,
+        "cosine": 0.35200010549016186,
+        "ndcg": 0.9106188852699119,
+        "mrr": 0.3333333333333333
+      },
+      "rag_context_size": 792,
+      "onto_rag_context_size": 792
+    },
+    {
+      "id": 18,
+      "question": "How does single-variable calculus extend to multiple dimensions?",
+      "reference": "Derivatives extend to partial derivatives and gradients. Single integrals extend to double and triple integrals. The Chain Rule extends via total derivatives. Line and surface integrals generalize to paths and surfaces in space.",
+      "type": "summary",
+      "rag_answer": "Partial derivatives and multiple integrals extend single-variable calculus to higher dimensions. The gradient generalizes the derivative, the divergence and curl extend differential analysis to vector fields, and double and triple integrals generalize single integrals. The Fundamental Theorem of Calculus, Green's Theorem, Stokes' Theorem, and the Divergence Theorem are all manifestations of a single generalized Stokes' theorem. The Fundamental Theorem of Calculus connects differentiation and int",
+      "onto_rag_answer": "Partial derivatives and multiple integrals extend single-variable calculus to higher dimensions. The gradient generalizes the derivative, the divergence and curl extend differential analysis to vector fields, and double and triple integrals generalize single integrals. The Fundamental Theorem of Calculus, Green's Theorem, Stokes' Theorem, and the Divergence Theorem are all manifestations of a single generalized Stokes' theorem. The Fundamental Theorem of Calculus connects differentiation and integration. This theorem is the cornerstone of integral calculus.",
+      "onto_context": "Derivative: The instantaneous rate of change of a function, defined as the limit of the difference quotient. Derivative requires Limit. Derivative is part of Single-Variable Calculus. Derivative is the inverse of Integral. Fundamental Theorem of Calculus: Connects differentiation and integration as inverse processes. Fundamental Theorem of Calculus proves / applies to Derivative. Fundamental Theor",
+      "entities_found": [
+        "SingleVariableCalculus",
+        "MultivariableCalculus",
+        "VectorCalculus",
+        "FundamentalTheoremOfCalculus"
+      ],
+      "rag_metrics": {
+        "rouge_l": 0.24074074074074073,
+        "bleu": 0.06388839565386965,
+        "cosine": 0.48546803643764097,
+        "ndcg": 0.9832727318877588,
+        "mrr": 1.0
+      },
+      "onto_rag_metrics": {
+        "rouge_l": 0.24074074074074073,
+        "bleu": 0.06388839565386965,
+        "cosine": 0.48546803643764097,
+        "ndcg": 1.0,
+        "mrr": 1.0
+      },
+      "rag_context_size": 563,
+      "onto_rag_context_size": 563
+    }
+  ]
+}

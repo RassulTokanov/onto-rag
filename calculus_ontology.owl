@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:calc="http://example.org/calculus#">
+
+  <owl:Ontology rdf:about="http://example.org/calculus"/>
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- Classes -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <owl:Class rdf:about="http://example.org/calculus#Concept"/>
+  <owl:Class rdf:about="http://example.org/calculus#Theorem"/>
+  <owl:Class rdf:about="http://example.org/calculus#Operation"/>
+  <owl:Class rdf:about="http://example.org/calculus#Application"/>
+  <owl:Class rdf:about="http://example.org/calculus#Field"/>
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- Object Properties -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <owl:ObjectProperty rdf:about="http://example.org/calculus#isPartOf">
+    <rdfs:domain rdf:resource="http://example.org/calculus#Concept"/>
+    <rdfs:range  rdf:resource="http://example.org/calculus#Field"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="http://example.org/calculus#requires">
+    <rdfs:domain rdf:resource="http://example.org/calculus#Concept"/>
+    <rdfs:range  rdf:resource="http://example.org/calculus#Concept"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="http://example.org/calculus#usedIn">
+    <rdfs:domain rdf:resource="http://example.org/calculus#Concept"/>
+    <rdfs:range  rdf:resource="http://example.org/calculus#Application"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="http://example.org/calculus#proves">
+    <rdfs:domain rdf:resource="http://example.org/calculus#Theorem"/>
+    <rdfs:range  rdf:resource="http://example.org/calculus#Concept"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="http://example.org/calculus#generalizationOf">
+    <rdfs:domain rdf:resource="http://example.org/calculus#Theorem"/>
+    <rdfs:range  rdf:resource="http://example.org/calculus#Theorem"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="http://example.org/calculus#relatedTo">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="http://example.org/calculus#inverseOf">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="http://example.org/calculus#appliedIn">
+    <rdfs:domain rdf:resource="http://example.org/calculus#Operation"/>
+    <rdfs:range  rdf:resource="http://example.org/calculus#Application"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="http://example.org/calculus#extendsTo">
+    <rdfs:domain rdf:resource="http://example.org/calculus#Concept"/>
+    <rdfs:range  rdf:resource="http://example.org/calculus#Concept"/>
+  </owl:ObjectProperty>
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- Data Properties -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <owl:DatatypeProperty rdf:about="http://example.org/calculus#label_en">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:about="http://example.org/calculus#description_en">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- Fields -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <calc:Field rdf:about="http://example.org/calculus#SingleVariableCalculus">
+    <calc:label_en>Single-Variable Calculus</calc:label_en>
+    <calc:description_en>Study of limits, derivatives, and integrals of functions of one variable</calc:description_en>
+  </calc:Field>
+  <calc:Field rdf:about="http://example.org/calculus#MultivariableCalculus">
+    <calc:label_en>Multivariable Calculus</calc:label_en>
+    <calc:description_en>Extension of calculus to functions of several variables</calc:description_en>
+  </calc:Field>
+  <calc:Field rdf:about="http://example.org/calculus#VectorCalculus">
+    <calc:label_en>Vector Calculus</calc:label_en>
+    <calc:description_en>Calculus of vector fields including divergence, curl, and integral theorems</calc:description_en>
+  </calc:Field>
+  <calc:Field rdf:about="http://example.org/calculus#DifferentialEquations">
+    <calc:label_en>Differential Equations</calc:label_en>
+    <calc:description_en>Study of equations involving unknown functions and their derivatives</calc:description_en>
+  </calc:Field>
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- Concepts -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <calc:Concept rdf:about="http://example.org/calculus#Limit">
+    <calc:label_en>Limit</calc:label_en>
+    <calc:description_en>The value a function approaches as the input approaches a point</calc:description_en>
+    <calc:isPartOf rdf:resource="http://example.org/calculus#SingleVariableCalculus"/>
+  </calc:Concept>
+
+  <calc:Concept rdf:about="http://example.org/calculus#Continuity">
+    <calc:label_en>Continuity</calc:label_en>
+    <calc:description_en>A function is continuous if its limit equals its value at every point</calc:description_en>
+    <calc:requires rdf:resource="http://example.org/calculus#Limit"/>
+    <calc:isPartOf rdf:resource="http://example.org/calculus#SingleVariableCalculus"/>
+  </calc:Concept>
+
+  <calc:Concept rdf:about="http://example.org/calculus#Derivative">
+    <calc:label_en>Derivative</calc:label_en>
+    <calc:description_en>The instantaneous rate of change of a function, defined as the limit of the difference quotient</calc:description_en>
+    <calc:requires rdf:resource="http://example.org/calculus#Limit"/>
+    <calc:isPartOf rdf:resource="http://example.org/calculus#SingleVariableCalculus"/>
+    <calc:inverseOf rdf:resource="http://example.org/calculus#Integral"/>
+  </calc:Concept>
+
+  <calc:Concept rdf:about="http://example.org/calculus#Integral">
+    <calc:label_en>Integral</calc:label_en>
+    <calc:description_en>The signed area under a curve, defined as the limit of Riemann sums</calc:description_en>
+    <calc:requires rdf:resource="http://example.org/calculus#Limit"/>
+    <calc:isPartOf rdf:resource="http://example.org/calculus#SingleVariableCalculus"/>
+    <calc:inverseOf rdf:resource="http://example.org/calculus#Derivative"/>
+  </calc:Concept>
+
+  <calc:Concept rdf:about="http://example.org/calculus#PartialDerivative">
+    <calc:label_en>Partial Derivative</calc:label_en>
+    <calc:description_en>Derivative of a multivariable function with respect to one variable, holding others constant</calc:description_en>
+    <calc:isPartOf rdf:resource="http://example.org/calculus#MultivariableCalculus"/>
+    <calc:extendsTo rdf:resource="http://example.org/calculus#Derivative"/>
+  </calc:Concept>
+
+  <calc:Concept rdf:about="http://example.org/calculus#Gradient">
+    <calc:label_en>Gradient</calc:label_en>
+    <calc:description_en>Vector of partial derivatives pointing in the direction of steepest ascent</calc:description_en>
+    <calc:requires rdf:resource="http://example.org/calculus#PartialDerivative"/>
+    <calc:isPartOf rdf:resource="http://example.org/calculus#VectorCalculus"/>
+    <calc:relatedTo rdf:resource="http://example.org/calculus#Divergence"/>
+    <calc:relatedTo rdf:resource="http://example.org/calculus#Curl"/>
+  </calc:Concept>
+
+  <calc:Concept rdf:about="http://example.org/calculus#Divergence">
+    <calc:label_en>Divergence</calc:label_en>
+    <calc:description_en>Scalar measuring how much a vector field spreads out from a point</calc:description_en>
+    <calc:requires rdf:resource="http://example.org/calculus#PartialDerivative"/>
+    <calc:isPartOf rdf:resource="http://example.org/calculus#VectorCalculus"/>
+    <calc:relatedTo rdf:resource="http://example.org/calculus#Curl"/>
+  </calc:Concept>
+
+  <calc:Concept rdf:about="http://example.org/calculus#Curl">
+    <calc:label_en>Curl</calc:label_en>
+    <calc:description_en>Vector measuring the rotation tendency of a vector field at a point</calc:description_en>
+    <calc:requires rdf:resource="http://example.org/calculus#PartialDerivative"/>
+    <calc:isPartOf rdf:resource="http://example.org/calculus#VectorCalculus"/>
+  </calc:Concept>
+
+  <calc:Concept rdf:about="http://example.org/calculus#TaylorSeries">
+    <calc:label_en>Taylor Series</calc:label_en>
+    <calc:description_en>Infinite sum representing a function using its derivatives at a single point</calc:description_en>
+    <calc:requires rdf:resource="http://example.org/calculus#Derivative"/>
+    <calc:isPartOf rdf:resource="http://example.org/calculus#SingleVariableCalculus"/>
+    <calc:relatedTo rdf:resource="http://example.org/calculus#PowerSeries"/>
+  </calc:Concept>
+
+  <calc:Concept rdf:about="http://example.org/calculus#PowerSeries">
+    <calc:label_en>Power Series</calc:label_en>
+    <calc:description_en>Infinite series of the form sum c_n (x-a)^n with a radius of convergence</calc:description_en>
+    <calc:isPartOf rdf:resource="http://example.org/calculus#SingleVariableCalculus"/>
+  </calc:Concept>
+
+  <calc:Concept rdf:about="http://example.org/calculus#DoubleIntegral">
+    <calc:label_en>Double Integral</calc:label_en>
+    <calc:description_en>Integral over a two-dimensional region computing volume under a surface</calc:description_en>
+    <calc:isPartOf rdf:resource="http://example.org/calculus#MultivariableCalculus"/>
+    <calc:extendsTo rdf:resource="http://example.org/calculus#Integral"/>
+  </calc:Concept>
+
+  <calc:Concept rdf:about="http://example.org/calculus#TripleIntegral">
+    <calc:label_en>Triple Integral</calc:label_en>
+    <calc:description_en>Integral over a three-dimensional region for mass and volume computations</calc:description_en>
+    <calc:isPartOf rdf:resource="http://example.org/calculus#MultivariableCalculus"/>
+    <calc:extendsTo rdf:resource="http://example.org/calculus#DoubleIntegral"/>
+  </calc:Concept>
+
+  <calc:Concept rdf:about="http://example.org/calculus#LineIntegral">
+    <calc:label_en>Line Integral</calc:label_en>
+    <calc:description_en>Integral of a vector field along a curve, computing work done by the field</calc:description_en>
+    <calc:isPartOf rdf:resource="http://example.org/calculus#VectorCalculus"/>
+    <calc:relatedTo rdf:resource="http://example.org/calculus#SurfaceIntegral"/>
+  </calc:Concept>
+
+  <calc:Concept rdf:about="http://example.org/calculus#SurfaceIntegral">
+    <calc:label_en>Surface Integral</calc:label_en>
+    <calc:description_en>Integral of a vector field over a surface computing flux through it</calc:description_en>
+    <calc:isPartOf rdf:resource="http://example.org/calculus#VectorCalculus"/>
+  </calc:Concept>
+
+  <calc:Concept rdf:about="http://example.org/calculus#Jacobian">
+    <calc:label_en>Jacobian</calc:label_en>
+    <calc:description_en>Determinant used for changing variables in multiple integrals</calc:description_en>
+    <calc:requires rdf:resource="http://example.org/calculus#PartialDerivative"/>
+    <calc:isPartOf rdf:resource="http://example.org/calculus#MultivariableCalculus"/>
+    <calc:relatedTo rdf:resource="http://example.org/calculus#DoubleIntegral"/>
+  </calc:Concept>
+
+  <calc:Concept rdf:about="http://example.org/calculus#ConservativeField">
+    <calc:label_en>Conservative Field</calc:label_en>
+    <calc:description_en>A vector field with zero curl, where line integrals are path-independent</calc:description_en>
+    <calc:requires rdf:resource="http://example.org/calculus#Curl"/>
+    <calc:isPartOf rdf:resource="http://example.org/calculus#VectorCalculus"/>
+    <calc:relatedTo rdf:resource="http://example.org/calculus#Gradient"/>
+    <calc:relatedTo rdf:resource="http://example.org/calculus#LineIntegral"/>
+  </calc:Concept>
+
+  <calc:Concept rdf:about="http://example.org/calculus#TotalDifferential">
+    <calc:label_en>Total Differential</calc:label_en>
+    <calc:description_en>Approximation df = (df/dx)dx + (df/dy)dy for change in a multivariable function</calc:description_en>
+    <calc:requires rdf:resource="http://example.org/calculus#PartialDerivative"/>
+    <calc:isPartOf rdf:resource="http://example.org/calculus#MultivariableCalculus"/>
+  </calc:Concept>
+
+  <calc:Concept rdf:about="http://example.org/calculus#ODE">
+    <calc:label_en>Ordinary Differential Equation</calc:label_en>
+    <calc:description_en>Equation involving an unknown function and its derivatives</calc:description_en>
+    <calc:requires rdf:resource="http://example.org/calculus#Derivative"/>
+    <calc:requires rdf:resource="http://example.org/calculus#Integral"/>
+    <calc:isPartOf rdf:resource="http://example.org/calculus#DifferentialEquations"/>
+  </calc:Concept>
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- Operations (differentiation rules and integration methods) -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <calc:Operation rdf:about="http://example.org/calculus#ChainRule">
+    <calc:label_en>Chain Rule</calc:label_en>
+    <calc:description_en>Derivative of composite function: d/dx f(g(x)) = f'(g(x)) * g'(x)</calc:description_en>
+    <calc:relatedTo rdf:resource="http://example.org/calculus#Derivative"/>
+    <calc:inverseOf rdf:resource="http://example.org/calculus#Substitution"/>
+  </calc:Operation>
+
+  <calc:Operation rdf:about="http://example.org/calculus#ProductRule">
+    <calc:label_en>Product Rule</calc:label_en>
+    <calc:description_en>Derivative of product: d/dx[uv] = u'v + uv'</calc:description_en>
+    <calc:relatedTo rdf:resource="http://example.org/calculus#Derivative"/>
+    <calc:inverseOf rdf:resource="http://example.org/calculus#IntegrationByParts"/>
+  </calc:Operation>
+
+  <calc:Operation rdf:about="http://example.org/calculus#QuotientRule">
+    <calc:label_en>Quotient Rule</calc:label_en>
+    <calc:description_en>Derivative of quotient: d/dx[u/v] = (u'v - uv')/v^2</calc:description_en>
+    <calc:relatedTo rdf:resource="http://example.org/calculus#ProductRule"/>
+  </calc:Operation>
+
+  <calc:Operation rdf:about="http://example.org/calculus#Substitution">
+    <calc:label_en>Integration by Substitution</calc:label_en>
+    <calc:description_en>Reverse of the Chain Rule: substituting u = g(x) to simplify integrals</calc:description_en>
+    <calc:relatedTo rdf:resource="http://example.org/calculus#Integral"/>
+  </calc:Operation>
+
+  <calc:Operation rdf:about="http://example.org/calculus#IntegrationByParts">
+    <calc:label_en>Integration by Parts</calc:label_en>
+    <calc:description_en>Derived from Product Rule: integral u dv = uv - integral v du</calc:description_en>
+    <calc:relatedTo rdf:resource="http://example.org/calculus#Integral"/>
+  </calc:Operation>
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- Theorems -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <calc:Theorem rdf:about="http://example.org/calculus#FundamentalTheoremOfCalculus">
+    <calc:label_en>Fundamental Theorem of Calculus</calc:label_en>
+    <calc:description_en>Connects differentiation and integration as inverse processes</calc:description_en>
+    <calc:proves rdf:resource="http://example.org/calculus#Derivative"/>
+    <calc:proves rdf:resource="http://example.org/calculus#Integral"/>
+    <calc:relatedTo rdf:resource="http://example.org/calculus#GreensTheorem"/>
+  </calc:Theorem>
+
+  <calc:Theorem rdf:about="http://example.org/calculus#GreensTheorem">
+    <calc:label_en>Green's Theorem</calc:label_en>
+    <calc:description_en>Relates line integral around a closed curve to double integral over the enclosed region</calc:description_en>
+    <calc:proves rdf:resource="http://example.org/calculus#LineIntegral"/>
+    <calc:proves rdf:resource="http://example.org/calculus#DoubleIntegral"/>
+    <calc:relatedTo rdf:resource="http://example.org/calculus#StokesTheorem"/>
+  </calc:Theorem>
+
+  <calc:Theorem rdf:about="http://example.org/calculus#StokesTheorem">
+    <calc:label_en>Stokes' Theorem</calc:label_en>
+    <calc:description_en>Relates surface integral of curl to line integral around the boundary</calc:description_en>
+    <calc:proves rdf:resource="http://example.org/calculus#Curl"/>
+    <calc:proves rdf:resource="http://example.org/calculus#SurfaceIntegral"/>
+    <calc:generalizationOf rdf:resource="http://example.org/calculus#GreensTheorem"/>
+  </calc:Theorem>
+
+  <calc:Theorem rdf:about="http://example.org/calculus#DivergenceTheorem">
+    <calc:label_en>Divergence Theorem</calc:label_en>
+    <calc:description_en>Relates flux through a closed surface to volume integral of divergence</calc:description_en>
+    <calc:proves rdf:resource="http://example.org/calculus#Divergence"/>
+    <calc:proves rdf:resource="http://example.org/calculus#SurfaceIntegral"/>
+    <calc:relatedTo rdf:resource="http://example.org/calculus#StokesTheorem"/>
+  </calc:Theorem>
+
+  <calc:Theorem rdf:about="http://example.org/calculus#IntermediateValueTheorem">
+    <calc:label_en>Intermediate Value Theorem</calc:label_en>
+    <calc:description_en>A continuous function on [a,b] takes every value between f(a) and f(b)</calc:description_en>
+    <calc:proves rdf:resource="http://example.org/calculus#Continuity"/>
+  </calc:Theorem>
+
+  <calc:Theorem rdf:about="http://example.org/calculus#FubiniTheorem">
+    <calc:label_en>Fubini's Theorem</calc:label_en>
+    <calc:description_en>Allows changing the order of integration in double integrals when integrand is continuous</calc:description_en>
+    <calc:proves rdf:resource="http://example.org/calculus#DoubleIntegral"/>
+  </calc:Theorem>
+
+  <calc:Theorem rdf:about="http://example.org/calculus#ClairauttTheorem">
+    <calc:label_en>Clairaut's Theorem</calc:label_en>
+    <calc:description_en>Mixed partial derivatives are equal when second-order partials are continuous</calc:description_en>
+    <calc:proves rdf:resource="http://example.org/calculus#PartialDerivative"/>
+  </calc:Theorem>
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- Applications -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <calc:Application rdf:about="http://example.org/calculus#Optimization">
+    <calc:label_en>Optimization</calc:label_en>
+    <calc:description_en>Finding maximum and minimum values using derivatives and critical points</calc:description_en>
+    <calc:requires rdf:resource="http://example.org/calculus#Derivative"/>
+  </calc:Application>
+
+  <calc:Application rdf:about="http://example.org/calculus#RelatedRates">
+    <calc:label_en>Related Rates</calc:label_en>
+    <calc:description_en>Finding how quantities change with respect to time using the Chain Rule</calc:description_en>
+    <calc:requires rdf:resource="http://example.org/calculus#ChainRule"/>
+    <calc:requires rdf:resource="http://example.org/calculus#Derivative"/>
+  </calc:Application>
+
+  <calc:Application rdf:about="http://example.org/calculus#AreaAndVolume">
+    <calc:label_en>Area and Volume Computation</calc:label_en>
+    <calc:description_en>Computing areas between curves and volumes of solids using integration</calc:description_en>
+    <calc:requires rdf:resource="http://example.org/calculus#Integral"/>
+  </calc:Application>
+
+  <calc:Application rdf:about="http://example.org/calculus#FluidMechanics">
+    <calc:label_en>Fluid Mechanics</calc:label_en>
+    <calc:description_en>Application of divergence theorem and vector calculus to fluid flow</calc:description_en>
+    <calc:requires rdf:resource="http://example.org/calculus#Divergence"/>
+    <calc:requires rdf:resource="http://example.org/calculus#DivergenceTheorem"/>
+  </calc:Application>
+
+  <calc:Application rdf:about="http://example.org/calculus#Electromagnetism">
+    <calc:label_en>Electromagnetism</calc:label_en>
+    <calc:description_en>Application of vector calculus theorems to electric and magnetic fields</calc:description_en>
+    <calc:requires rdf:resource="http://example.org/calculus#Curl"/>
+    <calc:requires rdf:resource="http://example.org/calculus#Divergence"/>
+    <calc:requires rdf:resource="http://example.org/calculus#StokesTheorem"/>
+  </calc:Application>
+
+</rdf:RDF>

@@ -1,0 +1,436 @@
+======================================================================
+  STANDARD RAG -- Результаты (без онтологии) / Results (no ontology)
+  Корпус / Corpus: Introduction to Calculus Vol. II (Heinbockel)
+======================================================================
+
+  Корпус / Corpus: 33 фрагментов / chunks
+  Вопросов / Questions: 18
+
+----------------------------------------------------------------------
+  Вопрос #1 [Фактический / Factual]
+----------------------------------------------------------------------
+  Вопрос:  What is the formal definition of a limit?
+  Эталон:  A limit uses the epsilon-delta definition: for every epsilon > 0 there exists delta > 0 such that |x - c| < delta implies |f(x) - L| < epsilon.
+
+  Ответ RAG / RAG Answer:
+        The formal epsilon-delta definition states that for every epsilon
+    greater than zero there exists a delta greater than zero such that whenever
+    the distance between x and the limit point is less than delta, the distance
+    between f(x) and L is less than epsilon. A limit describes the value that a
+    function approaches as the input approaches a particular point. Both rules
+    are derived from the definition of the derivative using limits. The
+    derivative of a function f(x) is defined as the limit of the difference
+    quotient: f'(x) = lim(h->0) [f(x+h) - f(x)] / h. Limits are foundational to
+    all of calculus.
+
+  Метрики / Metrics:
+    ROUGE-L:  0.2707
+    BLEU:     0.0000
+    Cosine:   0.5396
+    NDCG@5:   0.9938
+    MRR:      1.0000
+
+----------------------------------------------------------------------
+  Вопрос #2 [Фактический / Factual]
+----------------------------------------------------------------------
+  Вопрос:  What does the Fundamental Theorem of Calculus state?
+  Эталон:  Part 1: if F(x) = integral from a to x of f(t)dt, then F'(x) = f(x). Part 2: integral from a to b of f(x)dx = F(b) - F(a), where F is an antiderivative of f.
+
+  Ответ RAG / RAG Answer:
+        The Fundamental Theorem of Calculus, Green's Theorem, Stokes' Theorem,
+    and the Divergence Theorem are all manifestations of a single generalized
+    Stokes' theorem. The Fundamental Theorem of Calculus connects
+    differentiation and integration. This theorem is the cornerstone of integral
+    calculus. This theorem is fundamental in fluid mechanics, electromagnetism,
+    and heat transfer. The Divergence Theorem (Gauss's Theorem) relates the flux
+    of a vector field through a closed surface to the volume integral of the
+    divergence over the enclosed region: integral_S F .
+
+  Метрики / Metrics:
+    ROUGE-L:  0.1138
+    BLEU:     0.0000
+    Cosine:   0.2059
+    NDCG@5:   0.8213
+    MRR:      1.0000
+
+----------------------------------------------------------------------
+  Вопрос #3 [Фактический / Factual]
+----------------------------------------------------------------------
+  Вопрос:  What is the gradient of a scalar function?
+  Эталон:  The gradient of f(x,y,z) is the vector (df/dx, df/dy, df/dz). It points in the direction of steepest ascent and its magnitude is the maximum rate of increase.
+
+  Ответ RAG / RAG Answer:
+        The gradient of a scalar function f(x,y,z) is the vector of its partial
+    derivatives: grad(f) = (df/dx, df/dy, df/dz). If curl(F) = 0, the field is
+    irrotational, which implies that F is the gradient of some scalar potential
+    function. The gradient points in the direction of steepest ascent of the
+    function and its magnitude gives the rate of maximum increase. It is
+    perpendicular to the level surfaces of the function. Continuity of a
+    function at a point means that the limit of the function as x approaches
+    that point equals the function value at that point.
+
+  Метрики / Metrics:
+    ROUGE-L:  0.4444
+    BLEU:     0.1902
+    Cosine:   0.7696
+    NDCG@5:   1.0000
+    MRR:      1.0000
+
+----------------------------------------------------------------------
+  Вопрос #4 [Фактический / Factual]
+----------------------------------------------------------------------
+  Вопрос:  What is the divergence of a vector field?
+  Эталон:  The divergence of F = (P,Q,R) is dP/dx + dQ/dy + dR/dz. It measures the rate at which the field spreads out from a point. Zero divergence means the field is solenoidal.
+
+  Ответ RAG / RAG Answer:
+        The divergence of a vector field F = (P, Q, R) is a scalar: div(F) =
+    dP/dx + dQ/dy + dR/dz. The Divergence Theorem (Gauss's Theorem) relates the
+    flux of a vector field through a closed surface to the volume integral of
+    the divergence over the enclosed region: integral_S F . The curl of a vector
+    field F = (P, Q, R) is a vector: curl(F) = (dR/dy - dQ/dz, dP/dz - dR/dx,
+    dQ/dx - dP/dy). It measures the rate at which the field spreads out from a
+    point. A positive divergence indicates a source, while negative divergence
+    indicates a sink.
+
+  Метрики / Metrics:
+    ROUGE-L:  0.4058
+    BLEU:     0.2072
+    Cosine:   0.7666
+    NDCG@5:   0.9621
+    MRR:      1.0000
+
+----------------------------------------------------------------------
+  Вопрос #5 [Фактический / Factual]
+----------------------------------------------------------------------
+  Вопрос:  What is the curl of a vector field?
+  Эталон:  The curl of F = (P,Q,R) is (dR/dy - dQ/dz, dP/dz - dR/dx, dQ/dx - dP/dy). It measures the rotation tendency. If curl(F) = 0, the field is irrotational.
+
+  Ответ RAG / RAG Answer:
+        The curl of a vector field F = (P, Q, R) is a vector: curl(F) = (dR/dy -
+    dQ/dz, dP/dz - dR/dx, dQ/dx - dP/dy). It relates the surface integral of the
+    curl of a vector field over a surface S to the line integral of the field
+    around the boundary curve of S: integral_S curl(F) . The curl measures the
+    rotation or circulation tendency of the field at a point. If curl(F) = 0,
+    the field is irrotational, which implies that F is the gradient of some
+    scalar potential function. A line integral of a vector field F along a curve
+    C computes the work done by the field along the path.
+
+  Метрики / Metrics:
+    ROUGE-L:  0.4430
+    BLEU:     0.2098
+    Cosine:   0.6725
+    NDCG@5:   0.9873
+    MRR:      1.0000
+
+----------------------------------------------------------------------
+  Вопрос #6 [О связях / Relationship]
+----------------------------------------------------------------------
+  Вопрос:  How are derivatives and integrals related?
+  Эталон:  The Fundamental Theorem of Calculus connects them: differentiation and integration are inverse processes. The integral of a derivative recovers the original function (up to a constant).
+
+  Ответ RAG / RAG Answer:
+        Partial derivatives and multiple integrals extend single-variable
+    calculus to higher dimensions. The gradient generalizes the derivative, the
+    divergence and curl extend differential analysis to vector fields, and
+    double and triple integrals generalize single integrals. A triple integral
+    extends double integrals to three dimensions, computing quantities like mass
+    and volume over a three-dimensional region. Triple integrals can be
+    evaluated in Cartesian, cylindrical, or spherical coordinates, with
+    appropriate Jacobian determinants for coordinate transformations. Related
+    rates problems involve finding the rate of change of one quantity in terms
+    of the rate of change of another.
+
+  Метрики / Metrics:
+    ROUGE-L:  0.1000
+    BLEU:     0.0000
+    Cosine:   0.4668
+    NDCG@5:   1.0000
+    MRR:      1.0000
+
+----------------------------------------------------------------------
+  Вопрос #7 [О связях / Relationship]
+----------------------------------------------------------------------
+  Вопрос:  How does the Chain Rule relate to integration by substitution?
+  Эталон:  Integration by substitution (u-substitution) is the reverse of the Chain Rule. If the integrand has the form f(g(x))*g'(x), substituting u=g(x) simplifies the integral.
+
+  Ответ RAG / RAG Answer:
+        Integration by substitution, also known as u-substitution, is the
+    reverse of the Chain Rule. The Chain Rule states that the derivative of a
+    composite function f(g(x)) equals f'(g(x)) multiplied by g'(x). The Chain
+    Rule extends naturally to compositions of three or more functions. This rule
+    is essential for differentiating nested functions. The Product Rule states
+    that the derivative of a product of two functions u(x) and v(x) is u'(x)v(x)
+    + u(x)v'(x).
+
+  Метрики / Metrics:
+    ROUGE-L:  0.3860
+    BLEU:     0.1392
+    Cosine:   0.7512
+    NDCG@5:   1.0000
+    MRR:      1.0000
+
+----------------------------------------------------------------------
+  Вопрос #8 [О связях / Relationship]
+----------------------------------------------------------------------
+  Вопрос:  What is the relationship between Green's Theorem and Stokes' Theorem?
+  Эталон:  Green's Theorem is a special two-dimensional case of Stokes' Theorem. Stokes' Theorem generalizes Green's Theorem to surfaces in three dimensions.
+
+  Ответ RAG / RAG Answer:
+        The Fundamental Theorem of Calculus, Green's Theorem, Stokes' Theorem,
+    and the Divergence Theorem are all manifestations of a single generalized
+    Stokes' theorem. Green's Theorem is a special two-dimensional case of
+    Stokes' Theorem. Stokes' Theorem generalizes Green's Theorem to three
+    dimensions. Green's Theorem relates a line integral around a simple closed
+    curve C in the plane to a double integral over the region D enclosed by C.
+    This theorem connects circulation and curl.
+
+  Метрики / Metrics:
+    ROUGE-L:  0.4200
+    BLEU:     0.2432
+    Cosine:   0.8284
+    NDCG@5:   0.9325
+    MRR:      1.0000
+
+----------------------------------------------------------------------
+  Вопрос #9 [О связях / Relationship]
+----------------------------------------------------------------------
+  Вопрос:  How are gradient, divergence, and curl connected?
+  Эталон:  The gradient maps scalars to vectors, divergence maps vectors to scalars, and curl maps vectors to vectors. Key identities: div(curl F) = 0 and curl(grad f) = 0.
+
+  Ответ RAG / RAG Answer:
+        The gradient generalizes the derivative, the divergence and curl extend
+    differential analysis to vector fields, and double and triple integrals
+    generalize single integrals. If curl(F) = 0, the field is irrotational,
+    which implies that F is the gradient of some scalar potential function. The
+    curl of a vector field F = (P, Q, R) is a vector: curl(F) = (dR/dy - dQ/dz,
+    dP/dz - dR/dx, dQ/dx - dP/dy). The curl measures the rotation or circulation
+    tendency of the field at a point. It relates the surface integral of the
+    curl of a vector field over a surface S to the line integral of the field
+    around the boundary curve of S: integral_S curl(F) .
+
+  Метрики / Metrics:
+    ROUGE-L:  0.1517
+    BLEU:     0.0000
+    Cosine:   0.3416
+    NDCG@5:   0.9683
+    MRR:      1.0000
+
+----------------------------------------------------------------------
+  Вопрос #10 [О связях / Relationship]
+----------------------------------------------------------------------
+  Вопрос:  How does the Product Rule relate to integration by parts?
+  Эталон:  Integration by parts is derived from the Product Rule. The Product Rule d(uv) = u dv + v du, when integrated, gives integral u dv = uv - integral v du.
+
+  Ответ RAG / RAG Answer:
+        Integration by parts is a technique derived from the Product Rule. The
+    Product Rule states that the derivative of a product of two functions u(x)
+    and v(x) is u'(x)v(x) + u(x)v'(x). The Quotient Rule gives the derivative of
+    u/v as [u'v - uv'] / v^2. The Chain Rule states that the derivative of a
+    composite function f(g(x)) equals f'(g(x)) multiplied by g'(x). This rule is
+    essential for differentiating nested functions.
+
+  Метрики / Metrics:
+    ROUGE-L:  0.3243
+    BLEU:     0.1183
+    Cosine:   0.5283
+    NDCG@5:   0.9208
+    MRR:      1.0000
+
+----------------------------------------------------------------------
+  Вопрос #11 [Рассуждение / Reasoning]
+----------------------------------------------------------------------
+  Вопрос:  Why does a Taylor series converge only within a radius of convergence?
+  Эталон:  A power series converges where the terms become small enough to sum to a finite value. The radius of convergence R is determined by the ratio or root test applied to the coefficients.
+
+  Ответ RAG / RAG Answer:
+        Within the radius of convergence, a power series can be differentiated
+    and integrated term by term. Each power series has a radius of convergence R
+    such that the series converges for |x-a| < R and diverges for |x-a| > R. A
+    Taylor series represents a function as an infinite sum of terms calculated
+    from the values of its derivatives at a single point. The Taylor series of
+    f(x) around x = a is given by sum [f^(n)(a)/n!] * (x-a)^n. A power series is
+    sigma from n=0 to infinity of c_n * (x-a)^n.
+
+  Метрики / Metrics:
+    ROUGE-L:  0.1667
+    BLEU:     0.0578
+    Cosine:   0.5033
+    NDCG@5:   0.9238
+    MRR:      1.0000
+
+----------------------------------------------------------------------
+  Вопрос #12 [Рассуждение / Reasoning]
+----------------------------------------------------------------------
+  Вопрос:  Why is the Jacobian needed when changing variables in multiple integrals?
+  Эталон:  The Jacobian accounts for how the coordinate transformation stretches or compresses area/volume elements. Without it, the integral would not correctly measure the transformed region.
+
+  Ответ RAG / RAG Answer:
+        The Jacobian determinant is used when changing variables in multiple
+    integrals. Partial derivatives and multiple integrals extend single-variable
+    calculus to higher dimensions. Triple integrals can be evaluated in
+    Cartesian, cylindrical, or spherical coordinates, with appropriate Jacobian
+    determinants for coordinate transformations. For a transformation from (u,v)
+    to (x,y), the Jacobian J = d(x,y)/d(u,v) = (dx/du)(dy/dv) - (dx/dv)(dy/du).
+    In polar coordinates, the Jacobian is r, so dA = r dr d(theta).
+
+  Метрики / Metrics:
+    ROUGE-L:  0.1333
+    BLEU:     0.0000
+    Cosine:   0.2877
+    NDCG@5:   0.8751
+    MRR:      1.0000
+
+----------------------------------------------------------------------
+  Вопрос #13 [Рассуждение / Reasoning]
+----------------------------------------------------------------------
+  Вопрос:  Why are conservative vector fields path-independent?
+  Эталон:  Because curl(F) = 0 for conservative fields, the field is the gradient of a potential. The line integral depends only on the potential values at the endpoints, not the path taken.
+
+  Ответ RAG / RAG Answer:
+        A line integral of a vector field F along a curve C computes the work
+    done by the field along the path. If F is conservative (curl F = 0), the
+    line integral depends only on the endpoints, not the path. A scalar
+    potential phi exists such that F = grad(phi) for conservative fields. The
+    gradient generalizes the derivative, the divergence and curl extend
+    differential analysis to vector fields, and double and triple integrals
+    generalize single integrals. The curl of a vector field F = (P, Q, R) is a
+    vector: curl(F) = (dR/dy - dQ/dz, dP/dz - dR/dx, dQ/dx - dP/dy).
+
+  Метрики / Metrics:
+    ROUGE-L:  0.2239
+    BLEU:     0.1358
+    Cosine:   0.7243
+    NDCG@5:   0.9733
+    MRR:      1.0000
+
+----------------------------------------------------------------------
+  Вопрос #14 [Рассуждение / Reasoning]
+----------------------------------------------------------------------
+  Вопрос:  How is the second derivative used to classify critical points?
+  Эталон:  At a critical point where f'(c)=0: if f''(c) > 0 the function is concave up so it is a local minimum; if f''(c) < 0 the function is concave down so it is a local maximum.
+
+  Ответ RAG / RAG Answer:
+        The First Derivative Test uses sign changes of f'(x) to classify
+    critical points. Critical points occur where f'(x) = 0 or f'(x) is
+    undefined. The Second Derivative Test uses f''(x): if f''(c) > 0 the point
+    is a local minimum, if f''(c) < 0 it is a local maximum. The second
+    derivative f''(x) represents the rate of change of the rate of change, which
+    geometrically describes the concavity of the curve. Points where concavity
+    changes are called inflection points.
+
+  Метрики / Metrics:
+    ROUGE-L:  0.3636
+    BLEU:     0.1769
+    Cosine:   0.5572
+    NDCG@5:   1.0000
+    MRR:      1.0000
+
+----------------------------------------------------------------------
+  Вопрос #15 [Обобщение / Summary]
+----------------------------------------------------------------------
+  Вопрос:  What are the main integration techniques covered in calculus?
+  Эталон:  The main techniques are: direct antidifferentiation, integration by substitution (u-substitution, reverse Chain Rule), integration by parts (from Product Rule), and partial fractions.
+
+  Ответ RAG / RAG Answer:
+        The Fundamental Theorem of Calculus connects differentiation and
+    integration. This theorem is the cornerstone of integral calculus.
+    Integration by substitution, also known as u-substitution, is the reverse of
+    the Chain Rule. It is evaluated as an iterated integral: integral(integral
+    f(x,y) dA), where the order of integration can often be changed using
+    Fubini's theorem, provided f is continuous on R. Part 1 states that if F(x)
+    = integral from a to x of f(t)dt, then F'(x) = f(x).
+
+  Метрики / Metrics:
+    ROUGE-L:  0.2037
+    BLEU:     0.0000
+    Cosine:   0.2874
+    NDCG@5:   0.8719
+    MRR:      1.0000
+
+----------------------------------------------------------------------
+  Вопрос #16 [Обобщение / Summary]
+----------------------------------------------------------------------
+  Вопрос:  How do the fundamental theorems of vector calculus unify?
+  Эталон:  The Fundamental Theorem of Calculus, Green's Theorem, Stokes' Theorem, and the Divergence Theorem are all cases of the generalized Stokes' theorem, relating boundary integrals to interior integrals.
+
+  Ответ RAG / RAG Answer:
+        The Fundamental Theorem of Calculus connects differentiation and
+    integration. The Fundamental Theorem of Calculus, Green's Theorem, Stokes'
+    Theorem, and the Divergence Theorem are all manifestations of a single
+    generalized Stokes' theorem. This theorem is the cornerstone of integral
+    calculus. The Divergence Theorem (Gauss's Theorem) relates the flux of a
+    vector field through a closed surface to the volume integral of the
+    divergence over the enclosed region: integral_S F . This theorem is
+    fundamental in fluid mechanics, electromagnetism, and heat transfer.
+
+  Метрики / Metrics:
+    ROUGE-L:  0.3818
+    BLEU:     0.2071
+    Cosine:   0.8130
+    NDCG@5:   0.8594
+    MRR:      1.0000
+
+----------------------------------------------------------------------
+  Вопрос #17 [Обобщение / Summary]
+----------------------------------------------------------------------
+  Вопрос:  What are the key applications of derivatives?
+  Эталон:  Derivatives are used for: finding rates of change, optimization (maxima/minima), related rates problems, analyzing concavity and inflection points, and linear approximation via differentials.
+
+  Ответ RAG / RAG Answer:
+        Partial derivatives and multiple integrals extend single-variable
+    calculus to higher dimensions. These extensions are essential for physics
+    and engineering applications. Applications of integration include computing
+    areas between curves, volumes of solids of revolution (using the disk,
+    washer, or shell methods), arc length of curves, surface area of surfaces of
+    revolution, and physical quantities like work, center of mass, and moments
+    of inertia. Mixed partial derivatives f_xy and f_yx are equal for functions
+    with continuous second-order partial derivatives, by Clairaut's theorem
+    (also called Schwarz's theorem). The gradient generalizes the derivative,
+    the divergence and curl extend differential analysis to vector fields, and
+    double and triple integrals generalize single integrals.
+
+  Метрики / Metrics:
+    ROUGE-L:  0.0876
+    BLEU:     0.0000
+    Cosine:   0.3520
+    NDCG@5:   0.9106
+    MRR:      0.3333
+
+----------------------------------------------------------------------
+  Вопрос #18 [Обобщение / Summary]
+----------------------------------------------------------------------
+  Вопрос:  How does single-variable calculus extend to multiple dimensions?
+  Эталон:  Derivatives extend to partial derivatives and gradients. Single integrals extend to double and triple integrals. The Chain Rule extends via total derivatives. Line and surface integrals generalize to paths and surfaces in space.
+
+  Ответ RAG / RAG Answer:
+        Partial derivatives and multiple integrals extend single-variable
+    calculus to higher dimensions. The gradient generalizes the derivative, the
+    divergence and curl extend differential analysis to vector fields, and
+    double and triple integrals generalize single integrals. The Fundamental
+    Theorem of Calculus, Green's Theorem, Stokes' Theorem, and the Divergence
+    Theorem are all manifestations of a single generalized Stokes' theorem. The
+    Fundamental Theorem of Calculus connects differentiation and integration.
+    This theorem is the cornerstone of integral calculus.
+
+  Метрики / Metrics:
+    ROUGE-L:  0.2407
+    BLEU:     0.0639
+    Cosine:   0.4855
+    NDCG@5:   0.9833
+    MRR:      1.0000
+
+======================================================================
+  СВОДНАЯ ТАБЛИЦА / SUMMARY -- Standard RAG (средние / averages)
+======================================================================
+
+  Метрика/Metric  Значение/Value
+  ---------------------------
+  ROUGE-L             0.2701
+  BLEU                0.0972
+  Cosine Sim          0.5489
+  NDCG@5              0.9435
+  MRR                 0.9630
+
+======================================================================
+  Завершено / Done.
+======================================================================

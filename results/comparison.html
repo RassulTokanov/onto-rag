@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAG vs Onto-RAG -- Experiment / Эксперимент (Calculus)</title>
+<style>
+  :root {
+    --bg: #0f172a; --surface: #1e293b; --surface2: #334155;
+    --text: #e2e8f0; --text-dim: #94a3b8; --accent: #818cf8;
+    --rag: #f97316; --onto: #22d3ee; --better: #4ade80;
+    --radius: 12px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg); color: var(--text);
+    line-height: 1.6; padding: 2rem;
+  }
+  .container { max-width: 1200px; margin: 0 auto; }
+  h1 {
+    text-align: center; font-size: 2rem;
+    background: linear-gradient(135deg, var(--accent), var(--onto));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+  }
+  .subtitle { text-align: center; color: var(--text-dim); margin-bottom: 2rem; }
+  h2 {
+    font-size: 1.4rem; color: var(--accent);
+    margin: 2rem 0 1rem; padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--surface2);
+  }
+
+  /* Сводная таблица */
+  .summary-table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+  .summary-table th, .summary-table td {
+    padding: 0.75rem 1rem; text-align: center;
+    border-bottom: 1px solid var(--surface2);
+  }
+  .summary-table th { background: var(--surface); color: var(--accent); }
+  .summary-table tr:hover { background: var(--surface); }
+
+  /* Графики */
+  .charts-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem; margin: 1rem 0;
+  }
+  .chart-card {
+    background: var(--surface); border-radius: var(--radius);
+    padding: 1rem; border: 1px solid var(--surface2);
+  }
+  .chart-title { font-weight: 600; margin-bottom: 0.75rem; color: var(--text); }
+  .bar-row { display: flex; align-items: center; gap: 0.5rem; margin: 0.4rem 0; }
+  .bar-label { width: 40px; font-size: 0.8rem; color: var(--text-dim); }
+  .bar-bg { flex: 1; height: 20px; background: var(--surface2); border-radius: 4px; overflow: hidden; }
+  .bar { height: 100%; border-radius: 4px; transition: width 0.5s; }
+  .rag-bar { background: linear-gradient(90deg, var(--rag), #fb923c); }
+  .onto-bar { background: linear-gradient(90deg, var(--onto), #67e8f9); }
+  .bar-value { width: 50px; font-size: 0.85rem; text-align: right; font-weight: 600; }
+
+  /* Карточки вопросов */
+  .qa-card {
+    background: var(--surface); border-radius: var(--radius);
+    padding: 1.5rem; margin: 1.5rem 0;
+    border: 1px solid var(--surface2);
+    transition: border-color 0.3s;
+  }
+  .qa-card:hover { border-color: var(--accent); }
+  .qa-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; }
+  .q-number { font-weight: 700; color: var(--accent); font-size: 1.1rem; }
+  .q-type {
+    background: var(--surface2); padding: 2px 10px; border-radius: 20px;
+    font-size: 0.8rem; color: var(--text-dim);
+  }
+  .badge {
+    margin-left: auto; padding: 2px 12px; border-radius: 20px;
+    font-size: 0.8rem; font-weight: 600;
+  }
+  .badge-better { background: rgba(74,222,128,0.15); color: var(--better); }
+  .badge-same { background: rgba(148,163,184,0.15); color: var(--text-dim); }
+  .question { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; }
+  .reference {
+    color: var(--text-dim); font-size: 0.9rem;
+    margin-bottom: 0.75rem; padding: 0.5rem;
+    background: rgba(129,140,248,0.06); border-radius: 8px;
+  }
+  .entities {
+    font-size: 0.85rem; color: var(--onto);
+    margin-bottom: 0.5rem; padding: 0.4rem 0.6rem;
+    background: rgba(34,211,238,0.08); border-radius: 8px;
+  }
+  .onto-ctx {
+    font-size: 0.82rem; color: var(--text-dim);
+    margin-bottom: 0.75rem; padding: 0.5rem;
+    background: rgba(34,211,238,0.05); border-radius: 8px;
+    border-left: 3px solid var(--onto);
+  }
+  .answers-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 768px) { .answers-grid { grid-template-columns: 1fr; } }
+  .answer-box {
+    padding: 1rem; border-radius: 8px;
+    border: 1px solid var(--surface2);
+  }
+  .rag-box { border-left: 3px solid var(--rag); background: rgba(249,115,22,0.04); }
+  .onto-box { border-left: 3px solid var(--onto); background: rgba(34,211,238,0.04); }
+  .answer-title { font-weight: 700; margin-bottom: 0.5rem; font-size: 0.95rem; }
+  .answer-text { font-size: 0.85rem; color: var(--text-dim); line-height: 1.5; }
+  .metrics-row {
+    margin-top: 0.75rem; padding-top: 0.5rem;
+    border-top: 1px solid var(--surface2);
+    font-size: 0.78rem; color: var(--text-dim); font-family: monospace;
+  }
+  footer { text-align: center; color: var(--text-dim); margin-top: 3rem; font-size: 0.85rem; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>RAG vs Onto-RAG</h1>
+<p class="subtitle">Experimental comparison / Экспериментальное сравнение -- "Introduction to Calculus Vol. II" (Heinbockel)</p>
+
+<h2>Сводка метрик / Metrics Summary</h2>
+<table class="summary-table">
+  <thead>
+    <tr><th>Метрика / Metric</th><th>Standard RAG</th><th>Onto-RAG</th><th>Изменение / Change</th></tr>
+  </thead>
+  <tbody>
+        <tr>
+          <td>ROUGE-L</td>
+          <td>0.2701</td>
+          <td>0.2608</td>
+          <td style="color:#f87171;font-weight:700">-3.4%</td>
+        </tr>
+        <tr>
+          <td>BLEU</td>
+          <td>0.0972</td>
+          <td>0.0906</td>
+          <td style="color:#f87171;font-weight:700">-6.7%</td>
+        </tr>
+        <tr>
+          <td>Cosine Sim</td>
+          <td>0.5489</td>
+          <td>0.5563</td>
+          <td style="color:#4ade80;font-weight:700">+1.3%</td>
+        </tr>
+        <tr>
+          <td>NDCG@5</td>
+          <td>0.9435</td>
+          <td>0.9343</td>
+          <td style="color:#f87171;font-weight:700">-1.0%</td>
+        </tr>
+        <tr>
+          <td>MRR</td>
+          <td>0.9630</td>
+          <td>0.9630</td>
+          <td style="color:#f87171;font-weight:700">+0.0%</td>
+        </tr></tbody>
+</table>
+
+<h2>Средние метрики / Average Metrics</h2>
+<div class="charts-grid">
+        <div class="chart-card">
+          <div class="chart-title">ROUGE-L</div>
+          <div class="bar-row">
+            <span class="bar-label">RAG</span>
+            <div class="bar-bg"><div class="bar rag-bar" style="width:200.0px"></div></div>
+            <span class="bar-value">0.270</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Onto</span>
+            <div class="bar-bg"><div class="bar onto-bar" style="width:193.1349730413805px"></div></div>
+            <span class="bar-value">0.261</span>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">BLEU</div>
+          <div class="bar-row">
+            <span class="bar-label">RAG</span>
+            <div class="bar-bg"><div class="bar rag-bar" style="width:200.0px"></div></div>
+            <span class="bar-value">0.097</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Onto</span>
+            <div class="bar-bg"><div class="bar onto-bar" style="width:186.5181863275677px"></div></div>
+            <span class="bar-value">0.091</span>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Cosine Sim</div>
+          <div class="bar-row">
+            <span class="bar-label">RAG</span>
+            <div class="bar-bg"><div class="bar rag-bar" style="width:197.35821624897693px"></div></div>
+            <span class="bar-value">0.549</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Onto</span>
+            <div class="bar-bg"><div class="bar onto-bar" style="width:200.0px"></div></div>
+            <span class="bar-value">0.556</span>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">NDCG@5</div>
+          <div class="bar-row">
+            <span class="bar-label">RAG</span>
+            <div class="bar-bg"><div class="bar rag-bar" style="width:200.0px"></div></div>
+            <span class="bar-value">0.944</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Onto</span>
+            <div class="bar-bg"><div class="bar onto-bar" style="width:198.03949315863028px"></div></div>
+            <span class="bar-value">0.934</span>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">MRR</div>
+          <div class="bar-row">
+            <span class="bar-label">RAG</span>
+            <div class="bar-bg"><div class="bar rag-bar" style="width:200.0px"></div></div>
+            <span class="bar-value">0.963</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Onto</span>
+            <div class="bar-bg"><div class="bar onto-bar" style="width:200.0px"></div></div>
+            <span class="bar-value">0.963</span>
+          </div>
+        </div></div>
+
+<h2>ROUGE-L по типам вопросов / by Question Type</h2>
+<div class="charts-grid">
+        <div class="chart-card">
+          <div class="chart-title">ROUGE-L: Фактический / Factual</div>
+          <div class="bar-row">
+            <span class="bar-label">RAG</span>
+            <div class="bar-bg"><div class="bar rag-bar" style="width:200.0px"></div></div>
+            <span class="bar-value">0.336</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Onto</span>
+            <div class="bar-bg"><div class="bar onto-bar" style="width:197.6297155565049px"></div></div>
+            <span class="bar-value">0.332</span>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">ROUGE-L: О связях / Relationship</div>
+          <div class="bar-row">
+            <span class="bar-label">RAG</span>
+            <div class="bar-bg"><div class="bar rag-bar" style="width:200.0px"></div></div>
+            <span class="bar-value">0.276</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Onto</span>
+            <div class="bar-bg"><div class="bar onto-bar" style="width:192.88063706070292px"></div></div>
+            <span class="bar-value">0.267</span>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">ROUGE-L: Рассуждение / Reasoning</div>
+          <div class="bar-row">
+            <span class="bar-label">RAG</span>
+            <div class="bar-bg"><div class="bar rag-bar" style="width:200.0px"></div></div>
+            <span class="bar-value">0.222</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Onto</span>
+            <div class="bar-bg"><div class="bar onto-bar" style="width:179.24661794680617px"></div></div>
+            <span class="bar-value">0.199</span>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">ROUGE-L: Обобщение / Summary</div>
+          <div class="bar-row">
+            <span class="bar-label">RAG</span>
+            <div class="bar-bg"><div class="bar rag-bar" style="width:200.0px"></div></div>
+            <span class="bar-value">0.228</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Onto</span>
+            <div class="bar-bg"><div class="bar onto-bar" style="width:198.75605894379962px"></div></div>
+            <span class="bar-value">0.227</span>
+          </div>
+        </div></div>
+
+<h2>Сравнение ответов / Answer Comparison</h2>
+
+        <div class="qa-card">
+          <div class="qa-header">
+            <span class="q-number">#1</span>
+            <span class="q-type">Фактический / Factual</span>
+            <span class="badge badge-same">Сопоставимо / comparable</span>
+          </div>
+          <div class="question">What is the formal definition of a limit?</div>
+          <div class="reference"><strong>Эталон / Reference:</strong> A limit uses the epsilon-delta definition: for every epsilon > 0 there exists delta > 0 such that |x - c| < delta implies |f(x) - L| < epsilon.</div>
+          
+            <div class="entities">
+              <strong>Найденные сущности / Entities found:</strong> Limit
+            </div>
+          
+            <div class="onto-ctx">
+              <strong>Контекст из онтологии / Ontology context:</strong><br>
+              <em>Derivative: The instantaneous rate of change of a function, defined as the limit of the difference quotient. Derivative requires Limit. Derivative is part of Single-Variable Calculus. Derivative is the inverse of Integral. Area and Volume Computation: Computing areas between curves and volumes of so...</em>
+            </div>
+          <div class="answers-grid">
+            <div class="answer-box rag-box">
+              <div class="answer-title">Standard RAG</div>
+              <div class="answer-text">The formal epsilon-delta definition states that for every epsilon greater than zero there exists a delta greater than zero such that whenever the distance between x and the limit point is less than delta, the distance between f(x) and L is less than epsilon. A limit describes the value that a function approaches as the input approaches a particular point. Both rules are derived from the definition...</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.271 |
+                BLEU: 0.000 |
+                Cosine: 0.540
+              </div>
+            </div>
+            <div class="answer-box onto-box">
+              <div class="answer-title">Onto-RAG</div>
+              <div class="answer-text">The formal epsilon-delta definition states that for every epsilon greater than zero there exists a delta greater than zero such that whenever the distance between x and the limit point is less than delta, the distance between f(x) and L is less than epsilon. Both rules are derived from the definition of the derivative using limits. A limit describes the value that a function approaches as the input approaches a particular point. It is defined as the limit of Riemann sums. The Product Rule states...</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.267 |
+                BLEU: 0.000 |
+                Cosine: 0.513
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="qa-card">
+          <div class="qa-header">
+            <span class="q-number">#2</span>
+            <span class="q-type">Фактический / Factual</span>
+            <span class="badge badge-same">Сопоставимо / comparable</span>
+          </div>
+          <div class="question">What does the Fundamental Theorem of Calculus state?</div>
+          <div class="reference"><strong>Эталон / Reference:</strong> Part 1: if F(x) = integral from a to x of f(t)dt, then F'(x) = f(x). Part 2: integral from a to b of f(x)dx = F(b) - F(a), where F is an antiderivative of f.</div>
+          
+            <div class="entities">
+              <strong>Найденные сущности / Entities found:</strong> SingleVariableCalculus, MultivariableCalculus, VectorCalculus, FundamentalTheoremOfCalculus, GreensTheorem, StokesTheorem, DivergenceTheorem, IntermediateValueTheorem, FubiniTheorem, ClairauttTheorem
+            </div>
+          
+            <div class="onto-ctx">
+              <strong>Контекст из онтологии / Ontology context:</strong><br>
+              <em>Clairaut's Theorem: Mixed partial derivatives are equal when second-order partials are continuous. Clairaut's Theorem proves / applies to Partial Derivative. Green's Theorem: Relates line integral around a closed curve to double integral over the enclosed region. Green's Theorem proves / applies to ...</em>
+            </div>
+          <div class="answers-grid">
+            <div class="answer-box rag-box">
+              <div class="answer-title">Standard RAG</div>
+              <div class="answer-text">The Fundamental Theorem of Calculus, Green's Theorem, Stokes' Theorem, and the Divergence Theorem are all manifestations of a single generalized Stokes' theorem. The Fundamental Theorem of Calculus connects differentiation and integration. This theorem is the cornerstone of integral calculus. This theorem is fundamental in fluid mechanics, electromagnetism, and heat transfer. The Divergence Theore...</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.114 |
+                BLEU: 0.000 |
+                Cosine: 0.206
+              </div>
+            </div>
+            <div class="answer-box onto-box">
+              <div class="answer-title">Onto-RAG</div>
+              <div class="answer-text">The Fundamental Theorem of Calculus, Green's Theorem, Stokes' Theorem, and the Divergence Theorem are all manifestations of a single generalized Stokes' theorem. The Fundamental Theorem of Calculus connects differentiation and integration. This theorem is the cornerstone of integral calculus. This theorem is fundamental in fluid mechanics, electromagnetism, and heat transfer. The Divergence Theorem (Gauss's Theorem) relates the flux of a vector field through a closed surface to the volume integr...</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.114 |
+                BLEU: 0.000 |
+                Cosine: 0.206
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="qa-card">
+          <div class="qa-header">
+            <span class="q-number">#3</span>
+            <span class="q-type">Фактический / Factual</span>
+            <span class="badge badge-same">Сопоставимо / comparable</span>
+          </div>
+          <div class="question">What is the gradient of a scalar function?</div>
+          <div class="reference"><strong>Эталон / Reference:</strong> The gradient of f(x,y,z) is the vector (df/dx, df/dy, df/dz). It points in the direction of steepest ascent and its magnitude is the maximum rate of increase.</div>
+          
+            <div class="entities">
+              <strong>Найденные сущности / Entities found:</strong> Gradient
+            </div>
+          
+            <div class="onto-ctx">
+              <strong>Контекст из онтологии / Ontology context:</strong><br>
+              <em>Clairaut's Theorem: Mixed partial derivatives are equal when second-order partials are continuous. Clairaut's Theorem proves / applies to Partial Derivative. Derivative: The instantaneous rate of change of a function, defined as the limit of the difference quotient. Derivative requires Limit. Deriva...</em>
+            </div>
+          <div class="answers-grid">
+            <div class="answer-box rag-box">
+              <div class="answer-title">Standard RAG</div>
+              <div class="answer-text">The gradient of a scalar function f(x,y,z) is the vector of its partial derivatives: grad(f) = (df/dx, df/dy, df/dz). If curl(F) = 0, the field is irrotational, which implies that F is the gradient of some scalar potential function. The gradient points in the direction of steepest ascent of the function and its magnitude gives the rate of maximum increase. It is perpendicular to the level surfaces...</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.444 |
+                BLEU: 0.190 |
+                Cosine: 0.770
+              </div>
+            </div>
+            <div class="answer-box onto-box">
+              <div class="answer-title">Onto-RAG</div>
+              <div class="answer-text">The gradient of a scalar function f(x,y,z) is the vector of its partial derivatives: grad(f) = (df/dx, df/dy, df/dz). The gradient points in the direction of steepest ascent of the function and its magnitude gives the rate of maximum increase. It is perpendicular to the level surfaces of the function. The gradient generalizes the derivative, the divergence and curl extend differential analysis to vector fields, and double and triple integrals generalize single integrals. A partial derivative of ...</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.429 |
+                BLEU: 0.181 |
+                Cosine: 0.821
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="qa-card">
+          <div class="qa-header">
+            <span class="q-number">#4</span>
+            <span class="q-type">Фактический / Factual</span>
+            <span class="badge badge-same">Сопоставимо / comparable</span>
+          </div>
+          <div class="question">What is the divergence of a vector field?</div>
+          <div class="reference"><strong>Эталон / Reference:</strong> The divergence of F = (P,Q,R) is dP/dx + dQ/dy + dR/dz. It measures the rate at which the field spreads out from a point. Zero divergence means the field is solenoidal.</div>
+          
+            <div class="entities">
+              <strong>Найденные сущности / Entities found:</strong> VectorCalculus, Divergence, ConservativeField, DivergenceTheorem
+            </div>
+          
+            <div class="onto-ctx">
+              <strong>Контекст из онтологии / Ontology context:</strong><br>
+              <em>Gradient: Vector of partial derivatives pointing in the direction of steepest ascent. Gradient requires Partial Derivative. Gradient is part of Vector Calculus. Gradient is related to Divergence. Gradient is related to Curl. Divergence: Scalar measuring how much a vector field spreads out from a poi...</em>
+            </div>
+          <div class="answers-grid">
+            <div class="answer-box rag-box">
+              <div class="answer-title">Standard RAG</div>
+              <div class="answer-text">The divergence of a vector field F = (P, Q, R) is a scalar: div(F) = dP/dx + dQ/dy + dR/dz. The Divergence Theorem (Gauss's Theorem) relates the flux of a vector field through a closed surface to the volume integral of the divergence over the enclosed region: integral_S F . The curl of a vector field F = (P, Q, R) is a vector: curl(F) = (dR/dy - dQ/dz, dP/dz - dR/dx, dQ/dx - dP/dy). It measures th...</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.406 |
+                BLEU: 0.207 |
+                Cosine: 0.767
+              </div>
+            </div>
+            <div class="answer-box onto-box">
+              <div class="answer-title">Onto-RAG</div>
+              <div class="answer-text">The Divergence Theorem (Gauss's Theorem) relates the flux of a vector field through a closed surface to the volume integral of the divergence over the enclosed region: integral_S F . The divergence of a vector field F = (P, Q, R) is a scalar: div(F) = dP/dx + dQ/dy + dR/dz. The curl of a vector field F = (P, Q, R) is a vector: curl(F) = (dR/dy - dQ/dz, dP/dz - dR/dx, dQ/dx - dP/dy). It measures the rate at which the field spreads out from a point. A positive divergence indicates a source, while ...</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.406 |
+                BLEU: 0.207 |
+                Cosine: 0.767
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="qa-card">
+          <div class="qa-header">
+            <span class="q-number">#5</span>
+            <span class="q-type">Фактический / Factual</span>
+            <span class="badge badge-same">Сопоставимо / comparable</span>
+          </div>
+          <div class="question">What is the curl of a vector field?</div>
+          <div class="reference"><strong>Эталон / Reference:</strong> The curl of F = (P,Q,R) is (dR/dy - dQ/dz, dP/dz - dR/dx, dQ/dx - dP/dy). It measures the rotation tendency. If curl(F) = 0, the field is irrotational.</div>
+          
+            <div class="entities">
+              <strong>Найденные сущности / Entities found:</strong> VectorCalculus, Curl, ConservativeField
+            </div>
+          
+            <div class="onto-ctx">
+              <strong>Контекст из онтологии / Ontology context:</strong><br>
+              <em>Line Integral: Integral of a vector field along a curve, computing work done by the field. Line Integral is part of Vector Calculus. Line Integral is related to Surface Integral. Divergence: Scalar measuring how much a vector field spreads out from a point. Divergence requires Partial Derivative. Di...</em>
+            </div>
+          <div class="answers-grid">
+            <div class="answer-box rag-box">
+              <div class="answer-title">Standard RAG</div>
+              <div class="answer-text">The curl of a vector field F = (P, Q, R) is a vector: curl(F) = (dR/dy - dQ/dz, dP/dz - dR/dx, dQ/dx - dP/dy). It relates the surface integral of the curl of a vector field over a surface S to the line integral of the field around the boundary curve of S: integral_S curl(F) . The curl measures the rotation or circulation tendency of the field at a point. If curl(F) = 0, the field is irrotational, ...</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.443 |
+                BLEU: 0.210 |
+                Cosine: 0.672
+              </div>
+            </div>
+            <div class="answer-box onto-box">
+              <div class="answer-title">Onto-RAG</div>
+              <div class="answer-text">The curl of a vector field F = (P, Q, R) is a vector: curl(F) = (dR/dy - dQ/dz, dP/dz - dR/dx, dQ/dx - dP/dy). It relates the surface integral of the curl of a vector field over a surface S to the line integral of the field around the boundary curve of S: integral_S curl(F) . The curl measures the rotation or circulation tendency of the field at a point. If curl(F) = 0, the field is irrotational, which implies that F is the gradient of some scalar potential function. A line integral of a vector ...</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.443 |
+                BLEU: 0.210 |
+                Cosine: 0.672
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="qa-card">
+          <div class="qa-header">
+            <span class="q-number">#6</span>
+            <span class="q-type">О связях / Relationship</span>
+            <span class="badge badge-better">Onto-RAG лучше / better</span>
+          </div>
+          <div class="question">How are derivatives and integrals related?</div>
+          <div class="reference"><strong>Эталон / Reference:</strong> The Fundamental Theorem of Calculus connects them: differentiation and integration are inverse processes. The integral of a derivative recovers the original function (up to a constant).</div>
+          
+            <div class="entities">
+              <strong>Найденные сущности / Entities found:</strong> RelatedRates, AreaAndVolume
+            </div>
+          
+            <div class="onto-ctx">
+              <strong>Контекст из онтологии / Ontology context:</strong><br>
+              <em>Derivative: The instantaneous rate of change of a function, defined as the limit of the difference quotient. Derivative requires Limit. Derivative is part of Single-Variable Calculus. Derivative is the inverse of Integral. Fundamental Theorem of Calculus: Connects differentiation and integration as ...</em>
+            </div>
+          <div class="answers-grid">
+            <div class="answer-box rag-box">
+              <div class="answer-title">Standard RAG</div>
+              <div class="answer-text">Partial derivatives and multiple integrals extend single-variable calculus to higher dimensions. The gradient generalizes the derivative, the divergence and curl extend differential analysis to vector fields, and double and triple integrals generalize single integrals. A triple integral extends double integrals to three dimensions, computing quantities like mass and volume over a three-dimensional...</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.100 |
+                BLEU: 0.000 |
+                Cosine: 0.467
+              </div>
+            </div>
+            <div class="answer-box onto-box">
+              <div class="answer-title">Onto-RAG</div>
+              <div class="answer-text">Partial derivatives and multiple integrals extend single-variable calculus to higher dimensions. The gradient generalizes the derivative, the divergence and curl extend differential analysis to vector fields, and double and triple integrals generalize single integrals. Related rates problems involve finding the rate of change of one quantity in terms of the rate of change of another. The Fundamental Theorem of Calculus connects differentiation and integration. Part 1 states that if F(x) = integr...</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.214 |
+                BLEU: 0.076 |
+                Cosine: 0.568
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="qa-card">
+          <div class="qa-header">
+            <span class="q-number">#7</span>
+            <span class="q-type">О связях / Relationship</span>
+            <span class="badge badge-same">Сопоставимо / comparable</span>
+          </div>
+          <div class="question">How does the Chain Rule relate to integration by substitution?</div>
+          <div class="reference"><strong>Эталон / Reference:</strong> Integration by substitution (u-substitution) is the reverse of the Chain Rule. If the integrand has the form f(g(x))*g'(x), substituting u=g(x) simplifies the integral.</div>
+          
+            <div class="entities">
+              <strong>Найденные сущности / Entities found:</strong> ChainRule, ProductRule, QuotientRule, Substitution, IntegrationByParts
+            </div>
+          
+            <div class="onto-ctx">
+              <strong>Контекст из онтологии / Ontology context:</strong><br>
+              <em>Derivative: The instantaneous rate of change of a function, defined as the limit of the difference quotient. Derivative requires Limit. Derivative is part of Single-Variable Calculus. Derivative is the inverse of Integral. Quotient Rule: Derivative of quotient: d/dx[u/v] = (u'v - uv')/v^2. Quotient ...</em>
+            </div>
+          <div class="answers-grid">
+            <div class="answer-box rag-box">
+              <div class="answer-title">Standard RAG</div>
+              <div class="answer-text">Integration by substitution, also known as u-substitution, is the reverse of the Chain Rule. The Chain Rule states that the derivative of a composite function f(g(x)) equals f'(g(x)) multiplied by g'(x). The Chain Rule extends naturally to compositions of three or more functions. This rule is essential for differentiating nested functions. The Product Rule states that the derivative of a product o...</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.386 |
+                BLEU: 0.139 |
+                Cosine: 0.751
+              </div>
+            </div>
+            <div class="answer-box onto-box">
+              <div class="answer-title">Onto-RAG</div>
+              <div class="answer-text">Integration by substitution, also known as u-substitution, is the reverse of the Chain Rule. The Chain Rule states that the derivative of a composite function f(g(x)) equals f'(g(x)) multiplied by g'(x). The Chain Rule extends naturally to compositions of three or more functions. The Product Rule states that the derivative of a product of two functions u(x) and v(x) is u'(x)v(x) + u(x)v'(x). The Quotient Rule gives the derivative of u/v as [u'v - uv'] / v^2.</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.364 |
+                BLEU: 0.128 |
+                Cosine: 0.748
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="qa-card">
+          <div class="qa-header">
+            <span class="q-number">#8</span>
+            <span class="q-type">О связях / Relationship</span>
+            <span class="badge badge-same">Сопоставимо / comparable</span>
+          </div>
+          <div class="question">What is the relationship between Green's Theorem and Stokes' Theorem?</div>
+          <div class="reference"><strong>Эталон / Reference:</strong> Green's Theorem is a special two-dimensional case of Stokes' Theorem. Stokes' Theorem generalizes Green's Theorem to surfaces in three dimensions.</div>
+          
+            <div class="entities">
+              <strong>Найденные сущности / Entities found:</strong> FundamentalTheoremOfCalculus, GreensTheorem, StokesTheorem, DivergenceTheorem, IntermediateValueTheorem, FubiniTheorem, ClairauttTheorem, AreaAndVolume
+            </div>
+          
+            <div class="onto-ctx">
+              <strong>Контекст из онтологии / Ontology context:</strong><br>
+              <em>Clairaut's Theorem: Mixed partial derivatives are equal when second-order partials are continuous. Clairaut's Theorem proves / applies to Partial Derivative. Green's Theorem: Relates line integral around a closed curve to double integral over the enclosed region. Green's Theorem proves / applies to ...</em>
+            </div>
+          <div class="answers-grid">
+            <div class="answer-box rag-box">
+              <div class="answer-title">Standard RAG</div>
+              <div class="answer-text">The Fundamental Theorem of Calculus, Green's Theorem, Stokes' Theorem, and the Divergence Theorem are all manifestations of a single generalized Stokes' theorem. Green's Theorem is a special two-dimensional case of Stokes' Theorem. Stokes' Theorem generalizes Green's Theorem to three dimensions. Green's Theorem relates a line integral around a simple closed curve C in the plane to a double integra...</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.420 |
+                BLEU: 0.243 |
+                Cosine: 0.828
+              </div>
+            </div>
+            <div class="answer-box onto-box">
+              <div class="answer-title">Onto-RAG</div>
+              <div class="answer-text">The Fundamental Theorem of Calculus, Green's Theorem, Stokes' Theorem, and the Divergence Theorem are all manifestations of a single generalized Stokes' theorem. Green's Theorem is a special two-dimensional case of Stokes' Theorem. Green's Theorem relates a line integral around a simple closed curve C in the plane to a double integral over the region D enclosed by C. The Divergence Theorem (Gauss's Theorem) relates the flux of a vector field through a closed surface to the volume integral of the...</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.268 |
+                BLEU: 0.129 |
+                Cosine: 0.671
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="qa-card">
+          <div class="qa-header">
+            <span class="q-number">#9</span>
+            <span class="q-type">О связях / Relationship</span>
+            <span class="badge badge-better">Onto-RAG лучше / better</span>
+          </div>
+          <div class="question">How are gradient, divergence, and curl connected?</div>
+          <div class="reference"><strong>Эталон / Reference:</strong> The gradient maps scalars to vectors, divergence maps vectors to scalars, and curl maps vectors to vectors. Key identities: div(curl F) = 0 and curl(grad f) = 0.</div>
+          
+            <div class="entities">
+              <strong>Найденные сущности / Entities found:</strong> Gradient, Divergence, Curl, DivergenceTheorem, AreaAndVolume
+            </div>
+          
+            <div class="onto-ctx">
+              <strong>Контекст из онтологии / Ontology context:</strong><br>
+              <em>Divergence: Scalar measuring how much a vector field spreads out from a point. Divergence requires Partial Derivative. Divergence is part of Vector Calculus. Divergence is related to Curl. Area and Volume Computation: Computing areas between curves and volumes of solids using integration. Area and V...</em>
+            </div>
+          <div class="answers-grid">
+            <div class="answer-box rag-box">
+              <div class="answer-title">Standard RAG</div>
+              <div class="answer-text">The gradient generalizes the derivative, the divergence and curl extend differential analysis to vector fields, and double and triple integrals generalize single integrals. If curl(F) = 0, the field is irrotational, which implies that F is the gradient of some scalar potential function. The curl of a vector field F = (P, Q, R) is a vector: curl(F) = (dR/dy - dQ/dz, dP/dz - dR/dx, dQ/dx - dP/dy). T...</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.152 |
+                BLEU: 0.000 |
+                Cosine: 0.342
+              </div>
+            </div>
+            <div class="answer-box onto-box">
+              <div class="answer-title">Onto-RAG</div>
+              <div class="answer-text">The gradient generalizes the derivative, the divergence and curl extend differential analysis to vector fields, and double and triple integrals generalize single integrals. If curl(F) = 0, the field is irrotational, which implies that F is the gradient of some scalar potential function. The Divergence Theorem (Gauss's Theorem) relates the flux of a vector field through a closed surface to the volume integral of the divergence over the enclosed region: integral_S F . The curl of a vector field F ...</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.154 |
+                BLEU: 0.000 |
+                Cosine: 0.339
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="qa-card">
+          <div class="qa-header">
+            <span class="q-number">#10</span>
+            <span class="q-type">О связях / Relationship</span>
+            <span class="badge badge-better">Onto-RAG лучше / better</span>
+          </div>
+          <div class="question">How does the Product Rule relate to integration by parts?</div>
+          <div class="reference"><strong>Эталон / Reference:</strong> Integration by parts is derived from the Product Rule. The Product Rule d(uv) = u dv + v du, when integrated, gives integral u dv = uv - integral v du.</div>
+          
+            <div class="entities">
+              <strong>Найденные сущности / Entities found:</strong> ChainRule, ProductRule, QuotientRule, Substitution, IntegrationByParts
+            </div>
+          
+            <div class="onto-ctx">
+              <strong>Контекст из онтологии / Ontology context:</strong><br>
+              <em>Derivative: The instantaneous rate of change of a function, defined as the limit of the difference quotient. Derivative requires Limit. Derivative is part of Single-Variable Calculus. Derivative is the inverse of Integral. Quotient Rule: Derivative of quotient: d/dx[u/v] = (u'v - uv')/v^2. Quotient ...</em>
+            </div>
+          <div class="answers-grid">
+            <div class="answer-box rag-box">
+              <div class="answer-title">Standard RAG</div>
+              <div class="answer-text">Integration by parts is a technique derived from the Product Rule. The Product Rule states that the derivative of a product of two functions u(x) and v(x) is u'(x)v(x) + u(x)v'(x). The Quotient Rule gives the derivative of u/v as [u'v - uv'] / v^2. The Chain Rule states that the derivative of a composite function f(g(x)) equals f'(g(x)) multiplied by g'(x). This rule is essential for differentiati...</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.324 |
+                BLEU: 0.118 |
+                Cosine: 0.528
+              </div>
+            </div>
+            <div class="answer-box onto-box">
+              <div class="answer-title">Onto-RAG</div>
+              <div class="answer-text">Integration by parts is a technique derived from the Product Rule. The Product Rule states that the derivative of a product of two functions u(x) and v(x) is u'(x)v(x) + u(x)v'(x). Integration by substitution, also known as u-substitution, is the reverse of the Chain Rule. The Quotient Rule gives the derivative of u/v as [u'v - uv'] / v^2. Both rules are derived from the definition of the derivative using limits.</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.333 |
+                BLEU: 0.123 |
+                Cosine: 0.598
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="qa-card">
+          <div class="qa-header">
+            <span class="q-number">#11</span>
+            <span class="q-type">Рассуждение / Reasoning</span>
+            <span class="badge badge-same">Сопоставимо / comparable</span>
+          </div>
+          <div class="question">Why does a Taylor series converge only within a radius of convergence?</div>
+          <div class="reference"><strong>Эталон / Reference:</strong> A power series converges where the terms become small enough to sum to a finite value. The radius of convergence R is determined by the ratio or root test applied to the coefficients.</div>
+          
+            <div class="entities">
+              <strong>Найденные сущности / Entities found:</strong> TaylorSeries, PowerSeries
+            </div>
+          
+            <div class="onto-ctx">
+              <strong>Контекст из онтологии / Ontology context:</strong><br>
+              <em>Derivative: The instantaneous rate of change of a function, defined as the limit of the difference quotient. Derivative requires Limit. Derivative is part of Single-Variable Calculus. Derivative is the inverse of Integral. Fundamental Theorem of Calculus: Connects differentiation and integration as ...</em>
+            </div>
+          <div class="answers-grid">
+            <div class="answer-box rag-box">
+              <div class="answer-title">Standard RAG</div>
+              <div class="answer-text">Within the radius of convergence, a power series can be differentiated and integrated term by term. Each power series has a radius of convergence R such that the series converges for |x-a| < R and diverges for |x-a| > R. A Taylor series represents a function as an infinite sum of terms calculated from the values of its derivatives at a single point. The Taylor series of f(x) around x = a is given ...</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.167 |
+                BLEU: 0.058 |
+                Cosine: 0.503
+              </div>
+            </div>
+            <div class="answer-box onto-box">
+              <div class="answer-title">Onto-RAG</div>
+              <div class="answer-text">Within the radius of convergence, a power series can be differentiated and integrated term by term. Each power series has a radius of convergence R such that the series converges for |x-a| < R and diverges for |x-a| > R. A Taylor series represents a function as an infinite sum of terms calculated from the values of its derivatives at a single point. The Taylor series of f(x) around x = a is given by sum [f^(n)(a)/n!] * (x-a)^n. A power series is sigma from n=0 to infinity of c_n * (x-a)^n.</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.167 |
+                BLEU: 0.058 |
+                Cosine: 0.503
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="qa-card">
+          <div class="qa-header">
+            <span class="q-number">#12</span>
+            <span class="q-type">Рассуждение / Reasoning</span>
+            <span class="badge badge-same">Сопоставимо / comparable</span>
+          </div>
+          <div class="question">Why is the Jacobian needed when changing variables in multiple integrals?</div>
+          <div class="reference"><strong>Эталон / Reference:</strong> The Jacobian accounts for how the coordinate transformation stretches or compresses area/volume elements. Without it, the integral would not correctly measure the transformed region.</div>
+          
+            <div class="entities">
+              <strong>Найденные сущности / Entities found:</strong> Jacobian
+            </div>
+          
+            <div class="onto-ctx">
+              <strong>Контекст из онтологии / Ontology context:</strong><br>
+              <em>Clairaut's Theorem: Mixed partial derivatives are equal when second-order partials are continuous. Clairaut's Theorem proves / applies to Partial Derivative. Derivative: The instantaneous rate of change of a function, defined as the limit of the difference quotient. Derivative requires Limit. Deriva...</em>
+            </div>
+          <div class="answers-grid">
+            <div class="answer-box rag-box">
+              <div class="answer-title">Standard RAG</div>
+              <div class="answer-text">The Jacobian determinant is used when changing variables in multiple integrals. Partial derivatives and multiple integrals extend single-variable calculus to higher dimensions. Triple integrals can be evaluated in Cartesian, cylindrical, or spherical coordinates, with appropriate Jacobian determinants for coordinate transformations. For a transformation from (u,v) to (x,y), the Jacobian J = d(x,y)...</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.133 |
+                BLEU: 0.000 |
+                Cosine: 0.288
+              </div>
+            </div>
+            <div class="answer-box onto-box">
+              <div class="answer-title">Onto-RAG</div>
+              <div class="answer-text">The Jacobian determinant is used when changing variables in multiple integrals. Partial derivatives and multiple integrals extend single-variable calculus to higher dimensions. For a transformation from (u,v) to (x,y), the Jacobian J = d(x,y)/d(u,v) = (dx/du)(dy/dv) - (dx/dv)(dy/du). In polar coordinates, the Jacobian is r, so dA = r dr d(theta). The gradient generalizes the derivative, the divergence and curl extend differential analysis to vector fields, and double and triple integrals general...</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.109 |
+                BLEU: 0.000 |
+                Cosine: 0.351
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="qa-card">
+          <div class="qa-header">
+            <span class="q-number">#13</span>
+            <span class="q-type">Рассуждение / Reasoning</span>
+            <span class="badge badge-same">Сопоставимо / comparable</span>
+          </div>
+          <div class="question">Why are conservative vector fields path-independent?</div>
+          <div class="reference"><strong>Эталон / Reference:</strong> Because curl(F) = 0 for conservative fields, the field is the gradient of a potential. The line integral depends only on the potential values at the endpoints, not the path taken.</div>
+          
+            <div class="entities">
+              <strong>Найденные сущности / Entities found:</strong> VectorCalculus, ConservativeField
+            </div>
+          
+            <div class="onto-ctx">
+              <strong>Контекст из онтологии / Ontology context:</strong><br>
+              <em>Line Integral: Integral of a vector field along a curve, computing work done by the field. Line Integral is part of Vector Calculus. Line Integral is related to Surface Integral. Divergence: Scalar measuring how much a vector field spreads out from a point. Divergence requires Partial Derivative. Di...</em>
+            </div>
+          <div class="answers-grid">
+            <div class="answer-box rag-box">
+              <div class="answer-title">Standard RAG</div>
+              <div class="answer-text">A line integral of a vector field F along a curve C computes the work done by the field along the path. If F is conservative (curl F = 0), the line integral depends only on the endpoints, not the path. A scalar potential phi exists such that F = grad(phi) for conservative fields. The gradient generalizes the derivative, the divergence and curl extend differential analysis to vector fields, and dou...</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.224 |
+                BLEU: 0.136 |
+                Cosine: 0.724
+              </div>
+            </div>
+            <div class="answer-box onto-box">
+              <div class="answer-title">Onto-RAG</div>
+              <div class="answer-text">A line integral of a vector field F along a curve C computes the work done by the field along the path. If F is conservative (curl F = 0), the line integral depends only on the endpoints, not the path. A scalar potential phi exists such that F = grad(phi) for conservative fields. It relates the surface integral of the curl of a vector field over a surface S to the line integral of the field around the boundary curve of S: integral_S curl(F) . The Divergence Theorem (Gauss's Theorem) relates the ...</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.216 |
+                BLEU: 0.108 |
+                Cosine: 0.765
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="qa-card">
+          <div class="qa-header">
+            <span class="q-number">#14</span>
+            <span class="q-type">Рассуждение / Reasoning</span>
+            <span class="badge badge-same">Сопоставимо / comparable</span>
+          </div>
+          <div class="question">How is the second derivative used to classify critical points?</div>
+          <div class="reference"><strong>Эталон / Reference:</strong> At a critical point where f'(c)=0: if f''(c) > 0 the function is concave up so it is a local minimum; if f''(c) < 0 the function is concave down so it is a local maximum.</div>
+          
+            <div class="entities">
+              <strong>Найденные сущности / Entities found:</strong> Derivative, PartialDerivative
+            </div>
+          
+            <div class="onto-ctx">
+              <strong>Контекст из онтологии / Ontology context:</strong><br>
+              <em>Clairaut's Theorem: Mixed partial derivatives are equal when second-order partials are continuous. Clairaut's Theorem proves / applies to Partial Derivative. Derivative: The instantaneous rate of change of a function, defined as the limit of the difference quotient. Derivative requires Limit. Deriva...</em>
+            </div>
+          <div class="answers-grid">
+            <div class="answer-box rag-box">
+              <div class="answer-title">Standard RAG</div>
+              <div class="answer-text">The First Derivative Test uses sign changes of f'(x) to classify critical points. Critical points occur where f'(x) = 0 or f'(x) is undefined. The Second Derivative Test uses f''(x): if f''(c) > 0 the point is a local minimum, if f''(c) < 0 it is a local maximum. The second derivative f''(x) represents the rate of change of the rate of change, which geometrically describes the concavity of the cur...</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.364 |
+                BLEU: 0.177 |
+                Cosine: 0.557
+              </div>
+            </div>
+            <div class="answer-box onto-box">
+              <div class="answer-title">Onto-RAG</div>
+              <div class="answer-text">The First Derivative Test uses sign changes of f'(x) to classify critical points. Critical points occur where f'(x) = 0 or f'(x) is undefined. The Second Derivative Test uses f''(x): if f''(c) > 0 the point is a local minimum, if f''(c) < 0 it is a local maximum. A partial derivative of a multivariable function f(x,y) with respect to x is the derivative taken while holding y constant, denoted df/dx or f_x. Mixed partial derivatives f_xy and f_yx are equal for functions with continuous second-ord...</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.303 |
+                BLEU: 0.141 |
+                Cosine: 0.580
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="qa-card">
+          <div class="qa-header">
+            <span class="q-number">#15</span>
+            <span class="q-type">Обобщение / Summary</span>
+            <span class="badge badge-same">Сопоставимо / comparable</span>
+          </div>
+          <div class="question">What are the main integration techniques covered in calculus?</div>
+          <div class="reference"><strong>Эталон / Reference:</strong> The main techniques are: direct antidifferentiation, integration by substitution (u-substitution, reverse Chain Rule), integration by parts (from Product Rule), and partial fractions.</div>
+          
+            <div class="entities">
+              <strong>Найденные сущности / Entities found:</strong> SingleVariableCalculus, MultivariableCalculus, VectorCalculus, Substitution, IntegrationByParts, FundamentalTheoremOfCalculus
+            </div>
+          
+            <div class="onto-ctx">
+              <strong>Контекст из онтологии / Ontology context:</strong><br>
+              <em>Integration by Substitution: Reverse of the Chain Rule: substituting u = g(x) to simplify integrals. Integration by Substitution is related to Integral. Fundamental Theorem of Calculus: Connects differentiation and integration as inverse processes. Fundamental Theorem of Calculus proves / applies to...</em>
+            </div>
+          <div class="answers-grid">
+            <div class="answer-box rag-box">
+              <div class="answer-title">Standard RAG</div>
+              <div class="answer-text">The Fundamental Theorem of Calculus connects differentiation and integration. This theorem is the cornerstone of integral calculus. Integration by substitution, also known as u-substitution, is the reverse of the Chain Rule. It is evaluated as an iterated integral: integral(integral f(x,y) dA), where the order of integration can often be changed using Fubini's theorem, provided f is continuous on ...</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.204 |
+                BLEU: 0.000 |
+                Cosine: 0.287
+              </div>
+            </div>
+            <div class="answer-box onto-box">
+              <div class="answer-title">Onto-RAG</div>
+              <div class="answer-text">The Fundamental Theorem of Calculus connects differentiation and integration. This theorem is the cornerstone of integral calculus. Integration by substitution, also known as u-substitution, is the reverse of the Chain Rule. Part 1 states that if F(x) = integral from a to x of f(t)dt, then F'(x) = f(x). Part 2 states that the definite integral of f from a to b equals F(b) - F(a), where F is any antiderivative of f.</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.198 |
+                BLEU: 0.000 |
+                Cosine: 0.261
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="qa-card">
+          <div class="qa-header">
+            <span class="q-number">#16</span>
+            <span class="q-type">Обобщение / Summary</span>
+            <span class="badge badge-same">Сопоставимо / comparable</span>
+          </div>
+          <div class="question">How do the fundamental theorems of vector calculus unify?</div>
+          <div class="reference"><strong>Эталон / Reference:</strong> The Fundamental Theorem of Calculus, Green's Theorem, Stokes' Theorem, and the Divergence Theorem are all cases of the generalized Stokes' theorem, relating boundary integrals to interior integrals.</div>
+          
+            <div class="entities">
+              <strong>Найденные сущности / Entities found:</strong> SingleVariableCalculus, MultivariableCalculus, VectorCalculus, FundamentalTheoremOfCalculus
+            </div>
+          
+            <div class="onto-ctx">
+              <strong>Контекст из онтологии / Ontology context:</strong><br>
+              <em>Derivative: The instantaneous rate of change of a function, defined as the limit of the difference quotient. Derivative requires Limit. Derivative is part of Single-Variable Calculus. Derivative is the inverse of Integral. Fundamental Theorem of Calculus: Connects differentiation and integration as ...</em>
+            </div>
+          <div class="answers-grid">
+            <div class="answer-box rag-box">
+              <div class="answer-title">Standard RAG</div>
+              <div class="answer-text">The Fundamental Theorem of Calculus connects differentiation and integration. The Fundamental Theorem of Calculus, Green's Theorem, Stokes' Theorem, and the Divergence Theorem are all manifestations of a single generalized Stokes' theorem. This theorem is the cornerstone of integral calculus. The Divergence Theorem (Gauss's Theorem) relates the flux of a vector field through a closed surface to th...</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.382 |
+                BLEU: 0.207 |
+                Cosine: 0.813
+              </div>
+            </div>
+            <div class="answer-box onto-box">
+              <div class="answer-title">Onto-RAG</div>
+              <div class="answer-text">The Fundamental Theorem of Calculus connects differentiation and integration. The Fundamental Theorem of Calculus, Green's Theorem, Stokes' Theorem, and the Divergence Theorem are all manifestations of a single generalized Stokes' theorem. This theorem is the cornerstone of integral calculus. The Divergence Theorem (Gauss's Theorem) relates the flux of a vector field through a closed surface to the volume integral of the divergence over the enclosed region: integral_S F . This theorem is fundame...</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.382 |
+                BLEU: 0.207 |
+                Cosine: 0.813
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="qa-card">
+          <div class="qa-header">
+            <span class="q-number">#17</span>
+            <span class="q-type">Обобщение / Summary</span>
+            <span class="badge badge-same">Сопоставимо / comparable</span>
+          </div>
+          <div class="question">What are the key applications of derivatives?</div>
+          <div class="reference"><strong>Эталон / Reference:</strong> Derivatives are used for: finding rates of change, optimization (maxima/minima), related rates problems, analyzing concavity and inflection points, and linear approximation via differentials.</div>
+          
+          
+          <div class="answers-grid">
+            <div class="answer-box rag-box">
+              <div class="answer-title">Standard RAG</div>
+              <div class="answer-text">Partial derivatives and multiple integrals extend single-variable calculus to higher dimensions. These extensions are essential for physics and engineering applications. Applications of integration include computing areas between curves, volumes of solids of revolution (using the disk, washer, or shell methods), arc length of curves, surface area of surfaces of revolution, and physical quantities ...</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.088 |
+                BLEU: 0.000 |
+                Cosine: 0.352
+              </div>
+            </div>
+            <div class="answer-box onto-box">
+              <div class="answer-title">Onto-RAG</div>
+              <div class="answer-text">Partial derivatives and multiple integrals extend single-variable calculus to higher dimensions. These extensions are essential for physics and engineering applications. Applications of integration include computing areas between curves, volumes of solids of revolution (using the disk, washer, or shell methods), arc length of curves, surface area of surfaces of revolution, and physical quantities like work, center of mass, and moments of inertia. Mixed partial derivatives f_xy and f_yx are equal...</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.088 |
+                BLEU: 0.000 |
+                Cosine: 0.352
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="qa-card">
+          <div class="qa-header">
+            <span class="q-number">#18</span>
+            <span class="q-type">Обобщение / Summary</span>
+            <span class="badge badge-same">Сопоставимо / comparable</span>
+          </div>
+          <div class="question">How does single-variable calculus extend to multiple dimensions?</div>
+          <div class="reference"><strong>Эталон / Reference:</strong> Derivatives extend to partial derivatives and gradients. Single integrals extend to double and triple integrals. The Chain Rule extends via total derivatives. Line and surface integrals generalize to paths and surfaces in space.</div>
+          
+            <div class="entities">
+              <strong>Найденные сущности / Entities found:</strong> SingleVariableCalculus, MultivariableCalculus, VectorCalculus, FundamentalTheoremOfCalculus
+            </div>
+          
+            <div class="onto-ctx">
+              <strong>Контекст из онтологии / Ontology context:</strong><br>
+              <em>Derivative: The instantaneous rate of change of a function, defined as the limit of the difference quotient. Derivative requires Limit. Derivative is part of Single-Variable Calculus. Derivative is the inverse of Integral. Fundamental Theorem of Calculus: Connects differentiation and integration as ...</em>
+            </div>
+          <div class="answers-grid">
+            <div class="answer-box rag-box">
+              <div class="answer-title">Standard RAG</div>
+              <div class="answer-text">Partial derivatives and multiple integrals extend single-variable calculus to higher dimensions. The gradient generalizes the derivative, the divergence and curl extend differential analysis to vector fields, and double and triple integrals generalize single integrals. The Fundamental Theorem of Calculus, Green's Theorem, Stokes' Theorem, and the Divergence Theorem are all manifestations of a sing...</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.241 |
+                BLEU: 0.064 |
+                Cosine: 0.485
+              </div>
+            </div>
+            <div class="answer-box onto-box">
+              <div class="answer-title">Onto-RAG</div>
+              <div class="answer-text">Partial derivatives and multiple integrals extend single-variable calculus to higher dimensions. The gradient generalizes the derivative, the divergence and curl extend differential analysis to vector fields, and double and triple integrals generalize single integrals. The Fundamental Theorem of Calculus, Green's Theorem, Stokes' Theorem, and the Divergence Theorem are all manifestations of a single generalized Stokes' theorem. The Fundamental Theorem of Calculus connects differentiation and int...</div>
+              <div class="metrics-row">
+                ROUGE-L: 0.241 |
+                BLEU: 0.064 |
+                Cosine: 0.485
+              </div>
+            </div>
+          </div>
+        </div>
+        
+
+<footer>
+  Диссертация / Dissertation: Integration of ontologies into RAG architecture<br>
+  Experiment completed automatically / Корпус / Corpus: "Introduction to Calculus Vol. II" (Heinbockel)
+</footer>
+
+</div>
+</body>
+</html>

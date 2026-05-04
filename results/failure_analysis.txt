@@ -1,0 +1,644 @@
+============================================================================
+  FAILURE ANALYSIS / ANALIZ OSHIBOK SISTEMY Onto-RAG
+  Corpus: Introduction to Calculus Vol. II (Heinbockel)
+============================================================================
+
+  Total questions:   18
+  Failure cases:     15  (Onto-RAG < RAG or ROUGE-L < 0.20)
+  Success cases:     4  (Onto-RAG > RAG)
+  Neutral:           -1  (comparable)
+
+  FAILURE TYPE DISTRIBUTION
+  ------------------------------------------------------------------------
+  Missing entity in ontology 11  ###########
+  Incorrect entity matching  4  ####
+  Noisy BFS expansion    13  #############
+  Weak retrieval relevance 10  ##########
+  Ambiguous or broad query 12  ############
+  ------------------------------------------------------------------------
+  Severity: HIGH=26  MEDIUM=18  LOW=6
+
+============================================================================
+  DETAILED FAILURE ANALYSIS
+============================================================================
+
+  ------------------------------------------------------------------------
+  CASE 1: Q1 [factual]
+  ------------------------------------------------------------------------
+  Question: What is the formal definition of a limit?
+
+  Reference answer:
+        A limit uses the epsilon-delta definition: for every epsilon > 0
+    there exists delta > 0 such that |x - c| < delta implies |f(x) - L|
+    < epsilon.
+
+  Metrics:
+    ROUGE-L:   RAG=0.2707  Onto-RAG=0.1101  (Delta=-0.1606)
+    Cosine:    RAG=0.5396  Onto-RAG=0.3104  (Delta=-0.2292)
+
+  Ontology data:
+    Entities found:    Limit
+    BFS added:         AreaAndVolume, ChainRule, Continuity, Derivative, DoubleIntegral, FundamentalTheoremOfCalculus, Integral, IntegrationByParts, IntermediateValueTheorem, ODE
+    Total expanded:    19 entities
+
+  Diagnosed causes:
+    1. [HIGH] Missing entity in ontology
+       Key reference terms not covered by ontology
+       Evidence: delta, epsilon, every, exists, implies, uses
+       Ontology coverage: 0%
+    2. [HIGH] Noisy BFS expansion
+       BFS expansion added 18 entities, only 0 relevant (0%)
+       Evidence: AreaAndVolume, ChainRule, Continuity, Derivative, DoubleIntegral, FundamentalTheoremOfCalculus, Integral, IntegrationByParts
+       BFS precision: 0%
+    3. [HIGH] Weak retrieval relevance
+       Onto-RAG chunk relevance: 0.04 (RAG: 0.33)
+    4. [LOW] Ambiguous or broad query
+       Query has few content words (3), may be too broad
+       Evidence: definition, formal, limit
+
+  Answer comparison:
+    RAG:      The formal epsilon-delta definition states that for every epsilon greater than zero there exists a delta greater than zero such that whenever the distance between x and the limit point is less than de...
+    Onto-RAG: Both rules are derived from the definition of the derivative using limits. The Product Rule states that the derivative of a product of two functions u(x) and v(x) is u'(x)v(x) + u(x)v'(x). The Quotien...
+
+  ------------------------------------------------------------------------
+  CASE 2: Q8 [relationship]
+  ------------------------------------------------------------------------
+  Question: What is the relationship between Green's Theorem and Stokes' Theorem?
+
+  Reference answer:
+        Green's Theorem is a special two-dimensional case of Stokes'
+    Theorem. Stokes' Theorem generalizes Green's Theorem to surfaces in
+    three dimensions.
+
+  Metrics:
+    ROUGE-L:   RAG=0.4200  Onto-RAG=0.2677  (Delta=-0.1523)
+    Cosine:    RAG=0.8284  Onto-RAG=0.6706  (Delta=-0.1578)
+
+  Ontology data:
+    Entities found:    FundamentalTheoremOfCalculus, GreensTheorem, StokesTheorem, DivergenceTheorem, IntermediateValueTheorem, FubiniTheorem, ClairauttTheorem, AreaAndVolume
+    BFS added:         ChainRule, ConservativeField, Continuity, Curl, Derivative, Divergence, DoubleIntegral, Electromagnetism, FluidMechanics, Gradient
+    Total expanded:    36 entities
+
+  Diagnosed causes:
+    1. [HIGH] Missing entity in ontology
+       Key reference terms not covered by ontology
+       Evidence: case, dimensional, dimensions, generalizes, special, surfaces, three
+       Ontology coverage: 0%
+    2. [MEDIUM] Incorrect entity matching
+       Entities matched but not relevant to question/answer
+       Evidence: AreaAndVolume
+    3. [HIGH] Noisy BFS expansion
+       BFS expansion added 28 entities, only 0 relevant (0%)
+       Evidence: ChainRule, ConservativeField, Continuity, Curl, Derivative, Divergence, DoubleIntegral, Electromagnetism
+       BFS precision: 0%
+    4. [MEDIUM] Ambiguous or broad query
+       Query matched 8 entities, suggesting broad scope
+       Evidence: FundamentalTheoremOfCalculus, GreensTheorem, StokesTheorem, DivergenceTheorem, IntermediateValueTheorem, FubiniTheorem, ClairauttTheorem, AreaAndVolume
+
+  Answer comparison:
+    RAG:      The Fundamental Theorem of Calculus, Green's Theorem, Stokes' Theorem, and the Divergence Theorem are all manifestations of a single generalized Stokes' theorem. Green's Theorem is a special two-dimen...
+    Onto-RAG: The Fundamental Theorem of Calculus, Green's Theorem, Stokes' Theorem, and the Divergence Theorem are all manifestations of a single generalized Stokes' theorem. Green's Theorem is a special two-dimen...
+
+  ------------------------------------------------------------------------
+  CASE 3: Q15 [summary]
+  ------------------------------------------------------------------------
+  Question: What are the main integration techniques covered in calculus?
+
+  Reference answer:
+        The main techniques are: direct antidifferentiation, integration
+    by substitution (u-substitution, reverse Chain Rule), integration by
+    parts (from Product Rule), and partial fractions.
+
+  Metrics:
+    ROUGE-L:   RAG=0.2037  Onto-RAG=0.0690  (Delta=-0.1347)
+    Cosine:    RAG=0.2874  Onto-RAG=0.1456  (Delta=-0.1417)
+
+  Ontology data:
+    Entities found:    SingleVariableCalculus, MultivariableCalculus, VectorCalculus, Substitution, IntegrationByParts, FundamentalTheoremOfCalculus
+    BFS added:         AreaAndVolume, ChainRule, ClairauttTheorem, ConservativeField, Continuity, Curl, Derivative, Divergence, DivergenceTheorem, DoubleIntegral
+    Total expanded:    38 entities
+
+  Diagnosed causes:
+    1. [HIGH] Noisy BFS expansion
+       BFS expansion added 32 entities, only 4 relevant (12%)
+       Evidence: AreaAndVolume, ChainRule, ClairauttTheorem, ConservativeField, Continuity, Curl, Derivative, Divergence
+       BFS precision: 12%
+    2. [HIGH] Weak retrieval relevance
+       Onto-RAG chunk relevance: 0.03 (RAG: 0.18)
+    3. [MEDIUM] Ambiguous or broad query
+       Query matched 6 entities, suggesting broad scope
+       Evidence: SingleVariableCalculus, MultivariableCalculus, VectorCalculus, Substitution, IntegrationByParts, FundamentalTheoremOfCalculus
+
+  Answer comparison:
+    RAG:      The Fundamental Theorem of Calculus connects differentiation and integration. This theorem is the cornerstone of integral calculus. Integration by substitution, also known as u-substitution, is the re...
+    Onto-RAG: The Fundamental Theorem of Calculus connects differentiation and integration. The Fundamental Theorem of Calculus, Green's Theorem, Stokes' Theorem, and the Divergence Theorem are all manifestations o...
+
+  ------------------------------------------------------------------------
+  CASE 4: Q17 [summary]
+  ------------------------------------------------------------------------
+  Question: What are the key applications of derivatives?
+
+  Reference answer:
+        Derivatives are used for: finding rates of change, optimization
+    (maxima/minima), related rates problems, analyzing concavity and
+    inflection points, and linear approximation via differentials.
+
+  Metrics:
+    ROUGE-L:   RAG=0.0876  Onto-RAG=0.0367  (Delta=-0.0509)
+    Cosine:    RAG=0.3520  Onto-RAG=0.0905  (Delta=-0.2615)
+
+  Ontology data:
+    Entities found:    Derivative, PartialDerivative
+    BFS added:         AreaAndVolume, ChainRule, ClairauttTheorem, ConservativeField, Continuity, Curl, DifferentialEquations, Divergence, DivergenceTheorem, DoubleIntegral
+    Total expanded:    35 entities
+
+  Diagnosed causes:
+    1. [HIGH] Missing entity in ontology
+       Key reference terms not covered by ontology
+       Evidence: analyzing, approximation, change, concavity, differentials, finding, inflection, linear
+       Ontology coverage: 20%
+    2. [MEDIUM] Incorrect entity matching
+       Entities matched but not relevant to question/answer
+       Evidence: Derivative, PartialDerivative
+    3. [HIGH] Noisy BFS expansion
+       BFS expansion added 33 entities, only 2 relevant (6%)
+       Evidence: AreaAndVolume, ChainRule, ClairauttTheorem, ConservativeField, Continuity, Curl, DifferentialEquations, Divergence
+       BFS precision: 6%
+    4. [HIGH] Weak retrieval relevance
+       Onto-RAG chunk relevance: 0.00 (RAG: 0.04)
+    5. [LOW] Ambiguous or broad query
+       Query has few content words (2), may be too broad
+       Evidence: applications, derivatives
+
+  Answer comparison:
+    RAG:      Partial derivatives and multiple integrals extend single-variable calculus to higher dimensions. These extensions are essential for physics and engineering applications. Applications of integration in...
+    Onto-RAG: The Fundamental Theorem of Calculus, Green's Theorem, Stokes' Theorem, and the Divergence Theorem are all manifestations of a single generalized Stokes' theorem. Each relates an integral over a bounda...
+
+  ------------------------------------------------------------------------
+  CASE 5: Q5 [factual]
+  ------------------------------------------------------------------------
+  Question: What is the curl of a vector field?
+
+  Reference answer:
+        The curl of F = (P,Q,R) is (dR/dy - dQ/dz, dP/dz - dR/dx, dQ/dx
+    - dP/dy). It measures the rotation tendency. If curl(F) = 0, the
+    field is irrotational.
+
+  Metrics:
+    ROUGE-L:   RAG=0.4430  Onto-RAG=0.4177  (Delta=-0.0252)
+    Cosine:    RAG=0.6725  Onto-RAG=0.6573  (Delta=-0.0152)
+
+  Ontology data:
+    Entities found:    VectorCalculus, Curl, ConservativeField
+    BFS added:         ClairauttTheorem, Derivative, Divergence, DivergenceTheorem, Electromagnetism, FluidMechanics, Gradient, GreensTheorem, Jacobian, LineIntegral
+    Total expanded:    18 entities
+
+  Diagnosed causes:
+    1. [HIGH] Missing entity in ontology
+       Key reference terms not covered by ontology
+       Evidence: irrotational, measures, rotation, tendency
+       Ontology coverage: 0%
+    2. [HIGH] Noisy BFS expansion
+       BFS expansion added 15 entities, only 0 relevant (0%)
+       Evidence: ClairauttTheorem, Derivative, Divergence, DivergenceTheorem, Electromagnetism, FluidMechanics, Gradient, GreensTheorem
+       BFS precision: 0%
+    3. [LOW] Ambiguous or broad query
+       Query has few content words (3), may be too broad
+       Evidence: curl, field, vector
+
+  Answer comparison:
+    RAG:      The curl of a vector field F = (P, Q, R) is a vector: curl(F) = (dR/dy - dQ/dz, dP/dz - dR/dx, dQ/dx - dP/dy). It relates the surface integral of the curl of a vector field over a surface S to the lin...
+    Onto-RAG: The curl of a vector field F = (P, Q, R) is a vector: curl(F) = (dR/dy - dQ/dz, dP/dz - dR/dx, dQ/dx - dP/dy). It relates the surface integral of the curl of a vector field over a surface S to the lin...
+
+  ------------------------------------------------------------------------
+  CASE 6: Q7 [relationship]
+  ------------------------------------------------------------------------
+  Question: How does the Chain Rule relate to integration by substitution?
+
+  Reference answer:
+        Integration by substitution (u-substitution) is the reverse of
+    the Chain Rule. If the integrand has the form f(g(x))*g'(x),
+    substituting u=g(x) simplifies the integral.
+
+  Metrics:
+    ROUGE-L:   RAG=0.3860  Onto-RAG=0.3636  (Delta=-0.0223)
+    Cosine:    RAG=0.7512  Onto-RAG=0.7485  (Delta=-0.0028)
+
+  Ontology data:
+    Entities found:    ChainRule, ProductRule, QuotientRule, Substitution, IntegrationByParts
+    BFS added:         AreaAndVolume, Derivative, DoubleIntegral, FundamentalTheoremOfCalculus, Integral, Limit, ODE, Optimization, PartialDerivative, RelatedRates
+    Total expanded:    17 entities
+
+  Diagnosed causes:
+    1. [HIGH] Missing entity in ontology
+       Key reference terms not covered by ontology
+       Evidence: form, integrand, reverse, simplifies, substituting
+       Ontology coverage: 17%
+    2. [MEDIUM] Noisy BFS expansion
+       BFS expansion added 12 entities, only 2 relevant (17%)
+       Evidence: AreaAndVolume, Derivative, DoubleIntegral, FundamentalTheoremOfCalculus, Integral, Limit, ODE, Optimization
+       BFS precision: 17%
+    3. [MEDIUM] Ambiguous or broad query
+       Query matched 5 entities, suggesting broad scope
+       Evidence: ChainRule, ProductRule, QuotientRule, Substitution, IntegrationByParts
+
+  Answer comparison:
+    RAG:      Integration by substitution, also known as u-substitution, is the reverse of the Chain Rule. The Chain Rule states that the derivative of a composite function f(g(x)) equals f'(g(x)) multiplied by g'(...
+    Onto-RAG: Integration by substitution, also known as u-substitution, is the reverse of the Chain Rule. The Chain Rule states that the derivative of a composite function f(g(x)) equals f'(g(x)) multiplied by g'(...
+
+  ------------------------------------------------------------------------
+  CASE 7: Q4 [factual]
+  ------------------------------------------------------------------------
+  Question: What is the divergence of a vector field?
+
+  Reference answer:
+        The divergence of F = (P,Q,R) is dP/dx + dQ/dy + dR/dz. It
+    measures the rate at which the field spreads out from a point. Zero
+    divergence means the field is solenoidal.
+
+  Metrics:
+    ROUGE-L:   RAG=0.4058  Onto-RAG=0.3889  (Delta=-0.0169)
+    Cosine:    RAG=0.7666  Onto-RAG=0.6960  (Delta=-0.0706)
+
+  Ontology data:
+    Entities found:    VectorCalculus, Divergence, ConservativeField, DivergenceTheorem
+    BFS added:         ClairauttTheorem, Curl, Derivative, Electromagnetism, FluidMechanics, Gradient, GreensTheorem, Jacobian, LineIntegral, MultivariableCalculus
+    Total expanded:    18 entities
+
+  Diagnosed causes:
+    1. [HIGH] Missing entity in ontology
+       Key reference terms not covered by ontology
+       Evidence: means, measures, point, rate, solenoidal, spreads, zero
+       Ontology coverage: 0%
+    2. [HIGH] Noisy BFS expansion
+       BFS expansion added 14 entities, only 0 relevant (0%)
+       Evidence: ClairauttTheorem, Curl, Derivative, Electromagnetism, FluidMechanics, Gradient, GreensTheorem, Jacobian
+       BFS precision: 0%
+    3. [LOW] Ambiguous or broad query
+       Query has few content words (3), may be too broad
+       Evidence: divergence, field, vector
+
+  Answer comparison:
+    RAG:      The divergence of a vector field F = (P, Q, R) is a scalar: div(F) = dP/dx + dQ/dy + dR/dz. The Divergence Theorem (Gauss's Theorem) relates the flux of a vector field through a closed surface to the ...
+    Onto-RAG: The Divergence Theorem (Gauss's Theorem) relates the flux of a vector field through a closed surface to the volume integral of the divergence over the enclosed region: integral_S F . The divergence of...
+
+  ------------------------------------------------------------------------
+  CASE 8: Q14 [reasoning]
+  ------------------------------------------------------------------------
+  Question: How is the second derivative used to classify critical points?
+
+  Reference answer:
+        At a critical point where f'(c)=0: if f''(c) > 0 the function is
+    concave up so it is a local minimum; if f''(c) < 0 the function is
+    concave down so it is a local maximum.
+
+  Metrics:
+    ROUGE-L:   RAG=0.3636  Onto-RAG=0.3492  (Delta=-0.0144)
+    Cosine:    RAG=0.5572  Onto-RAG=0.5898  (Delta=+0.0326)
+
+  Ontology data:
+    Entities found:    Derivative, PartialDerivative
+    BFS added:         AreaAndVolume, ChainRule, ClairauttTheorem, ConservativeField, Continuity, Curl, DifferentialEquations, Divergence, DivergenceTheorem, DoubleIntegral
+    Total expanded:    35 entities
+
+  Diagnosed causes:
+    1. [HIGH] Missing entity in ontology
+       Key reference terms not covered by ontology
+       Evidence: concave, down, function, local, maximum, minimum, point
+       Ontology coverage: 0%
+    2. [HIGH] Noisy BFS expansion
+       BFS expansion added 33 entities, only 0 relevant (0%)
+       Evidence: AreaAndVolume, ChainRule, ClairauttTheorem, ConservativeField, Continuity, Curl, DifferentialEquations, Divergence
+       BFS precision: 0%
+    3. [MEDIUM] Weak retrieval relevance
+       Onto-RAG chunk relevance: 0.21 (RAG: 0.33)
+
+  Answer comparison:
+    RAG:      The First Derivative Test uses sign changes of f'(x) to classify critical points. Critical points occur where f'(x) = 0 or f'(x) is undefined. The Second Derivative Test uses f''(x): if f''(c) > 0 the...
+    Onto-RAG: The First Derivative Test uses sign changes of f'(x) to classify critical points. Critical points occur where f'(x) = 0 or f'(x) is undefined. The Second Derivative Test uses f''(x): if f''(c) > 0 the...
+
+  ------------------------------------------------------------------------
+  CASE 9: Q18 [summary]
+  ------------------------------------------------------------------------
+  Question: How does single-variable calculus extend to multiple dimensions?
+
+  Reference answer:
+        Derivatives extend to partial derivatives and gradients. Single
+    integrals extend to double and triple integrals. The Chain Rule
+    extends via total derivatives. Line and surface integrals generalize
+    to paths and surfaces in space.
+
+  Metrics:
+    ROUGE-L:   RAG=0.2407  Onto-RAG=0.2301  (Delta=-0.0107)
+    Cosine:    RAG=0.4855  Onto-RAG=0.5465  (Delta=+0.0610)
+
+  Ontology data:
+    Entities found:    SingleVariableCalculus, MultivariableCalculus, VectorCalculus, FundamentalTheoremOfCalculus
+    BFS added:         AreaAndVolume, ChainRule, ClairauttTheorem, ConservativeField, Continuity, Curl, Derivative, Divergence, DivergenceTheorem, DoubleIntegral
+    Total expanded:    37 entities
+
+  Diagnosed causes:
+    1. [MEDIUM] Noisy BFS expansion
+       BFS expansion added 33 entities, only 8 relevant (24%)
+       Evidence: AreaAndVolume, ChainRule, ClairauttTheorem, ConservativeField, Continuity, Curl, Derivative, Divergence
+       BFS precision: 24%
+    2. [MEDIUM] Weak retrieval relevance
+       Onto-RAG chunk relevance: 0.19 (RAG: 0.17)
+
+  Answer comparison:
+    RAG:      Partial derivatives and multiple integrals extend single-variable calculus to higher dimensions. The gradient generalizes the derivative, the divergence and curl extend differential analysis to vector...
+    Onto-RAG: Partial derivatives and multiple integrals extend single-variable calculus to higher dimensions. The gradient generalizes the derivative, the divergence and curl extend differential analysis to vector...
+
+  ------------------------------------------------------------------------
+  CASE 10: Q13 [reasoning]
+  ------------------------------------------------------------------------
+  Question: Why are conservative vector fields path-independent?
+
+  Reference answer:
+        Because curl(F) = 0 for conservative fields, the field is the
+    gradient of a potential. The line integral depends only on the
+    potential values at the endpoints, not the path taken.
+
+  Metrics:
+    ROUGE-L:   RAG=0.2239  Onto-RAG=0.2162  (Delta=-0.0077)
+    Cosine:    RAG=0.7243  Onto-RAG=0.7645  (Delta=+0.0402)
+
+  Ontology data:
+    Entities found:    VectorCalculus, ConservativeField
+    BFS added:         Curl, Divergence, DivergenceTheorem, Electromagnetism, FluidMechanics, Gradient, GreensTheorem, LineIntegral, PartialDerivative, StokesTheorem
+    Total expanded:    13 entities
+
+  Diagnosed causes:
+    1. [LOW] Weak retrieval relevance
+       No specific failure pattern detected; marginal difference
+
+  Answer comparison:
+    RAG:      A line integral of a vector field F along a curve C computes the work done by the field along the path. If F is conservative (curl F = 0), the line integral depends only on the endpoints, not the path...
+    Onto-RAG: A line integral of a vector field F along a curve C computes the work done by the field along the path. If F is conservative (curl F = 0), the line integral depends only on the endpoints, not the path...
+
+  ------------------------------------------------------------------------
+  CASE 11: Q12 [reasoning]
+  ------------------------------------------------------------------------
+  Question: Why is the Jacobian needed when changing variables in multiple integrals?
+
+  Reference answer:
+        The Jacobian accounts for how the coordinate transformation
+    stretches or compresses area/volume elements. Without it, the
+    integral would not correctly measure the transformed region.
+
+  Metrics:
+    ROUGE-L:   RAG=0.1333  Onto-RAG=0.1261  (Delta=-0.0072)
+    Cosine:    RAG=0.2877  Onto-RAG=0.3717  (Delta=+0.0840)
+
+  Ontology data:
+    Entities found:    Integral, DoubleIntegral, TripleIntegral, LineIntegral, SurfaceIntegral, Jacobian
+    BFS added:         AreaAndVolume, ChainRule, ClairauttTheorem, ConservativeField, Continuity, Curl, Derivative, DifferentialEquations, Divergence, DivergenceTheorem
+    Total expanded:    37 entities
+
+  Diagnosed causes:
+    1. [HIGH] Missing entity in ontology
+       Key reference terms not covered by ontology
+       Evidence: accounts, compresses, coordinate, correctly, elements, measure, region, stretches
+       Ontology coverage: 20%
+    2. [HIGH] Noisy BFS expansion
+       BFS expansion added 31 entities, only 1 relevant (3%)
+       Evidence: AreaAndVolume, ChainRule, ClairauttTheorem, ConservativeField, Continuity, Curl, Derivative, DifferentialEquations
+       BFS precision: 3%
+    3. [HIGH] Weak retrieval relevance
+       Onto-RAG chunk relevance: 0.15 (RAG: 0.17)
+    4. [MEDIUM] Ambiguous or broad query
+       Query matched 6 entities, suggesting broad scope
+       Evidence: Integral, DoubleIntegral, TripleIntegral, LineIntegral, SurfaceIntegral, Jacobian
+
+  Answer comparison:
+    RAG:      The Jacobian determinant is used when changing variables in multiple integrals. Partial derivatives and multiple integrals extend single-variable calculus to higher dimensions. Triple integrals can be...
+    Onto-RAG: The Jacobian determinant is used when changing variables in multiple integrals. For a transformation from (u,v) to (x,y), the Jacobian J = d(x,y)/d(u,v) = (dx/du)(dy/dv) - (dx/dv)(dy/du). In polar coo...
+
+  ------------------------------------------------------------------------
+  CASE 12: Q2 [factual]
+  ------------------------------------------------------------------------
+  Question: What does the Fundamental Theorem of Calculus state?
+
+  Reference answer:
+        Part 1: if F(x) = integral from a to x of f(t)dt, then F'(x) =
+    f(x). Part 2: integral from a to b of f(x)dx = F(b) - F(a), where F
+    is an antiderivative of f.
+
+  Metrics:
+    ROUGE-L:   RAG=0.1138  Onto-RAG=0.1138  (Delta=+0.0000)
+    Cosine:    RAG=0.2059  Onto-RAG=0.2059  (Delta=+0.0000)
+
+  Ontology data:
+    Entities found:    SingleVariableCalculus, MultivariableCalculus, VectorCalculus, FundamentalTheoremOfCalculus, GreensTheorem, StokesTheorem, DivergenceTheorem, IntermediateValueTheorem, FubiniTheorem, ClairauttTheorem
+    BFS added:         AreaAndVolume, ChainRule, ConservativeField, Continuity, Curl, Derivative, Divergence, DoubleIntegral, Electromagnetism, FluidMechanics
+    Total expanded:    37 entities
+
+  Diagnosed causes:
+    1. [MEDIUM] Missing entity in ontology
+       Key reference terms not covered by ontology
+       Evidence: antiderivative, part, then
+       Ontology coverage: 25%
+    2. [MEDIUM] Noisy BFS expansion
+       BFS expansion added 27 entities, only 5 relevant (19%)
+       Evidence: AreaAndVolume, ChainRule, ConservativeField, Continuity, Curl, Derivative, Divergence, DoubleIntegral
+       BFS precision: 19%
+    3. [MEDIUM] Ambiguous or broad query
+       Query matched 10 entities, suggesting broad scope
+       Evidence: SingleVariableCalculus, MultivariableCalculus, VectorCalculus, FundamentalTheoremOfCalculus, GreensTheorem, StokesTheorem, DivergenceTheorem, IntermediateValueTheorem
+
+  Answer comparison:
+    RAG:      The Fundamental Theorem of Calculus, Green's Theorem, Stokes' Theorem, and the Divergence Theorem are all manifestations of a single generalized Stokes' theorem. The Fundamental Theorem of Calculus co...
+    Onto-RAG: The Fundamental Theorem of Calculus, Green's Theorem, Stokes' Theorem, and the Divergence Theorem are all manifestations of a single generalized Stokes' theorem. The Fundamental Theorem of Calculus co...
+
+  ------------------------------------------------------------------------
+  CASE 13: Q11 [reasoning]
+  ------------------------------------------------------------------------
+  Question: Why does a Taylor series converge only within a radius of convergence?
+
+  Reference answer:
+        A power series converges where the terms become small enough to
+    sum to a finite value. The radius of convergence R is determined by
+    the ratio or root test applied to the coefficients.
+
+  Metrics:
+    ROUGE-L:   RAG=0.1667  Onto-RAG=0.1679  (Delta=+0.0013)
+    Cosine:    RAG=0.5033  Onto-RAG=0.4604  (Delta=-0.0428)
+
+  Ontology data:
+    Entities found:    TaylorSeries, PowerSeries
+    BFS added:         ChainRule, Continuity, Derivative, FundamentalTheoremOfCalculus, Integral, Limit, ODE, Optimization, PartialDerivative, ProductRule
+    Total expanded:    14 entities
+
+  Diagnosed causes:
+    1. [HIGH] Missing entity in ontology
+       Key reference terms not covered by ontology
+       Evidence: applied, become, coefficients, converges, determined, enough, finite, ratio
+       Ontology coverage: 14%
+    2. [HIGH] Noisy BFS expansion
+       BFS expansion added 12 entities, only 0 relevant (0%)
+       Evidence: ChainRule, Continuity, Derivative, FundamentalTheoremOfCalculus, Integral, Limit, ODE, Optimization
+       BFS precision: 0%
+    3. [HIGH] Weak retrieval relevance
+       Onto-RAG chunk relevance: 0.10 (RAG: 0.29)
+
+  Answer comparison:
+    RAG:      Within the radius of convergence, a power series can be differentiated and integrated term by term. Each power series has a radius of convergence R such that the series converges for |x-a| < R and div...
+    Onto-RAG: Within the radius of convergence, a power series can be differentiated and integrated term by term. Each power series has a radius of convergence R such that the series converges for |x-a| < R and div...
+
+  ------------------------------------------------------------------------
+  CASE 14: Q9 [relationship]
+  ------------------------------------------------------------------------
+  Question: How are gradient, divergence, and curl connected?
+
+  Reference answer:
+        The gradient maps scalars to vectors, divergence maps vectors to
+    scalars, and curl maps vectors to vectors. Key identities: div(curl
+    F) = 0 and curl(grad f) = 0.
+
+  Metrics:
+    ROUGE-L:   RAG=0.1517  Onto-RAG=0.1719  (Delta=+0.0202)
+    Cosine:    RAG=0.3416  Onto-RAG=0.2338  (Delta=-0.1079)
+
+  Ontology data:
+    Entities found:    Gradient, Divergence, Curl, DivergenceTheorem, AreaAndVolume
+    BFS added:         ClairauttTheorem, ConservativeField, Derivative, DoubleIntegral, Electromagnetism, FluidMechanics, FundamentalTheoremOfCalculus, GreensTheorem, Integral, IntegrationByParts
+    Total expanded:    27 entities
+
+  Diagnosed causes:
+    1. [HIGH] Missing entity in ontology
+       Key reference terms not covered by ontology
+       Evidence: grad, identities, maps, scalars, vectors
+       Ontology coverage: 0%
+    2. [MEDIUM] Incorrect entity matching
+       Entities matched but not relevant to question/answer
+       Evidence: AreaAndVolume
+    3. [HIGH] Noisy BFS expansion
+       BFS expansion added 22 entities, only 0 relevant (0%)
+       Evidence: ClairauttTheorem, ConservativeField, Derivative, DoubleIntegral, Electromagnetism, FluidMechanics, FundamentalTheoremOfCalculus, GreensTheorem
+       BFS precision: 0%
+    4. [HIGH] Weak retrieval relevance
+       Onto-RAG chunk relevance: 0.12 (RAG: 0.25)
+    5. [MEDIUM] Ambiguous or broad query
+       Query matched 5 entities, suggesting broad scope
+       Evidence: Gradient, Divergence, Curl, DivergenceTheorem, AreaAndVolume
+
+  Answer comparison:
+    RAG:      The gradient generalizes the derivative, the divergence and curl extend differential analysis to vector fields, and double and triple integrals generalize single integrals. If curl(F) = 0, the field i...
+    Onto-RAG: The Divergence Theorem (Gauss's Theorem) relates the flux of a vector field through a closed surface to the volume integral of the divergence over the enclosed region: integral_S F . The Fundamental T...
+
+  ------------------------------------------------------------------------
+  CASE 15: Q6 [relationship]
+  ------------------------------------------------------------------------
+  Question: How are derivatives and integrals related?
+
+  Reference answer:
+        The Fundamental Theorem of Calculus connects them:
+    differentiation and integration are inverse processes. The integral
+    of a derivative recovers the original function (up to a constant).
+
+  Metrics:
+    ROUGE-L:   RAG=0.1000  Onto-RAG=0.1982  (Delta=+0.0982)
+    Cosine:    RAG=0.4668  Onto-RAG=0.6286  (Delta=+0.1619)
+
+  Ontology data:
+    Entities found:    Derivative, Integral, PartialDerivative, DoubleIntegral, TripleIntegral, LineIntegral, SurfaceIntegral, RelatedRates, AreaAndVolume
+    BFS added:         ChainRule, ClairauttTheorem, ConservativeField, Continuity, Curl, DifferentialEquations, Divergence, DivergenceTheorem, Electromagnetism, FluidMechanics
+    Total expanded:    38 entities
+
+  Diagnosed causes:
+    1. [MEDIUM] Incorrect entity matching
+       Entities matched but not relevant to question/answer
+       Evidence: AreaAndVolume
+    2. [MEDIUM] Weak retrieval relevance
+       Onto-RAG chunk relevance: 0.24 (RAG: 0.07)
+    3. [LOW] Ambiguous or broad query
+       Query has few content words (3), may be too broad
+       Evidence: derivatives, integrals, related
+    4. [MEDIUM] Ambiguous or broad query
+       Query matched 9 entities, suggesting broad scope
+       Evidence: Derivative, Integral, PartialDerivative, DoubleIntegral, TripleIntegral, LineIntegral, SurfaceIntegral, RelatedRates
+
+  Answer comparison:
+    RAG:      Partial derivatives and multiple integrals extend single-variable calculus to higher dimensions. The gradient generalizes the derivative, the divergence and curl extend differential analysis to vector...
+    Onto-RAG: The Fundamental Theorem of Calculus, Green's Theorem, Stokes' Theorem, and the Divergence Theorem are all manifestations of a single generalized Stokes' theorem. Each relates an integral over a bounda...
+
+============================================================================
+  SUCCESS CASES (for comparison)
+============================================================================
+
+  Q6 [relationship]: How are derivatives and integrals related?
+    ROUGE-L: RAG=0.1000 -> Onto-RAG=0.1982 (Delta=+0.0982)
+    Entities: Derivative, Integral, PartialDerivative, DoubleIntegral, TripleIntegral, LineIntegral
+    -> Ontology correctly identified relevant entities.
+
+  Q3 [factual]: What is the gradient of a scalar function?
+    ROUGE-L: RAG=0.4444 -> Onto-RAG=0.4724 (Delta=+0.0280)
+    Entities: Gradient
+    -> Ontology correctly identified relevant entities.
+
+  Q9 [relationship]: How are gradient, divergence, and curl connected?
+    ROUGE-L: RAG=0.1517 -> Onto-RAG=0.1719 (Delta=+0.0202)
+    Entities: Gradient, Divergence, Curl, DivergenceTheorem, AreaAndVolume
+    -> Ontology correctly identified relevant entities.
+
+  Q10 [relationship]: How does the Product Rule relate to integration by parts?
+    ROUGE-L: RAG=0.3243 -> Onto-RAG=0.3333 (Delta=+0.0090)
+    Entities: ChainRule, ProductRule, QuotientRule, Substitution, IntegrationByParts
+    -> Ontology correctly identified relevant entities.
+
+============================================================================
+  SUMMARY AND RECOMMENDATIONS
+============================================================================
+
+  Most frequent failure cause: Noisy BFS expansion (13 occurrences)
+
+  BFS NOISE (13 cases):
+    Problem:  BFS expands to loosely related entities, diluting
+              retrieval focus and pulling in off-topic chunks.
+    Recommendation:
+      - Reduce BFS hop_depth from 2 to 1
+      - Add edge-weight filtering (prune weak relations)
+      - Implement relevance scoring for expanded entities
+
+  MISSING ENTITY (11 cases):
+    Problem:  Key domain concepts from reference answers are
+              absent from the ontology, limiting enrichment.
+    Recommendation:
+      - Expand ontology with missing concepts:
+        Candidates: accounts, analyzing, antiderivative, applied, approximation, become, case, change, coefficients, compresses, concave, concavity, converges, coordinate, correctly
+      - Consider automatic ontology enrichment from corpus
+
+  WRONG MATCH (4 cases):
+    Problem:  Entity matcher links question terms to incorrect
+              ontology entities due to substring overlap.
+    Recommendation:
+      - Use full-word matching instead of substring matching
+      - Add disambiguation via context scoring
+      - Increase minimum keyword length threshold
+
+  WEAK RETRIEVAL (10 cases):
+    Problem:  Retrieved chunks have low overlap with the
+              expected reference answer content.
+    Recommendation:
+      - Increase top_k to retrieve more candidate chunks
+      - Add re-ranking based on answer-question coherence
+      - Fine-tune TF-IDF weights or switch to BM25
+
+  QUERY AMBIGUITY (12 cases):
+    Problem:  Question is too broad, causing the system to
+              match many entities without clear focus.
+    Recommendation:
+      - Apply entity importance ranking (not all matches equal)
+      - Weight entities by specificity (rare > common)
+      - Limit query expansion to top-N most relevant entities
+
+  OVERALL STATISTICS:
+    Average ROUGE-L Delta: -0.0248
+    Failure rate: 15/18 (83%)
+    Success rate: 4/18 (22%)
+
+  These findings indicate that targeted improvements to entity
+  matching precision and BFS expansion filtering would yield the
+  most significant gains in Onto-RAG performance.
+
+============================================================================

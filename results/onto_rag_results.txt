@@ -1,0 +1,614 @@
+======================================================================
+  ONTO-RAG -- Результаты (с онтологией) / Results (with ontology)
+  Корпус / Corpus: Introduction to Calculus Vol. II (Heinbockel)
+  Онтология / Ontology: calculus_ontology.owl
+======================================================================
+
+  Корпус / Corpus: 33 фрагментов / chunks
+  Вопросов / Questions: 18
+  Сущностей в онтологии / Entities: 39
+  Связей (рёбер) / Edges: 92
+
+----------------------------------------------------------------------
+  Вопрос #1 [Фактический / Factual]
+----------------------------------------------------------------------
+  Вопрос:  What is the formal definition of a limit?
+  Эталон:  A limit uses the epsilon-delta definition: for every epsilon > 0 there exists delta > 0 such that |x - c| < delta implies |f(x) - L| < epsilon.
+
+  Найденные сущности / Entities found: Limit
+  Расширенные сущности (BFS) / Expanded: DoubleIntegral, PowerSeries, RelatedRates, TaylorSeries, ChainRule, Limit, ProductRule, Continuity, ODE, IntermediateValueTheorem, Substitution, Optimization, FundamentalTheoremOfCalculus, SingleVariableCalculus, AreaAndVolume, PartialDerivative, Derivative, Integral, IntegrationByParts
+  Контекст из онтологии / Ontology context:
+    • Double Integral: Integral over a two-dimensional region computing volume under a surface.
+    • Double Integral is part of Multivariable Calculus.
+    • Double Integral extends Integral.
+    • Power Series: Infinite series of the form sum c_n (x-a)^n with a radius of convergence.
+    • Power Series is part of Single-Variable Calculus.
+    • Related Rates: Finding how quantities change with respect to time using the Chain Rule.
+
+  Ответ Onto-RAG / Onto-RAG Answer:
+        Both rules are derived from the definition of the derivative using
+    limits. The Product Rule states that the derivative of a product of two
+    functions u(x) and v(x) is u'(x)v(x) + u(x)v'(x). The Quotient Rule gives
+    the derivative of u/v as [u'v - uv'] / v^2. The Fundamental Theorem of
+    Calculus connects differentiation and integration. Part 1 states that if
+    F(x) = integral from a to x of f(t)dt, then F'(x) = f(x).
+
+  Метрики / Metrics:
+    ROUGE-L:  0.1101
+    BLEU:     0.0000
+    Cosine:   0.3104
+    NDCG@5:   1.0000
+    MRR:      1.0000
+
+----------------------------------------------------------------------
+  Вопрос #2 [Фактический / Factual]
+----------------------------------------------------------------------
+  Вопрос:  What does the Fundamental Theorem of Calculus state?
+  Эталон:  Part 1: if F(x) = integral from a to x of f(t)dt, then F'(x) = f(x). Part 2: integral from a to b of f(x)dx = F(b) - F(a), where F is an antiderivative of f.
+
+  Найденные сущности / Entities found: SingleVariableCalculus, MultivariableCalculus, VectorCalculus, FundamentalTheoremOfCalculus, GreensTheorem, StokesTheorem, DivergenceTheorem, IntermediateValueTheorem, FubiniTheorem, ClairauttTheorem
+  Расширенные сущности (BFS) / Expanded: DoubleIntegral, TotalDifferential, PowerSeries, RelatedRates, ChainRule, DivergenceTheorem, Continuity, FluidMechanics, IntermediateValueTheorem, Optimization, SingleVariableCalculus, FubiniTheorem, PartialDerivative, Integral, IntegrationByParts, TaylorSeries, Limit, Electromagnetism, ProductRule, ODE, VectorCalculus, LineIntegral, GreensTheorem, Curl, ClairauttTheorem, Substitution, FundamentalTheoremOfCalculus, Gradient, SurfaceIntegral, AreaAndVolume, ConservativeField, Divergence, Derivative, TripleIntegral, Jacobian, MultivariableCalculus, StokesTheorem
+  Контекст из онтологии / Ontology context:
+    • Double Integral: Integral over a two-dimensional region computing volume under a surface.
+    • Double Integral is part of Multivariable Calculus.
+    • Double Integral extends Integral.
+    • Total Differential: Approximation df = (df/dx)dx + (df/dy)dy for change in a multivariable function.
+    • Total Differential requires Partial Derivative.
+    • Total Differential is part of Multivariable Calculus.
+
+  Ответ Onto-RAG / Onto-RAG Answer:
+        The Fundamental Theorem of Calculus, Green's Theorem, Stokes' Theorem,
+    and the Divergence Theorem are all manifestations of a single generalized
+    Stokes' theorem. The Fundamental Theorem of Calculus connects
+    differentiation and integration. This theorem is the cornerstone of integral
+    calculus. This theorem is fundamental in fluid mechanics, electromagnetism,
+    and heat transfer. The Divergence Theorem (Gauss's Theorem) relates the flux
+    of a vector field through a closed surface to the volume integral of the
+    divergence over the enclosed region: integral_S F .
+
+  Метрики / Metrics:
+    ROUGE-L:  0.1138
+    BLEU:     0.0000
+    Cosine:   0.2059
+    NDCG@5:   0.8213
+    MRR:      1.0000
+
+----------------------------------------------------------------------
+  Вопрос #3 [Фактический / Factual]
+----------------------------------------------------------------------
+  Вопрос:  What is the gradient of a scalar function?
+  Эталон:  The gradient of f(x,y,z) is the vector (df/dx, df/dy, df/dz). It points in the direction of steepest ascent and its magnitude is the maximum rate of increase.
+
+  Найденные сущности / Entities found: Gradient
+  Расширенные сущности (BFS) / Expanded: TotalDifferential, Electromagnetism, DivergenceTheorem, VectorCalculus, Jacobian, LineIntegral, FluidMechanics, Curl, ClairauttTheorem, Gradient, SurfaceIntegral, ConservativeField, PartialDerivative, Derivative, Divergence, MultivariableCalculus, StokesTheorem
+  Контекст из онтологии / Ontology context:
+    • Total Differential: Approximation df = (df/dx)dx + (df/dy)dy for change in a multivariable function.
+    • Total Differential requires Partial Derivative.
+    • Total Differential is part of Multivariable Calculus.
+    • Electromagnetism: Application of vector calculus theorems to electric and magnetic fields.
+    • Electromagnetism requires Curl.
+    • Electromagnetism requires Divergence.
+
+  Ответ Onto-RAG / Onto-RAG Answer:
+        The gradient of a scalar function f(x,y,z) is the vector of its partial
+    derivatives: grad(f) = (df/dx, df/dy, df/dz). The gradient points in the
+    direction of steepest ascent of the function and its magnitude gives the
+    rate of maximum increase. It is perpendicular to the level surfaces of the
+    function. The Divergence Theorem (Gauss's Theorem) relates the flux of a
+    vector field through a closed surface to the volume integral of the
+    divergence over the enclosed region: integral_S F . n dS = integral_V div(F)
+    dV.
+
+  Метрики / Metrics:
+    ROUGE-L:  0.4724
+    BLEU:     0.2044
+    Cosine:   0.7982
+    NDCG@5:   1.0000
+    MRR:      1.0000
+
+----------------------------------------------------------------------
+  Вопрос #4 [Фактический / Factual]
+----------------------------------------------------------------------
+  Вопрос:  What is the divergence of a vector field?
+  Эталон:  The divergence of F = (P,Q,R) is dP/dx + dQ/dy + dR/dz. It measures the rate at which the field spreads out from a point. Zero divergence means the field is solenoidal.
+
+  Найденные сущности / Entities found: VectorCalculus, Divergence, ConservativeField, DivergenceTheorem
+  Расширенные сущности (BFS) / Expanded: TotalDifferential, Electromagnetism, DivergenceTheorem, VectorCalculus, Jacobian, LineIntegral, FluidMechanics, GreensTheorem, Curl, ClairauttTheorem, Gradient, SurfaceIntegral, ConservativeField, PartialDerivative, Derivative, Divergence, MultivariableCalculus, StokesTheorem
+  Контекст из онтологии / Ontology context:
+    • Total Differential: Approximation df = (df/dx)dx + (df/dy)dy for change in a multivariable function.
+    • Total Differential requires Partial Derivative.
+    • Total Differential is part of Multivariable Calculus.
+    • Electromagnetism: Application of vector calculus theorems to electric and magnetic fields.
+    • Electromagnetism requires Curl.
+    • Electromagnetism requires Divergence.
+
+  Ответ Onto-RAG / Onto-RAG Answer:
+        The Divergence Theorem (Gauss's Theorem) relates the flux of a vector
+    field through a closed surface to the volume integral of the divergence over
+    the enclosed region: integral_S F . The divergence of a vector field F = (P,
+    Q, R) is a scalar: div(F) = dP/dx + dQ/dy + dR/dz. It relates the surface
+    integral of the curl of a vector field over a surface S to the line integral
+    of the field around the boundary curve of S: integral_S curl(F) . It
+    measures the rate at which the field spreads out from a point. A positive
+    divergence indicates a source, while negative divergence indicates a sink.
+
+  Метрики / Metrics:
+    ROUGE-L:  0.3889
+    BLEU:     0.2040
+    Cosine:   0.6960
+    NDCG@5:   0.7199
+    MRR:      1.0000
+
+----------------------------------------------------------------------
+  Вопрос #5 [Фактический / Factual]
+----------------------------------------------------------------------
+  Вопрос:  What is the curl of a vector field?
+  Эталон:  The curl of F = (P,Q,R) is (dR/dy - dQ/dz, dP/dz - dR/dx, dQ/dx - dP/dy). It measures the rotation tendency. If curl(F) = 0, the field is irrotational.
+
+  Найденные сущности / Entities found: VectorCalculus, Curl, ConservativeField
+  Расширенные сущности (BFS) / Expanded: TotalDifferential, Electromagnetism, DivergenceTheorem, VectorCalculus, Jacobian, LineIntegral, FluidMechanics, GreensTheorem, Curl, ClairauttTheorem, Gradient, SurfaceIntegral, ConservativeField, PartialDerivative, Derivative, Divergence, MultivariableCalculus, StokesTheorem
+  Контекст из онтологии / Ontology context:
+    • Total Differential: Approximation df = (df/dx)dx + (df/dy)dy for change in a multivariable function.
+    • Total Differential requires Partial Derivative.
+    • Total Differential is part of Multivariable Calculus.
+    • Electromagnetism: Application of vector calculus theorems to electric and magnetic fields.
+    • Electromagnetism requires Curl.
+    • Electromagnetism requires Divergence.
+
+  Ответ Onto-RAG / Onto-RAG Answer:
+        The curl of a vector field F = (P, Q, R) is a vector: curl(F) = (dR/dy -
+    dQ/dz, dP/dz - dR/dx, dQ/dx - dP/dy). It relates the surface integral of the
+    curl of a vector field over a surface S to the line integral of the field
+    around the boundary curve of S: integral_S curl(F) . The curl measures the
+    rotation or circulation tendency of the field at a point. If curl(F) = 0,
+    the field is irrotational, which implies that F is the gradient of some
+    scalar potential function. The Divergence Theorem (Gauss's Theorem) relates
+    the flux of a vector field through a closed surface to the volume integral
+    of the divergence over the enclosed region: integral_S F .
+
+  Метрики / Metrics:
+    ROUGE-L:  0.4177
+    BLEU:     0.1946
+    Cosine:   0.6573
+    NDCG@5:   1.0000
+    MRR:      1.0000
+
+----------------------------------------------------------------------
+  Вопрос #6 [О связях / Relationship]
+----------------------------------------------------------------------
+  Вопрос:  How are derivatives and integrals related?
+  Эталон:  The Fundamental Theorem of Calculus connects them: differentiation and integration are inverse processes. The integral of a derivative recovers the original function (up to a constant).
+
+  Найденные сущности / Entities found: Derivative, Integral, PartialDerivative, DoubleIntegral, TripleIntegral, LineIntegral, SurfaceIntegral, RelatedRates, AreaAndVolume
+  Расширенные сущности (BFS) / Expanded: DoubleIntegral, TotalDifferential, PowerSeries, RelatedRates, ChainRule, DivergenceTheorem, Continuity, FluidMechanics, Optimization, SingleVariableCalculus, PartialDerivative, FubiniTheorem, Integral, IntegrationByParts, QuotientRule, TaylorSeries, DifferentialEquations, Limit, Electromagnetism, ProductRule, ODE, VectorCalculus, LineIntegral, GreensTheorem, Curl, ClairauttTheorem, Substitution, FundamentalTheoremOfCalculus, Gradient, SurfaceIntegral, AreaAndVolume, ConservativeField, Divergence, Derivative, TripleIntegral, Jacobian, MultivariableCalculus, StokesTheorem
+  Контекст из онтологии / Ontology context:
+    • Double Integral: Integral over a two-dimensional region computing volume under a surface.
+    • Double Integral is part of Multivariable Calculus.
+    • Double Integral extends Integral.
+    • Total Differential: Approximation df = (df/dx)dx + (df/dy)dy for change in a multivariable function.
+    • Total Differential requires Partial Derivative.
+    • Total Differential is part of Multivariable Calculus.
+
+  Ответ Onto-RAG / Onto-RAG Answer:
+        The Fundamental Theorem of Calculus, Green's Theorem, Stokes' Theorem,
+    and the Divergence Theorem are all manifestations of a single generalized
+    Stokes' theorem. Each relates an integral over a boundary to an integral
+    over the interior. This unification is one of the deepest results in
+    mathematical analysis. The Divergence Theorem (Gauss's Theorem) relates the
+    flux of a vector field through a closed surface to the volume integral of
+    the divergence over the enclosed region: integral_S F . n dS = integral_V
+    div(F) dV.
+
+  Метрики / Metrics:
+    ROUGE-L:  0.1982
+    BLEU:     0.0567
+    Cosine:   0.6286
+    NDCG@5:   1.0000
+    MRR:      1.0000
+
+----------------------------------------------------------------------
+  Вопрос #7 [О связях / Relationship]
+----------------------------------------------------------------------
+  Вопрос:  How does the Chain Rule relate to integration by substitution?
+  Эталон:  Integration by substitution (u-substitution) is the reverse of the Chain Rule. If the integrand has the form f(g(x))*g'(x), substituting u=g(x) simplifies the integral.
+
+  Найденные сущности / Entities found: ChainRule, ProductRule, QuotientRule, Substitution, IntegrationByParts
+  Расширенные сущности (BFS) / Expanded: DoubleIntegral, RelatedRates, TaylorSeries, ChainRule, Limit, ProductRule, ODE, Substitution, FundamentalTheoremOfCalculus, Optimization, SingleVariableCalculus, AreaAndVolume, PartialDerivative, Derivative, Integral, IntegrationByParts, QuotientRule
+  Контекст из онтологии / Ontology context:
+    • Double Integral: Integral over a two-dimensional region computing volume under a surface.
+    • Double Integral is part of Multivariable Calculus.
+    • Double Integral extends Integral.
+    • Related Rates: Finding how quantities change with respect to time using the Chain Rule.
+    • Related Rates requires Chain Rule.
+    • Related Rates requires Derivative.
+
+  Ответ Onto-RAG / Onto-RAG Answer:
+        Integration by substitution, also known as u-substitution, is the
+    reverse of the Chain Rule. The Chain Rule states that the derivative of a
+    composite function f(g(x)) equals f'(g(x)) multiplied by g'(x). The Chain
+    Rule extends naturally to compositions of three or more functions. The
+    Product Rule states that the derivative of a product of two functions u(x)
+    and v(x) is u'(x)v(x) + u(x)v'(x). The Quotient Rule gives the derivative of
+    u/v as [u'v - uv'] / v^2.
+
+  Метрики / Metrics:
+    ROUGE-L:  0.3636
+    BLEU:     0.1283
+    Cosine:   0.7485
+    NDCG@5:   0.9853
+    MRR:      1.0000
+
+----------------------------------------------------------------------
+  Вопрос #8 [О связях / Relationship]
+----------------------------------------------------------------------
+  Вопрос:  What is the relationship between Green's Theorem and Stokes' Theorem?
+  Эталон:  Green's Theorem is a special two-dimensional case of Stokes' Theorem. Stokes' Theorem generalizes Green's Theorem to surfaces in three dimensions.
+
+  Найденные сущности / Entities found: FundamentalTheoremOfCalculus, GreensTheorem, StokesTheorem, DivergenceTheorem, IntermediateValueTheorem, FubiniTheorem, ClairauttTheorem, AreaAndVolume
+  Расширенные сущности (BFS) / Expanded: DoubleIntegral, TotalDifferential, RelatedRates, ChainRule, DivergenceTheorem, Continuity, FluidMechanics, IntermediateValueTheorem, Optimization, SingleVariableCalculus, FubiniTheorem, PartialDerivative, Integral, IntegrationByParts, Divergence, TaylorSeries, Limit, Electromagnetism, ProductRule, ODE, VectorCalculus, GreensTheorem, Curl, ClairauttTheorem, Substitution, FundamentalTheoremOfCalculus, SurfaceIntegral, Gradient, AreaAndVolume, ConservativeField, LineIntegral, Derivative, TripleIntegral, Jacobian, MultivariableCalculus, StokesTheorem
+  Контекст из онтологии / Ontology context:
+    • Double Integral: Integral over a two-dimensional region computing volume under a surface.
+    • Double Integral is part of Multivariable Calculus.
+    • Double Integral extends Integral.
+    • Total Differential: Approximation df = (df/dx)dx + (df/dy)dy for change in a multivariable function.
+    • Total Differential requires Partial Derivative.
+    • Total Differential is part of Multivariable Calculus.
+
+  Ответ Onto-RAG / Onto-RAG Answer:
+        The Fundamental Theorem of Calculus, Green's Theorem, Stokes' Theorem,
+    and the Divergence Theorem are all manifestations of a single generalized
+    Stokes' theorem. Green's Theorem is a special two-dimensional case of
+    Stokes' Theorem. Green's Theorem relates a line integral around a simple
+    closed curve C in the plane to a double integral over the region D enclosed
+    by C. The Divergence Theorem (Gauss's Theorem) relates the flux of a vector
+    field through a closed surface to the volume integral of the divergence over
+    the enclosed region: integral_S F . This theorem is fundamental in fluid
+    mechanics, electromagnetism, and heat transfer.
+
+  Метрики / Metrics:
+    ROUGE-L:  0.2677
+    BLEU:     0.1292
+    Cosine:   0.6706
+    NDCG@5:   0.9334
+    MRR:      1.0000
+
+----------------------------------------------------------------------
+  Вопрос #9 [О связях / Relationship]
+----------------------------------------------------------------------
+  Вопрос:  How are gradient, divergence, and curl connected?
+  Эталон:  The gradient maps scalars to vectors, divergence maps vectors to scalars, and curl maps vectors to vectors. Key identities: div(curl F) = 0 and curl(grad f) = 0.
+
+  Найденные сущности / Entities found: Gradient, Divergence, Curl, DivergenceTheorem, AreaAndVolume
+  Расширенные сущности (BFS) / Expanded: DoubleIntegral, TotalDifferential, Limit, Electromagnetism, DivergenceTheorem, VectorCalculus, Jacobian, ODE, LineIntegral, FluidMechanics, GreensTheorem, Curl, ClairauttTheorem, Substitution, FundamentalTheoremOfCalculus, Gradient, SurfaceIntegral, SingleVariableCalculus, ConservativeField, AreaAndVolume, PartialDerivative, Derivative, Integral, IntegrationByParts, Divergence, MultivariableCalculus, StokesTheorem
+  Контекст из онтологии / Ontology context:
+    • Double Integral: Integral over a two-dimensional region computing volume under a surface.
+    • Double Integral is part of Multivariable Calculus.
+    • Double Integral extends Integral.
+    • Total Differential: Approximation df = (df/dx)dx + (df/dy)dy for change in a multivariable function.
+    • Total Differential requires Partial Derivative.
+    • Total Differential is part of Multivariable Calculus.
+
+  Ответ Onto-RAG / Onto-RAG Answer:
+        The Divergence Theorem (Gauss's Theorem) relates the flux of a vector
+    field through a closed surface to the volume integral of the divergence over
+    the enclosed region: integral_S F . The Fundamental Theorem of Calculus,
+    Green's Theorem, Stokes' Theorem, and the Divergence Theorem are all
+    manifestations of a single generalized Stokes' theorem. It relates the
+    surface integral of the curl of a vector field over a surface S to the line
+    integral of the field around the boundary curve of S: integral_S curl(F) .
+    This theorem connects circulation and curl. n dS = integral_V div(F) dV.
+
+  Метрики / Metrics:
+    ROUGE-L:  0.1719
+    BLEU:     0.0000
+    Cosine:   0.2338
+    NDCG@5:   0.9883
+    MRR:      1.0000
+
+----------------------------------------------------------------------
+  Вопрос #10 [О связях / Relationship]
+----------------------------------------------------------------------
+  Вопрос:  How does the Product Rule relate to integration by parts?
+  Эталон:  Integration by parts is derived from the Product Rule. The Product Rule d(uv) = u dv + v du, when integrated, gives integral u dv = uv - integral v du.
+
+  Найденные сущности / Entities found: ChainRule, ProductRule, QuotientRule, Substitution, IntegrationByParts
+  Расширенные сущности (BFS) / Expanded: DoubleIntegral, RelatedRates, TaylorSeries, ChainRule, Limit, ProductRule, ODE, Substitution, FundamentalTheoremOfCalculus, Optimization, SingleVariableCalculus, AreaAndVolume, PartialDerivative, Derivative, Integral, IntegrationByParts, QuotientRule
+  Контекст из онтологии / Ontology context:
+    • Double Integral: Integral over a two-dimensional region computing volume under a surface.
+    • Double Integral is part of Multivariable Calculus.
+    • Double Integral extends Integral.
+    • Related Rates: Finding how quantities change with respect to time using the Chain Rule.
+    • Related Rates requires Chain Rule.
+    • Related Rates requires Derivative.
+
+  Ответ Onto-RAG / Onto-RAG Answer:
+        Integration by parts is a technique derived from the Product Rule. The
+    Product Rule states that the derivative of a product of two functions u(x)
+    and v(x) is u'(x)v(x) + u(x)v'(x). Integration by substitution, also known
+    as u-substitution, is the reverse of the Chain Rule. The Quotient Rule gives
+    the derivative of u/v as [u'v - uv'] / v^2. Both rules are derived from the
+    definition of the derivative using limits.
+
+  Метрики / Metrics:
+    ROUGE-L:  0.3333
+    BLEU:     0.1228
+    Cosine:   0.5984
+    NDCG@5:   0.9271
+    MRR:      1.0000
+
+----------------------------------------------------------------------
+  Вопрос #11 [Рассуждение / Reasoning]
+----------------------------------------------------------------------
+  Вопрос:  Why does a Taylor series converge only within a radius of convergence?
+  Эталон:  A power series converges where the terms become small enough to sum to a finite value. The radius of convergence R is determined by the ratio or root test applied to the coefficients.
+
+  Найденные сущности / Entities found: TaylorSeries, PowerSeries
+  Расширенные сущности (BFS) / Expanded: PowerSeries, RelatedRates, TaylorSeries, ChainRule, Limit, ProductRule, ODE, Continuity, FundamentalTheoremOfCalculus, Optimization, SingleVariableCalculus, PartialDerivative, Derivative, Integral
+  Контекст из онтологии / Ontology context:
+    • Power Series: Infinite series of the form sum c_n (x-a)^n with a radius of convergence.
+    • Power Series is part of Single-Variable Calculus.
+    • Related Rates: Finding how quantities change with respect to time using the Chain Rule.
+    • Related Rates requires Chain Rule.
+    • Related Rates requires Derivative.
+    • Taylor Series: Infinite sum representing a function using its derivatives at a single point.
+
+  Ответ Onto-RAG / Onto-RAG Answer:
+        Within the radius of convergence, a power series can be differentiated
+    and integrated term by term. Each power series has a radius of convergence R
+    such that the series converges for |x-a| < R and diverges for |x-a| > R. A
+    power series is sigma from n=0 to infinity of c_n * (x-a)^n. The Product
+    Rule states that the derivative of a product of two functions u(x) and v(x)
+    is u'(x)v(x) + u(x)v'(x). The Quotient Rule gives the derivative of u/v as
+    [u'v - uv'] / v^2.
+
+  Метрики / Metrics:
+    ROUGE-L:  0.1679
+    BLEU:     0.0567
+    Cosine:   0.4604
+    NDCG@5:   1.0000
+    MRR:      1.0000
+
+----------------------------------------------------------------------
+  Вопрос #12 [Рассуждение / Reasoning]
+----------------------------------------------------------------------
+  Вопрос:  Why is the Jacobian needed when changing variables in multiple integrals?
+  Эталон:  The Jacobian accounts for how the coordinate transformation stretches or compresses area/volume elements. Without it, the integral would not correctly measure the transformed region.
+
+  Найденные сущности / Entities found: Integral, DoubleIntegral, TripleIntegral, LineIntegral, SurfaceIntegral, Jacobian
+  Расширенные сущности (BFS) / Expanded: DoubleIntegral, TotalDifferential, PowerSeries, RelatedRates, ChainRule, DivergenceTheorem, Continuity, FluidMechanics, Optimization, SingleVariableCalculus, FubiniTheorem, PartialDerivative, Integral, IntegrationByParts, Divergence, TaylorSeries, DifferentialEquations, Limit, Electromagnetism, ProductRule, ODE, VectorCalculus, GreensTheorem, Curl, ClairauttTheorem, Substitution, FundamentalTheoremOfCalculus, SurfaceIntegral, Gradient, AreaAndVolume, ConservativeField, LineIntegral, Derivative, TripleIntegral, Jacobian, MultivariableCalculus, StokesTheorem
+  Контекст из онтологии / Ontology context:
+    • Double Integral: Integral over a two-dimensional region computing volume under a surface.
+    • Double Integral is part of Multivariable Calculus.
+    • Double Integral extends Integral.
+    • Total Differential: Approximation df = (df/dx)dx + (df/dy)dy for change in a multivariable function.
+    • Total Differential requires Partial Derivative.
+    • Total Differential is part of Multivariable Calculus.
+
+  Ответ Onto-RAG / Onto-RAG Answer:
+        The Jacobian determinant is used when changing variables in multiple
+    integrals. For a transformation from (u,v) to (x,y), the Jacobian J =
+    d(x,y)/d(u,v) = (dx/du)(dy/dv) - (dx/dv)(dy/du). In polar coordinates, the
+    Jacobian is r, so dA = r dr d(theta). The Fundamental Theorem of Calculus,
+    Green's Theorem, Stokes' Theorem, and the Divergence Theorem are all
+    manifestations of a single generalized Stokes' theorem. Each relates an
+    integral over a boundary to an integral over the interior.
+
+  Метрики / Metrics:
+    ROUGE-L:  0.1261
+    BLEU:     0.0000
+    Cosine:   0.3717
+    NDCG@5:   0.8240
+    MRR:      0.3333
+
+----------------------------------------------------------------------
+  Вопрос #13 [Рассуждение / Reasoning]
+----------------------------------------------------------------------
+  Вопрос:  Why are conservative vector fields path-independent?
+  Эталон:  Because curl(F) = 0 for conservative fields, the field is the gradient of a potential. The line integral depends only on the potential values at the endpoints, not the path taken.
+
+  Найденные сущности / Entities found: VectorCalculus, ConservativeField
+  Расширенные сущности (BFS) / Expanded: Electromagnetism, DivergenceTheorem, VectorCalculus, LineIntegral, FluidMechanics, GreensTheorem, Curl, Gradient, SurfaceIntegral, ConservativeField, PartialDerivative, Divergence, StokesTheorem
+  Контекст из онтологии / Ontology context:
+    • Electromagnetism: Application of vector calculus theorems to electric and magnetic fields.
+    • Electromagnetism requires Curl.
+    • Electromagnetism requires Divergence.
+    • Electromagnetism requires Stokes' Theorem.
+    • Divergence Theorem: Relates flux through a closed surface to volume integral of divergence.
+    • Divergence Theorem proves / applies to Divergence.
+
+  Ответ Onto-RAG / Onto-RAG Answer:
+        A line integral of a vector field F along a curve C computes the work
+    done by the field along the path. If F is conservative (curl F = 0), the
+    line integral depends only on the endpoints, not the path. A scalar
+    potential phi exists such that F = grad(phi) for conservative fields. The
+    Divergence Theorem (Gauss's Theorem) relates the flux of a vector field
+    through a closed surface to the volume integral of the divergence over the
+    enclosed region: integral_S F . It relates the surface integral of the curl
+    of a vector field over a surface S to the line integral of the field around
+    the boundary curve of S: integral_S curl(F) .
+
+  Метрики / Metrics:
+    ROUGE-L:  0.2162
+    BLEU:     0.1165
+    Cosine:   0.7645
+    NDCG@5:   0.9954
+    MRR:      1.0000
+
+----------------------------------------------------------------------
+  Вопрос #14 [Рассуждение / Reasoning]
+----------------------------------------------------------------------
+  Вопрос:  How is the second derivative used to classify critical points?
+  Эталон:  At a critical point where f'(c)=0: if f''(c) > 0 the function is concave up so it is a local minimum; if f''(c) < 0 the function is concave down so it is a local maximum.
+
+  Найденные сущности / Entities found: Derivative, PartialDerivative
+  Расширенные сущности (BFS) / Expanded: DoubleIntegral, TotalDifferential, PowerSeries, RelatedRates, ChainRule, DivergenceTheorem, Continuity, FluidMechanics, Optimization, SingleVariableCalculus, PartialDerivative, Integral, IntegrationByParts, QuotientRule, TaylorSeries, DifferentialEquations, Limit, Electromagnetism, ProductRule, ODE, VectorCalculus, GreensTheorem, Curl, ClairauttTheorem, Substitution, FundamentalTheoremOfCalculus, Gradient, AreaAndVolume, ConservativeField, Divergence, Derivative, TripleIntegral, Jacobian, MultivariableCalculus, StokesTheorem
+  Контекст из онтологии / Ontology context:
+    • Double Integral: Integral over a two-dimensional region computing volume under a surface.
+    • Double Integral is part of Multivariable Calculus.
+    • Double Integral extends Integral.
+    • Total Differential: Approximation df = (df/dx)dx + (df/dy)dy for change in a multivariable function.
+    • Total Differential requires Partial Derivative.
+    • Total Differential is part of Multivariable Calculus.
+
+  Ответ Onto-RAG / Onto-RAG Answer:
+        The First Derivative Test uses sign changes of f'(x) to classify
+    critical points. Critical points occur where f'(x) = 0 or f'(x) is
+    undefined. The Second Derivative Test uses f''(x): if f''(c) > 0 the point
+    is a local minimum, if f''(c) < 0 it is a local maximum. The Fundamental
+    Theorem of Calculus, Green's Theorem, Stokes' Theorem, and the Divergence
+    Theorem are all manifestations of a single generalized Stokes' theorem. Each
+    relates an integral over a boundary to an integral over the interior.
+
+  Метрики / Metrics:
+    ROUGE-L:  0.3492
+    BLEU:     0.1683
+    Cosine:   0.5898
+    NDCG@5:   0.7675
+    MRR:      0.5000
+
+----------------------------------------------------------------------
+  Вопрос #15 [Обобщение / Summary]
+----------------------------------------------------------------------
+  Вопрос:  What are the main integration techniques covered in calculus?
+  Эталон:  The main techniques are: direct antidifferentiation, integration by substitution (u-substitution, reverse Chain Rule), integration by parts (from Product Rule), and partial fractions.
+
+  Найденные сущности / Entities found: SingleVariableCalculus, MultivariableCalculus, VectorCalculus, Substitution, IntegrationByParts, FundamentalTheoremOfCalculus
+  Расширенные сущности (BFS) / Expanded: DoubleIntegral, TotalDifferential, PowerSeries, RelatedRates, ChainRule, DivergenceTheorem, Continuity, FluidMechanics, IntermediateValueTheorem, Optimization, SingleVariableCalculus, FubiniTheorem, PartialDerivative, Integral, IntegrationByParts, QuotientRule, TaylorSeries, Limit, Electromagnetism, ProductRule, ODE, VectorCalculus, LineIntegral, GreensTheorem, Curl, ClairauttTheorem, Substitution, FundamentalTheoremOfCalculus, Gradient, SurfaceIntegral, AreaAndVolume, ConservativeField, Divergence, Derivative, TripleIntegral, Jacobian, MultivariableCalculus, StokesTheorem
+  Контекст из онтологии / Ontology context:
+    • Double Integral: Integral over a two-dimensional region computing volume under a surface.
+    • Double Integral is part of Multivariable Calculus.
+    • Double Integral extends Integral.
+    • Total Differential: Approximation df = (df/dx)dx + (df/dy)dy for change in a multivariable function.
+    • Total Differential requires Partial Derivative.
+    • Total Differential is part of Multivariable Calculus.
+
+  Ответ Onto-RAG / Onto-RAG Answer:
+        The Fundamental Theorem of Calculus connects differentiation and
+    integration. The Fundamental Theorem of Calculus, Green's Theorem, Stokes'
+    Theorem, and the Divergence Theorem are all manifestations of a single
+    generalized Stokes' theorem. This theorem is the cornerstone of integral
+    calculus. Each relates an integral over a boundary to an integral over the
+    interior. This unification is one of the deepest results in mathematical
+    analysis.
+
+  Метрики / Metrics:
+    ROUGE-L:  0.0690
+    BLEU:     0.0000
+    Cosine:   0.1456
+    NDCG@5:   0.9085
+    MRR:      0.3333
+
+----------------------------------------------------------------------
+  Вопрос #16 [Обобщение / Summary]
+----------------------------------------------------------------------
+  Вопрос:  How do the fundamental theorems of vector calculus unify?
+  Эталон:  The Fundamental Theorem of Calculus, Green's Theorem, Stokes' Theorem, and the Divergence Theorem are all cases of the generalized Stokes' theorem, relating boundary integrals to interior integrals.
+
+  Найденные сущности / Entities found: SingleVariableCalculus, MultivariableCalculus, VectorCalculus, FundamentalTheoremOfCalculus, GreensTheorem, StokesTheorem, DivergenceTheorem, IntermediateValueTheorem, FubiniTheorem, ClairauttTheorem
+  Расширенные сущности (BFS) / Expanded: DoubleIntegral, TotalDifferential, PowerSeries, RelatedRates, ChainRule, DivergenceTheorem, Continuity, FluidMechanics, IntermediateValueTheorem, Optimization, SingleVariableCalculus, FubiniTheorem, PartialDerivative, Integral, IntegrationByParts, TaylorSeries, Limit, Electromagnetism, ProductRule, ODE, VectorCalculus, LineIntegral, GreensTheorem, Curl, ClairauttTheorem, Substitution, FundamentalTheoremOfCalculus, Gradient, SurfaceIntegral, AreaAndVolume, ConservativeField, Divergence, Derivative, TripleIntegral, Jacobian, MultivariableCalculus, StokesTheorem
+  Контекст из онтологии / Ontology context:
+    • Double Integral: Integral over a two-dimensional region computing volume under a surface.
+    • Double Integral is part of Multivariable Calculus.
+    • Double Integral extends Integral.
+    • Total Differential: Approximation df = (df/dx)dx + (df/dy)dy for change in a multivariable function.
+    • Total Differential requires Partial Derivative.
+    • Total Differential is part of Multivariable Calculus.
+
+  Ответ Onto-RAG / Onto-RAG Answer:
+        The Fundamental Theorem of Calculus, Green's Theorem, Stokes' Theorem,
+    and the Divergence Theorem are all manifestations of a single generalized
+    Stokes' theorem. The Fundamental Theorem of Calculus connects
+    differentiation and integration. The Divergence Theorem (Gauss's Theorem)
+    relates the flux of a vector field through a closed surface to the volume
+    integral of the divergence over the enclosed region: integral_S F . This
+    theorem is fundamental in fluid mechanics, electromagnetism, and heat
+    transfer. This theorem is the cornerstone of integral calculus.
+
+  Метрики / Metrics:
+    ROUGE-L:  0.3818
+    BLEU:     0.2071
+    Cosine:   0.8130
+    NDCG@5:   1.0000
+    MRR:      1.0000
+
+----------------------------------------------------------------------
+  Вопрос #17 [Обобщение / Summary]
+----------------------------------------------------------------------
+  Вопрос:  What are the key applications of derivatives?
+  Эталон:  Derivatives are used for: finding rates of change, optimization (maxima/minima), related rates problems, analyzing concavity and inflection points, and linear approximation via differentials.
+
+  Найденные сущности / Entities found: Derivative, PartialDerivative
+  Расширенные сущности (BFS) / Expanded: DoubleIntegral, TotalDifferential, PowerSeries, RelatedRates, ChainRule, DivergenceTheorem, Continuity, FluidMechanics, Optimization, SingleVariableCalculus, PartialDerivative, Integral, IntegrationByParts, QuotientRule, TaylorSeries, DifferentialEquations, Limit, Electromagnetism, ProductRule, ODE, VectorCalculus, GreensTheorem, Curl, ClairauttTheorem, Substitution, FundamentalTheoremOfCalculus, Gradient, AreaAndVolume, ConservativeField, Divergence, Derivative, TripleIntegral, Jacobian, MultivariableCalculus, StokesTheorem
+  Контекст из онтологии / Ontology context:
+    • Double Integral: Integral over a two-dimensional region computing volume under a surface.
+    • Double Integral is part of Multivariable Calculus.
+    • Double Integral extends Integral.
+    • Total Differential: Approximation df = (df/dx)dx + (df/dy)dy for change in a multivariable function.
+    • Total Differential requires Partial Derivative.
+    • Total Differential is part of Multivariable Calculus.
+
+  Ответ Onto-RAG / Onto-RAG Answer:
+        The Fundamental Theorem of Calculus, Green's Theorem, Stokes' Theorem,
+    and the Divergence Theorem are all manifestations of a single generalized
+    Stokes' theorem. Each relates an integral over a boundary to an integral
+    over the interior. This unification is one of the deepest results in
+    mathematical analysis. The Divergence Theorem (Gauss's Theorem) relates the
+    flux of a vector field through a closed surface to the volume integral of
+    the divergence over the enclosed region: integral_S F . n dS = integral_V
+    div(F) dV.
+
+  Метрики / Metrics:
+    ROUGE-L:  0.0367
+    BLEU:     0.0000
+    Cosine:   0.0905
+    NDCG@5:   1.0000
+    MRR:      0.0000
+
+----------------------------------------------------------------------
+  Вопрос #18 [Обобщение / Summary]
+----------------------------------------------------------------------
+  Вопрос:  How does single-variable calculus extend to multiple dimensions?
+  Эталон:  Derivatives extend to partial derivatives and gradients. Single integrals extend to double and triple integrals. The Chain Rule extends via total derivatives. Line and surface integrals generalize to paths and surfaces in space.
+
+  Найденные сущности / Entities found: SingleVariableCalculus, MultivariableCalculus, VectorCalculus, FundamentalTheoremOfCalculus
+  Расширенные сущности (BFS) / Expanded: DoubleIntegral, TotalDifferential, PowerSeries, RelatedRates, ChainRule, DivergenceTheorem, Continuity, FluidMechanics, IntermediateValueTheorem, Optimization, SingleVariableCalculus, FubiniTheorem, PartialDerivative, Integral, IntegrationByParts, TaylorSeries, Limit, Electromagnetism, ProductRule, ODE, VectorCalculus, LineIntegral, GreensTheorem, Curl, ClairauttTheorem, Substitution, FundamentalTheoremOfCalculus, Gradient, SurfaceIntegral, AreaAndVolume, ConservativeField, Divergence, Derivative, TripleIntegral, Jacobian, MultivariableCalculus, StokesTheorem
+  Контекст из онтологии / Ontology context:
+    • Double Integral: Integral over a two-dimensional region computing volume under a surface.
+    • Double Integral is part of Multivariable Calculus.
+    • Double Integral extends Integral.
+    • Total Differential: Approximation df = (df/dx)dx + (df/dy)dy for change in a multivariable function.
+    • Total Differential requires Partial Derivative.
+    • Total Differential is part of Multivariable Calculus.
+
+  Ответ Onto-RAG / Onto-RAG Answer:
+        Partial derivatives and multiple integrals extend single-variable
+    calculus to higher dimensions. The gradient generalizes the derivative, the
+    divergence and curl extend differential analysis to vector fields, and
+    double and triple integrals generalize single integrals. The Fundamental
+    Theorem of Calculus, Green's Theorem, Stokes' Theorem, and the Divergence
+    Theorem are all manifestations of a single generalized Stokes' theorem.
+    These extensions are essential for physics and engineering applications.
+    Each relates an integral over a boundary to an integral over the interior.
+
+  Метрики / Metrics:
+    ROUGE-L:  0.2301
+    BLEU:     0.0606
+    Cosine:   0.5465
+    NDCG@5:   1.0000
+    MRR:      1.0000
+
+======================================================================
+  СВОДНАЯ ТАБЛИЦА / SUMMARY -- Onto-RAG (средние / averages)
+======================================================================
+
+  Метрика/Metric  Значение/Value
+  ---------------------------
+  ROUGE-L             0.2453
+  BLEU                0.0916
+  Cosine Sim          0.5183
+  NDCG@5              0.9373
+  MRR                 0.8426
+
+======================================================================
+  Завершено / Done.
+======================================================================
