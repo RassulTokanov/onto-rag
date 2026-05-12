@@ -42,8 +42,8 @@ class RAGConfig:
     retrieval_mode: str = "tfidf"
     top_k: int = 3
     bfs_depth: int = 1
-    bfs_max_entities: int = 7
-    ontology_weight: float = 0.3
+    bfs_max_entities: int = 5
+    ontology_weight: float = 0.15
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -333,12 +333,13 @@ class OntologyGraph:
 # ===================================================================
 
 class GraphExpander:
-    """Isolated BFS module with post-filtering and weight decay.
+    """Isolated BFS module with query-relevance filtering and weight decay.
 
-    Design decisions:
+    Design decisions (v3.2):
       - max_depth is a CLASS parameter (not passed dynamically)
       - max_entities is applied as POST-FILTER (full BFS first, then cap)
-      - Weight = 1.0 / (1 + hop_distance): nearer relations weighted higher
+      - Weight combines hop distance AND query relevance
+      - Semantic relations prioritized over structural ones
       - Generic/abstract nodes excluded from results (not from traversal)
     """
 
@@ -347,14 +348,40 @@ class GraphExpander:
         "VectorCalculus", "DifferentialEquations",
     })
 
+    # Semantic relations get full weight; structural ones are penalized
+    _SEMANTIC_RELATIONS = frozenset({
+        "inverseOf", "relatedTo", "requires", "proves",
+        "generalizationOf", "extendsTo",
+    })
+    _STRUCTURAL_RELATIONS = frozenset({
+        "isPartOf", "usedIn", "appliedIn",
+    })
+    _STRUCTURAL_PENALTY = 0.4  # structural edges get 40% of normal weight
+
     def __init__(self, ontology: OntologyGraph, max_depth: int = 1,
-                 max_entities: int = 7):
+                 max_entities: int = 5):
         self._ontology = ontology
         self._max_depth = max_depth
         self._max_entities = max_entities
 
-    def expand(self, seed_entities: list[str]) -> list[tuple[str, float]]:
-        """Full BFS, then sort by weight, cap at max_entities.
+    @staticmethod
+    def _token_overlap(text_a: str, text_b: str) -> float:
+        """Fraction of tokens in text_a found in text_b."""
+        tokens_a = set(w for w in re.findall(r"[a-z0-9]+", text_a.lower())
+                       if len(w) > 2)
+        tokens_b = set(w for w in re.findall(r"[a-z0-9]+", text_b.lower())
+                       if len(w) > 2)
+        if not tokens_a or not tokens_b:
+            return 0.0
+        return len(tokens_a & tokens_b) / len(tokens_a)
+
+    def expand(self, seed_entities: list[str],
+               query: str = "") -> list[tuple[str, float]]:
+        """BFS with query-relevance filtering.
+
+        Args:
+            seed_entities: entities found in the query
+            query: original query text (for relevance scoring)
 
         Returns:
             [(entity_id, weight)] sorted by weight desc.
@@ -362,29 +389,53 @@ class GraphExpander:
         if not seed_entities:
             return []
 
-        # Full BFS with distance tracking across all seeds
-        result: dict[str, int] = {}  # entity_id -> min hop distance
+        # Full BFS with distance and relation-type tracking
+        # result: entity_id -> (min_hop_distance, best_relation_type)
+        result: dict[str, tuple[int, str]] = {}
 
         for seed in seed_entities:
             visited = {seed: 0}
+            edge_type = {seed: "seed"}
             frontier = [seed]
             for depth_level in range(1, self._max_depth + 1):
                 next_frontier = []
                 for node in frontier:
-                    for _, neighbor in self._ontology.adj.get(node, []):
+                    for rel, neighbor in self._ontology.adj.get(node, []):
                         if neighbor not in visited:
                             visited[neighbor] = depth_level
+                            # Strip _inv suffix to get base relation
+                            base_rel = rel.replace("_inv", "")
+                            edge_type[neighbor] = base_rel
                             next_frontier.append(neighbor)
                 frontier = next_frontier
 
             for eid, dist in visited.items():
                 if eid in self._GENERIC_NODES:
                     continue
-                if eid not in result or dist < result[eid]:
-                    result[eid] = dist
+                if eid not in result or dist < result[eid][0]:
+                    result[eid] = (dist, edge_type.get(eid, "unknown"))
 
-        # Weight by distance: nearer = higher weight
-        weighted = [(eid, 1.0 / (1 + dist)) for eid, dist in result.items()]
+        # Weight by: (1) distance, (2) relation type, (3) query relevance
+        weighted = []
+        for eid, (dist, rel_type) in result.items():
+            # Base weight by distance
+            base_w = 1.0 / (1 + dist)
+
+            # Relation-type modifier
+            if rel_type in self._STRUCTURAL_RELATIONS:
+                base_w *= self._STRUCTURAL_PENALTY
+            # seed entities always get full weight (rel_type == "seed")
+
+            # Query-relevance modifier (if query provided)
+            if query and dist > 0:
+                label = self._ontology.labels.get(eid, eid)
+                desc = self._ontology.descriptions.get(eid, "")
+                entity_text = label + " " + desc
+                relevance = self._token_overlap(query, entity_text)
+                # Blend: 60% structure + 40% relevance
+                base_w *= (0.6 + 0.4 * relevance)
+
+            weighted.append((eid, base_w))
 
         # Post-filter: sort by weight desc, cap at max_entities
         weighted.sort(key=lambda x: (-x[1], x[0]))  # stable sort by id
@@ -396,25 +447,32 @@ class GraphExpander:
 # ===================================================================
 
 class OntologyReranker:
-    """Weighted reranking with a single tunable parameter.
+    """Weighted reranking with adaptive weight scaling (v3.2).
 
-    score = (1 - w_onto) * base_score + w_onto * entity_overlap_ratio
+    score = (1 - w_eff) * base_score + w_eff * relevance_signal
 
-    When w_onto=0.0, reranker is a no-op (preserves base ranking).
+    Improvements over v3.1:
+      - Adaptive w_eff: scales with entity count (few entities = low weight)
+      - Query-aware overlap: entity keywords weighted by query co-occurrence
+      - Preserves base ranking when ontology signal is weak
     """
 
-    def __init__(self, w_onto: float = 0.3):
+    def __init__(self, w_onto: float = 0.15):
         self.w_onto = w_onto
 
     def rerank(self, candidates: list[tuple[int, float]],
                corpus: list[str],
-               entity_keywords: set[str]) -> list[tuple[int, float]]:
-        """Rerank candidates by entity overlap.
+               entity_keywords: set[str],
+               query: str = "",
+               n_seed_entities: int = 0) -> list[tuple[int, float]]:
+        """Rerank candidates by entity overlap with adaptive weighting.
 
         Args:
             candidates: [(chunk_index, base_score)]
             corpus: full document list
             entity_keywords: lowercase keywords from expanded entities
+            query: original query (for co-occurrence weighting)
+            n_seed_entities: number of entities found in query directly
 
         Returns:
             [(chunk_index, final_score)] sorted by score desc.
@@ -423,13 +481,39 @@ class OntologyReranker:
             result = sorted(candidates, key=lambda x: x[1], reverse=True)
             return result
 
+        # Adaptive weight: scale by entity confidence
+        # 1 entity -> 30% of w_onto, 2 -> 70%, 3+ -> 100%
+        if n_seed_entities <= 1:
+            w_eff = self.w_onto * 0.3
+        elif n_seed_entities == 2:
+            w_eff = self.w_onto * 0.7
+        else:
+            w_eff = self.w_onto
+
+        # Pre-compute query tokens for co-occurrence weighting
+        query_tokens = set(w for w in re.findall(r"[a-z0-9]+", query.lower())
+                           if len(w) > 2) if query else set()
+
         reranked = []
         n_kw = len(entity_keywords)
         for idx, base_score in candidates:
             text_lower = corpus[idx].lower()
-            hits = sum(1 for kw in entity_keywords if kw in text_lower)
-            overlap_ratio = hits / n_kw
-            score = (1.0 - self.w_onto) * base_score + self.w_onto * overlap_ratio
+            text_tokens = set(re.findall(r"[a-z0-9]+", text_lower))
+
+            # Weighted overlap: keywords that also appear in query get 2x
+            weighted_hits = 0.0
+            for kw in entity_keywords:
+                if kw in text_lower:
+                    if kw in query_tokens:
+                        weighted_hits += 2.0  # query-relevant entity keyword
+                    else:
+                        weighted_hits += 1.0
+            # Normalize: max possible = 2 * n_kw (if all co-occur with query)
+            overlap_ratio = weighted_hits / (2.0 * n_kw) if n_kw else 0.0
+
+            # Query relevance guard: if chunk has low base_score,
+            # don't let entity overlap push it up too much
+            score = (1.0 - w_eff) * base_score + w_eff * overlap_ratio
             reranked.append((idx, score))
 
         reranked.sort(key=lambda x: x[1], reverse=True)
@@ -441,14 +525,15 @@ class OntologyReranker:
 # ===================================================================
 
 class QueryClassifier:
-    """2-score heuristic classifier for adaptive routing.
+    """3-signal heuristic classifier for adaptive routing (v3.2).
 
-    Scores:
+    Signals:
       - relation: presence of relation keywords (how/why/compare/...)
       - entity_density: fraction of ontology entities found in query
+      - negative: presence of factual/definitional keywords (penalty)
+      - graph_connectivity: bonus if multiple entities are connected
 
-    Design: weights are fixed at 0.5/0.5 (equal). Threshold is the
-    only tunable parameter, justified by threshold sweep experiment.
+    Design: threshold raised to 0.5 for more selective routing.
     """
 
     _RELATION_KEYWORDS = frozenset({
@@ -456,12 +541,28 @@ class QueryClassifier:
         "difference", "between", "connect", "versus", "affect", "influence",
     })
 
-    # Design constant: 0.3 chosen via threshold sweep (see run_ablation.py)
-    DEFAULT_THRESHOLD = 0.3
+    # Negative keywords: factual/definitional queries where ontology hurts
+    _NEGATIVE_KEYWORDS = frozenset({
+        "what", "define", "definition", "state", "list", "name",
+        "give", "formal", "formula",
+    })
+
+    # Design constant: 0.5 chosen via threshold sweep (v3.2)
+    DEFAULT_THRESHOLD = 0.5
 
     def __init__(self, threshold: float = None):
         self.threshold = (threshold if threshold is not None
                           else self.DEFAULT_THRESHOLD)
+
+    def _entities_connected(self, entities: list[str],
+                            ontology: OntologyGraph) -> bool:
+        """Check if any pair of entities is directly connected in graph."""
+        entity_set = set(entities)
+        for eid in entities:
+            for _, neighbor in ontology.adj.get(eid, []):
+                if neighbor in entity_set and neighbor != eid:
+                    return True
+        return False
 
     def classify(self, query: str, ontology: OntologyGraph) -> dict:
         """Classify query and return routing decision + confidence.
@@ -480,7 +581,18 @@ class QueryClassifier:
         entities = ontology.find_entities_in_text(query)
         score_entity = min(len(entities) / 3.0, 1.0)
 
-        score_total = 0.5 * score_relation + 0.5 * score_entity
+        # Score 3: negative signal (penalty for factual queries)
+        has_negative = any(w in self._NEGATIVE_KEYWORDS for w in words)
+        penalty = 0.3 if (has_negative and not has_relation) else 0.0
+
+        # Bonus: graph connectivity (entities connected in ontology)
+        connectivity_bonus = 0.0
+        if len(entities) >= 2 and self._entities_connected(entities, ontology):
+            connectivity_bonus = 0.2
+
+        score_total = (0.4 * score_relation + 0.4 * score_entity
+                       + connectivity_bonus - penalty)
+        score_total = max(0.0, min(1.0, score_total))  # clamp to [0, 1]
 
         return {
             "use_ontology": score_total > self.threshold,
@@ -488,6 +600,8 @@ class QueryClassifier:
             "scores": {
                 "relation": round(score_relation, 4),
                 "entity_density": round(score_entity, 4),
+                "negative_penalty": round(penalty, 4),
+                "connectivity_bonus": round(connectivity_bonus, 4),
             },
             "entities_found": entities,
         }
@@ -607,45 +721,74 @@ class OntoRAG:
         # 1. Entity recognition (Ontology Layer)
         q_entities = self.ontology.find_entities_in_text(question)
 
-        # 2. Graph expansion (Ontology Layer -- GraphExpander)
-        expanded = self.expander.expand(q_entities)
+        # 2. Graph expansion with query relevance (v3.2)
+        expanded = self.expander.expand(q_entities, query=question)
         expanded_ids = {eid for eid, _ in expanded}
 
-        # 3. Enriched query from entity labels
-        entity_labels = []
-        for eid, _ in expanded:
+        # 3. Selective query enrichment (v3.2)
+        # Only use seed entities + high-weight expanded entities for query
+        seed_set = set(q_entities)
+        seed_labels = []
+        expanded_labels = []
+        for eid, weight in expanded:
             lbl = self.ontology.labels.get(eid, "")
             if lbl:
-                entity_labels.append(lbl)
-        enriched_query = question + " " + " ".join(entity_labels)
+                if eid in seed_set:
+                    seed_labels.append(lbl)
+                elif weight >= 0.4:  # only high-relevance expansions
+                    expanded_labels.append(lbl)
 
-        # 4. Retrieval (Retrieval Layer -- no ontology knowledge)
+        # Enriched query: seed labels at full strength only
+        enriched_query = question + " " + " ".join(seed_labels)
+
+        # 4. Retrieval (Retrieval Layer)
+        # Primary: original query (full weight)
         candidates = {}
         for idx, score in self.index.search(question, self.config.top_k * 2):
             candidates[idx] = score
+        # Secondary: enriched query (reduced weight: 0.7 instead of 0.9)
         for idx, score in self.index.search(enriched_query,
                                             self.config.top_k * 2):
             old = candidates.get(idx, 0)
-            candidates[idx] = max(old, score * 0.9)
+            candidates[idx] = max(old, score * 0.7)
+        # Tertiary: expanded labels (low weight: 0.4)
+        if expanded_labels:
+            exp_query = question + " " + " ".join(expanded_labels)
+            for idx, score in self.index.search(exp_query,
+                                                self.config.top_k):
+                old = candidates.get(idx, 0)
+                candidates[idx] = max(old, score * 0.4)
 
-        # 5. Reranking (Ranking Layer)
+        # 5. Reranking with adaptive weight (v3.2)
         entity_kw = set()
-        for lbl in entity_labels:
+        all_labels = seed_labels + expanded_labels
+        for lbl in all_labels:
             for w in lbl.lower().split():
                 if len(w) >= 3:
                     entity_kw.add(w)
 
         candidate_list = list(candidates.items())
-        reranked = self.reranker.rerank(candidate_list, self.corpus, entity_kw)
+        reranked = self.reranker.rerank(
+            candidate_list, self.corpus, entity_kw,
+            query=question, n_seed_entities=len(q_entities)
+        )
         retrieved = [(self.corpus[i], s)
                      for i, s in reranked[:self.config.top_k]]
 
-        # 6. Answer extraction
-        answer_text = _extract_answer(retrieved, question, n_sentences=5)
-
-        # 7. Ontology context (for display)
+        # 6. Answer extraction with ontology-enriched context (v3.2)
+        # Add ontology descriptions as supplementary sentences
         onto_sentences = self.ontology.get_context_sentences(expanded_ids)
         onto_context = " ".join(onto_sentences)
+
+        # Inject relevant ontology sentences as low-priority retrieval
+        enriched_retrieved = list(retrieved)
+        if onto_sentences and q_entities:
+            # Add ontology context as a pseudo-chunk with low score
+            min_score = min(s for _, s in retrieved) if retrieved else 0.0
+            enriched_retrieved.append((onto_context, min_score * 0.3))
+
+        answer_text = _extract_answer(enriched_retrieved, question,
+                                      n_sentences=5)
 
         return {
             "answer": answer_text,
