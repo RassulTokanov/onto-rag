@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Ablation Study v3.1 -- RAG Engine Modular Architecture
+Ablation Study v3.2 -- RAG Engine Modular Architecture
 =======================================================
 6-configuration ablation + sensitivity analysis.
 
@@ -14,7 +14,7 @@ Configurations:
 
 Sensitivity analysis:
   - BFS depth sweep (0, 1, 2)
-  - Ontology weight sweep (0.0, 0.1, 0.2, 0.3, 0.5)
+  - Ontology weight sweep (0.0, 0.05, 0.10, 0.15, 0.3)
   - Classifier threshold sweep (0.1 .. 0.9)
 
 Corpus: "Introduction to Calculus Vol. II" by J.H. Heinbockel.
@@ -56,9 +56,9 @@ def _build_systems(corpus, owl):
     cfg_tfidf = RAGConfig(retrieval_mode="tfidf")
     cfg_bm25 = RAGConfig(retrieval_mode="bm25")
     cfg_entity = RAGConfig(bfs_depth=0, ontology_weight=0.0)
-    cfg_full = RAGConfig(bfs_depth=1, ontology_weight=0.3)
+    cfg_full = RAGConfig(bfs_depth=1, ontology_weight=0.15)
     cfg_bm25_onto = RAGConfig(retrieval_mode="bm25", bfs_depth=1,
-                              ontology_weight=0.3)
+                              ontology_weight=0.15)
 
     return [
         ("Standard(TF-IDF)", StandardRAG(corpus, config=cfg_tfidf)),
@@ -104,7 +104,7 @@ def run_ablation():
 
     W = 80
     out("=" * W)
-    out("  ABLATION STUDY v3.1 -- RAG Engine Modular Architecture")
+    out("  ABLATION STUDY v3.2 -- RAG Engine Modular Architecture")
     out("  Corpus: Introduction to Calculus Vol. II (Heinbockel)")
     out("  Questions: %d  |  Metrics: %s" % (
         len(questions), ", ".join(METRIC_LABELS.values())))
@@ -115,7 +115,7 @@ def run_ablation():
     out("  CONFIGURATION SUMMARY")
     out("  " + "-" * (W - 4))
     out("  RAGConfig defaults: retrieval=tfidf, top_k=3, bfs_depth=1,")
-    out("    bfs_max_entities=7, ontology_weight=0.3")
+    out("    bfs_max_entities=5, ontology_weight=0.15")
     out("  Classifier threshold: %.1f" % QueryClassifier.DEFAULT_THRESHOLD)
     out("  " + "-" * (W - 4))
 
@@ -253,13 +253,13 @@ def run_ablation():
 
     # -- BFS depth sweep --------------------------------------------------
     out("")
-    out("  S1. BFS depth sweep (ontology_weight=0.3 fixed)")
+    out("  S1. BFS depth sweep (ontology_weight=0.15 fixed)")
     out("  " + "-" * (W - 4))
     out("  {:>10s} {:>10s} {:>10s} {:>10s}".format(
         "bfs_depth", "ROUGE-L", "NDCG@5", "MRR"))
     out("  " + "-" * (W - 4))
     for depth in [0, 1, 2]:
-        cfg = RAGConfig(bfs_depth=depth, ontology_weight=0.3)
+        cfg = RAGConfig(bfs_depth=depth, ontology_weight=0.15)
         sys_onto = OntoRAG(corpus, owl, config=cfg)
         rl_sum = 0.0
         nd_sum = 0.0
@@ -282,7 +282,7 @@ def run_ablation():
     out("  {:>10s} {:>10s} {:>10s} {:>10s}".format(
         "w_onto", "ROUGE-L", "NDCG@5", "MRR"))
     out("  " + "-" * (W - 4))
-    for w in [0.0, 0.1, 0.2, 0.3, 0.5]:
+    for w in [0.0, 0.05, 0.10, 0.15, 0.30]:
         cfg = RAGConfig(bfs_depth=1, ontology_weight=w)
         sys_onto = OntoRAG(corpus, owl, config=cfg)
         rl_sum = 0.0
@@ -307,7 +307,7 @@ def run_ablation():
         "threshold", "ROUGE-L", "onto%", "route"))
     out("  " + "-" * (W - 4))
     for th in [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.7, 0.9, 1.0]:
-        cfg = RAGConfig(bfs_depth=1, ontology_weight=0.3)
+        cfg = RAGConfig(bfs_depth=1, ontology_weight=0.15)
         ada = AdaptiveRAG(corpus, owl, config=cfg)
         ada._classifier = QueryClassifier(threshold=th)
         rl_sum = 0.0
